@@ -12,7 +12,7 @@ namespace UserManager
         {
             sc.TryAddScoped<IMd5Encryption, Md5Encryption>();
             sc.TryAddSingleton<IUserRepository, UserRepository>();
-            sc.TryAddScoped<IUserManager, Services.UserManager>();
+            sc.TryAddSingleton<IUserManager, Services.UserManager>();
 
             return sc;
         }

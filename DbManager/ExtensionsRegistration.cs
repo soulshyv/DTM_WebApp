@@ -1,9 +1,9 @@
 ﻿using DbManager.Contracts;
-using DTM.DbManager.Services;
+using DbManager.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace DbManager
+namespace DTM.DbManager
 {
     public static class RegistrationExtensions
     {

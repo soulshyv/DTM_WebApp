@@ -2,6 +2,7 @@
 using DbManager.Contracts;
 using DbManager.Services;
 using DTM.Core.Services;
+using DTM.DbManager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
