@@ -17,8 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DbManager\DbManager.csproj" />
-    <ProjectReference Include="..\UserManager\UserManager.csproj" />
+    <ProjectReference Include="..\DbManager\DTM.DbManager.csproj" />
+    <ProjectReference Include="..\DTM.Core\DTM.Core.csproj" />
+    <ProjectReference Include="..\UserManager\DTM.UserManager.csproj" />
   </ItemGroup>
 
 </Project>

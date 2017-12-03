@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
+using DTM.Encryption;
 
-namespace DTM.Encryption
+namespace UserManager.Services
 {
     public class Md5Encryption : IMd5Encryption
     {

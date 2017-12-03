@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DbManager;
 using DbManager.Contracts;
 using DbManager.Services;
+using DTM.Core.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using UserManager;
+using UserManager.Contracts;
+using UserManager.Services;
 
 namespace Main
 {
@@ -25,7 +26,12 @@ namespace Main
         {
             services.AddMvc();
 
-            services.AddSingleton<IDtmRepository, DtmRepository>();
+            services.AddSingleton<IDtmDbConnection>(_ =>
+                new DtmDbConnection(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbManager();
+
+            services.AddUserManager();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

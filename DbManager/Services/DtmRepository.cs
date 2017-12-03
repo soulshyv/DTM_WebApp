@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DbManager.Contracts;
+using DTM.Core.Services;
 using MySql.Data.MySqlClient;
 
 namespace DbManager.Services
 {
     public sealed class DtmRepository : IDtmRepository
     {
-        private const string ConnectionString = @"Server=localhost;Port=3306;Database=jdr;Uid=root;Pwd=root";
-
-        public DtmRepository()
+        public DtmRepository(IDtmDbConnection dbConnection)
         {
             try
             {
-                Conn = new MySqlConnection(ConnectionString);
+                Conn = dbConnection.DbConnection;
                 Conn.Open();
             }
             catch (Exception)

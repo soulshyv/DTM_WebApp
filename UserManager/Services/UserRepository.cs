@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using DTM.Core.Services;
 using MySql.Data.MySqlClient;
 using UserManager.Contracts;
 
@@ -9,13 +8,11 @@ namespace UserManager.Services
 {
     public class UserRepository : IUserRepository
     {
-        private const string ConnectionString = @"Server=localhost;Port=3306;Database=jdr;Uid=root;Pwd=root";
-
-        public UserRepository()
+        public UserRepository(IDtmDbConnection dbConnection)
         {
             try
             {
-                Conn = new MySqlConnection(ConnectionString);
+                Conn = dbConnection.DbConnection;
                 Conn.Open();
             }
             catch (Exception)
