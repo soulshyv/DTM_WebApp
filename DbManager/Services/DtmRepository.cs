@@ -2,11 +2,9 @@
 using System.Threading.Tasks;
 using DTM.Core.Contracts;
 using DTM.DbManager.Contracts;
-using Main.Models;
 using MySql.Data.MySqlClient;
 using Dapper;
-using System.Linq;
-using System.Linq.Expressions;
+using DTM.DbManager.Models;
 
 namespace DTM.DbManager.Services
 {

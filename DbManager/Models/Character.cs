@@ -1,4 +1,4 @@
-﻿namespace Main.Models
+﻿namespace DTM.DbManager.Models
 {
     public class Character
     {

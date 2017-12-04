@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Main.Models;
+using DTM.DbManager.Models;
 
 namespace DTM.DbManager.Contracts
 {
