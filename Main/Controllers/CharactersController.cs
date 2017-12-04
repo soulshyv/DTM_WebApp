@@ -1,26 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DbManager.Contracts;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using UserManager.Contracts;
+using Dapper;
+using DTM.DbManager.Contracts;
 
 namespace Main.Controllers
 {
     public class CharactersController : Controller
     {
-        protected CharactersController(IUserManager userManager, IDtmRepository dtmRepository)
+        public CharactersController(IUserManager userManager, IDtmRepository dtmRepository)
         {
             UserManager = userManager;
             DtmRepository = dtmRepository;
         }
 
-        public IUserManager UserManager { get; }
-        public IDtmRepository DtmRepository { get; }
+        private IUserManager UserManager { get; }
+        private IDtmRepository DtmRepository { get; }
 
-        public IActionResult PlayableCharacters()
+        public async System.Threading.Tasks.Task<IActionResult> PlayableCharactersAsync()
         {
+            var allPersos = await DtmRepository.GetAllPerso();
             return View();
         }
     }

@@ -1,25 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DTM.Core.Services;
+using DTM.Core.Contracts;
 using MySql.Data.MySqlClient;
 using UserManager.Contracts;
 
-namespace UserManager.Services
+namespace DTM.UserManager.Services
 {
     public class UserRepository : IUserRepository
     {
         public UserRepository(IDtmDbConnection dbConnection)
         {
-            try
-            {
-                Conn = dbConnection.DbConnection;
-                Conn.Open();
-            }
-            catch (Exception)
-            {
-                Conn.Close();
-                throw new Exception("Une erreur est survenue pendant la connexion à la base de données");
-            }
+            Conn = dbConnection.DbConnection;
         }
 
         private MySqlConnection Conn { get; }

@@ -1,15 +1,11 @@
-﻿using DbManager;
-using DbManager.Contracts;
-using DbManager.Services;
+﻿using DTM.Core.Contracts;
 using DTM.Core.Services;
 using DTM.DbManager;
+using DTM.UserManager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using UserManager;
-using UserManager.Contracts;
-using UserManager.Services;
 
 namespace Main
 {
@@ -27,8 +23,9 @@ namespace Main
         {
             services.AddMvc();
 
+            var defaultConnection = Configuration.GetConnectionString("DefaultConnection");
             services.AddSingleton<IDtmDbConnection>(_ =>
-                new DtmDbConnection(Configuration.GetConnectionString("DefaultConnection")));
+                new DtmDbConnection(defaultConnection));
 
             services.AddDbManager();
 

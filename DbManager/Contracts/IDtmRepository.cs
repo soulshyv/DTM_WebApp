@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Main.Models;
 
-namespace DbManager.Contracts
+namespace DTM.DbManager.Contracts
 {
     public interface IDtmRepository
     {
@@ -10,7 +12,7 @@ namespace DbManager.Contracts
         Task GetAllInventaires();
         Task GetAllItemsByPerso();
         Task GetAllPassifs();
-        Task GetAllPerso(object perso);
+        Task<List<Character>> GetAllPerso();
         Task GetAllSkills();
         Task GetCaracPerso(object perso);
         Task GetDemonPerso(object perso);

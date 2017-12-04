@@ -1,31 +1,34 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using DbManager.Contracts;
-using DTM.Core.Services;
+using DTM.Core.Contracts;
+using DTM.DbManager.Contracts;
+using Main.Models;
 using MySql.Data.MySqlClient;
+using Dapper;
+using System.Linq;
+using System.Linq.Expressions;
 
-namespace DbManager.Services
+namespace DTM.DbManager.Services
 {
     public sealed class DtmRepository : IDtmRepository
     {
         public DtmRepository(IDtmDbConnection dbConnection)
         {
-            try
-            {
-                Conn = dbConnection.DbConnection;
-                Conn.Open();
-            }
-            catch (Exception)
-            {
-                Conn.Close();
-                throw new Exception("Une erreur est survenue pendant la connexion à la base de données");
-            }
+            Conn = dbConnection.DbConnection;
         }
 
         private MySqlConnection Conn { get; }
-        public async Task GetAllPerso(object perso)
+
+        public async Task<List<Character>> GetAllPerso()
         {
-            await Task.CompletedTask;
+            return (await Conn.ExecuteAsync(@"SELECT
+                                             perso.Nom,
+                                             perso.Xp,
+                                             perso.Lvl,
+                                             perso.Po,
+                                             perso.Race,
+                                             perso.Type_Perso
+                                            FROM jdr.perso")).Tolist();
         }
 
         public async Task GetPersoByName(object perso)

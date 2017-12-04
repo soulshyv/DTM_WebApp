@@ -1,6 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 
-namespace DTM.Core.Services
+namespace DTM.Core.Contracts
 {
     public interface IDtmDbConnection
     {

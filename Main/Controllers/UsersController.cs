@@ -7,7 +7,7 @@ namespace Main.Controllers
     {
         public IUserManager UserManager { get; }
 
-        protected UsersController(IUserManager userManager)
+        public UsersController(IUserManager userManager)
         {
             UserManager = userManager;
         }
