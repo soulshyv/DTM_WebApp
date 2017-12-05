@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using UserManager.Contracts;
-using Dapper;
 using DTM.DbManager.Contracts;
 
 namespace Main.Controllers
@@ -16,7 +16,7 @@ namespace Main.Controllers
         private IUserManager UserManager { get; }
         private IDtmRepository DtmRepository { get; }
 
-        public async System.Threading.Tasks.Task<IActionResult> PlayableCharactersAsync()
+        public async Task<IActionResult> PlayableCharacters()
         {
             var allPersos = await DtmRepository.GetAllPerso();
             return View();

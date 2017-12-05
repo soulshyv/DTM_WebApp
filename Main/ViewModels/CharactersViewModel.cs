@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using DTM.DbManager.Models.Character;
+using DTM.DbManager.Models;
 
 namespace Main.ViewModels
 {
