@@ -17,7 +17,7 @@ namespace DTM.DbManager.Contracts
         Task GetCaracPerso(object perso);
         Task GetDemonPerso(object perso);
         Task GetDonsPerso(object perso);
-        Task GetElementPerso(object perso);
+        Task<List<Element>> GetElementPerso(string nomPerso);
         Task GetInventairePerso(object perso);
         Task GetItemByNom(object perso);
         Task GetItemsPerso(object perso);

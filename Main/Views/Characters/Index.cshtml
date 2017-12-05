@@ -1,0 +1,32 @@
+﻿@model Main.ViewModels.CharactersViewModel
+@{
+    ViewData["Title"] = "Gestion des personnages";
+}
+
+<h2>Gestion des personnages</h2>
+
+<table class="table">
+    <tr>
+        <th>Pseudo</th>
+        <th>Xp</th>
+        <th>Lvl</th>
+        <th>Po</th>
+        <th>Race</th>
+        <th>Type</th>
+        <th></th>
+    </tr>
+    @foreach (var charac in Model.Characters)
+    {
+        <tr>
+            <td>@charac.Nom</td>
+            <td>@charac.Xp</td>
+            <td>@charac.Lvl</td>
+            <td>@charac.Po</td>
+            <td>@charac.Race</td>
+            <td>@charac.TypePerso</td>
+            <td>
+                <button type="button" data-toggle="modal" data-target="#DetailsPerso">Voir</button>
+            </td>
+        </tr>
+    }
+</table>

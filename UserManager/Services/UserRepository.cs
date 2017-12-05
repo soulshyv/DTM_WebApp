@@ -25,7 +25,7 @@ namespace DTM.UserManager.Services
             if (reader == null)
                 throw new Exception("Une erreur est survenue");
 
-            if (!reader.HasRows || reader.FieldCount != 1)
+            if (!reader.HasRows)
             {
                 reader.Close();
                 return null;

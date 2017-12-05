@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using UserManager.Contracts;
 using DTM.DbManager.Contracts;
+using Main.ViewModels;
 
 namespace Main.Controllers
 {
@@ -16,10 +17,42 @@ namespace Main.Controllers
         private IUserManager UserManager { get; }
         private IDtmRepository DtmRepository { get; }
 
-        public async Task<IActionResult> PlayableCharacters()
+        public async Task<IActionResult> Index()
         {
             var allPersos = await DtmRepository.GetAllPerso();
+
+            if (allPersos != null)
+                return View(new CharactersViewModel
+                {
+                    Characters = allPersos
+                });
+
             return View();
+        }
+
+        public string DetailsPerso(string nomPerso)
+        {
+            var perso = DtmRepository.GetPersoByName(nomPerso);
+
+            var ret = "<div id=\"DetailsPerso\" class=\"modal fade\" role=\"dialog\">" +
+                                   "< div class=\"modal-dialog\">" +
+
+                                       "<div class=\"modal-content\">" +
+                                           "<div class=\"modal-header\">" +
+                                                $"<p>Détails de {nomPerso}</p>" +
+                                           "</div>" +
+                                           "<div class=\"modal-body\">" +
+
+                                           "</div>" +
+                                           "<div class=\"modal-footer\">" +
+
+                                           "</div>" +
+                                       "</div>" +
+
+                                   "</div>" +
+                               "</div>";
+
+            return ret;
         }
     }
 }

@@ -5,6 +5,7 @@ namespace Main.ViewModels
 {
     public class CharactersViewModel
     {
-        private List<Character> Characters { get; set; }
+        public List<Character> Characters { get; set; }
+        public Character Perso { get; set; }
     }
 }
