@@ -6,25 +6,20 @@ namespace DTM.DbManager.Contracts
 {
     public interface IDtmRepository
     {
-        Task GetAllDemons();
-        Task GetAllDons();
-        Task GetAllEllements();
-        Task GetAllInventaires();
-        Task GetAllItemsByPerso();
-        Task GetAllPassifs();
+        Task<List<Demon>> GetAllDemons();
+        Task<List<Don>> GetAllDons();
+        Task<List<Element>> GetAllEllements();
+        Task<List<Passif>> GetAllPassifs();
         Task<List<Character>> GetAllPerso();
-        Task GetAllSkills();
-        Task GetCaracPerso(object perso);
-        Task GetDemonPerso(object perso);
-        Task GetDonsPerso(object perso);
+        Task<List<Skill>> GetAllSkills();
+        Task<List<Demon>> GetDemonPerso(string nomPerso);
+        Task<List<DonsPerso>> GetDonsPerso(string nomPerso);
         Task<List<Element>> GetElementPerso(string nomPerso);
-        Task GetInventairePerso(object perso);
-        Task GetItemByNom(object perso);
-        Task GetItemsPerso(object perso);
-        Task GetJaugePerso(object perso);
-        Task GetPersoByName(object perso);
-        Task GetSkillsPerso(object perso);
-        Task GetStatsPerso(object perso);
-        Task PassifsPerso(object perso);
+        Task<Inventaire> GetInventairePerso(string nomPerso);
+        Task<Item> GetItemByNom(string nomItem);
+        Task<Character> GetPersoByName(string nomPerso);
+        Task<List<Skill>> GetSkillsPerso(string nomPerso);
+        Task<List<Passif>> PassifsPerso(string nomPerso);
+        Task<List<Passif>> PassifsDemon(string nomDemon);
     }
 }

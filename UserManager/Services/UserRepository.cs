@@ -4,7 +4,7 @@ using DTM.Core.Contracts;
 using MySql.Data.MySqlClient;
 using UserManager.Contracts;
 
-namespace DTM.UserManager.Services
+namespace DTM.DbManager.Services
 {
     public class UserRepository : IUserRepository
     {

@@ -1,11 +1,11 @@
 ﻿using DTM.Encryption;
-using DTM.UserManager.Services;
+using DTM.DbManager.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using UserManager.Contracts;
 using UserManager.Services;
 
-namespace DTM.UserManager
+namespace DTM.DbManager
 {
     public static class RegistrationExtensions
     {

@@ -31,7 +31,7 @@ namespace DTM.DbManager.Services
                                  FROM jdr.perso";
             var cmd = new MySqlCommand(sql, Conn);
 
-            var ret = new List<Character>();
+            var characs = new List<Character>();
             using (var reader = await cmd.ExecuteReaderAsync())
             {
                 if (reader == null)
@@ -43,9 +43,9 @@ namespace DTM.DbManager.Services
                     return null;
                 }
 
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
-                    ret.Add(new Character
+                    characs.Add(new Character
                     {
                         Nom = reader["Nom"].ToString(),
                         Xp = Convert.ToInt16(reader["Xp"]),
@@ -58,7 +58,7 @@ namespace DTM.DbManager.Services
                 }
             }
 
-            return ret;
+            return characs;
         }
 
         public async Task<CharacterFull> GetFullPersoByName(string nomPerso)
@@ -103,7 +103,7 @@ namespace DTM.DbManager.Services
                     return null;
                 }
 
-                reader.Read();
+                await reader.ReadAsync();
                 Perso = new Character
                 {
                     Nom = reader["Pseudo"].ToString(),
@@ -146,79 +146,481 @@ namespace DTM.DbManager.Services
             return ret;
         }
 
-        public async Task GetDonsPerso(object perso)
+        public async Task<List<DonsPerso>> GetDonsPerso(string nomPerso)
         {
-            await Task.CompletedTask;
+            const string elementPerso = @"SELECT
+                                            `viewdonperso`.`Pseudo`,
+                                            `viewdonperso`.`Competence`,
+                                            `viewdonperso`.`Description`,
+                                            `viewdonperso`.`Taux`
+                                          FROM `jdr`.`viewdonperso`
+                                          WHERE Pseudo = @NomPerso";
+            var cmd = new MySqlCommand(elementPerso, Conn);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+
+            var dons = new List<DonsPerso>();
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                if (reader == null)
+                    throw new Exception("Une erreur est survenue");
+
+                if (!reader.HasRows)
+                {
+                    reader.Close();
+                    return null;
+                }
+
+                while (await reader.ReadAsync())
+                {
+                    dons.Add(new DonsPerso
+                    {
+                        Libelle = reader["Libelle"].ToString(),
+                        Description = reader["Description"].ToString(),
+                        Taux = Convert.ToInt16(reader["Taux"])
+                    });
+                }
+            }
+
+            return dons;
         }
 
-        public async Task GetAllDons()
+        public async Task<List<Don>> GetAllDons()
         {
-            await Task.CompletedTask;
+            const string elementPerso = @"SELECT
+                                            `don`.`Libelle`,
+                                            `don`.`Description`
+                                          FROM `jdr`.`don`";
+            var cmd = new MySqlCommand(elementPerso, Conn);
+
+            var demons = new List<Don>();
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                if (reader == null)
+                    throw new Exception("Une erreur est survenue");
+
+                if (!reader.HasRows)
+                {
+                    reader.Close();
+                    return null;
+                }
+
+                while (await reader.ReadAsync())
+                {
+                    demons.Add(new Don
+                    {
+                        Libelle = reader["Libelle"].ToString(),
+                        Description = reader["Description"].ToString()
+                    });
+                }
+            }
+
+            return demons;
         }
 
-        public async Task PassifsPerso(object perso)
+        public async Task<List<Passif>> PassifsPerso(string nomPerso)
         {
-            await Task.CompletedTask;
+            const string elementPerso = @"SELECT
+                                            `viewpassifdemon`.`Passif`
+                                          FROM `jdr`.`viewpassifdemon`
+                                          WHERE Pseudo = @nomPerso";
+            var cmd = new MySqlCommand(elementPerso, Conn);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+
+            var passifs = new List<Passif>();
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                if (reader == null)
+                    throw new Exception("Une erreur est survenue");
+
+                if (!reader.HasRows)
+                {
+                    reader.Close();
+                    return null;
+                }
+
+                while (await reader.ReadAsync())
+                {
+                    passifs.Add(new Passif
+                    {
+                        Libelle = reader["Libelle"].ToString(),
+                        Description = reader["Description"].ToString()
+                    });
+                }
+            }
+
+            return passifs;
         }
 
-        public async Task GetAllPassifs()
+        public async Task<List<Passif>> PassifsDemon(string nomDemon)
         {
-            await Task.CompletedTask;
+            const string elementPerso = @"SELECT
+                                            `viewpassifdemon`.`Passif`
+                                          FROM `jdr`.`viewpassifdemon`
+                                          WHERE Demon = @nomDemon";
+            var cmd = new MySqlCommand(elementPerso, Conn);
+            cmd.Parameters.AddWithValue("@nomDemon", nomDemon);
+
+            var passifs = new List<Passif>();
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                if (reader == null)
+                    throw new Exception("Une erreur est survenue");
+
+                if (!reader.HasRows)
+                {
+                    reader.Close();
+                    return null;
+                }
+
+                while (await reader.ReadAsync())
+                {
+                    passifs.Add(new Passif
+                    {
+                        Libelle = reader["Libelle"].ToString(),
+                        Description = reader["Description"].ToString()
+                    });
+                }
+            }
+
+            return passifs;
         }
 
-        public async Task GetAllDemons()
+        public async Task<List<Passif>> GetAllPassifs()
         {
-            await Task.CompletedTask;
+            const string elementPerso = @"SELECT
+                                            `passif`.`Libelle`,
+                                            `passif`.`Description`
+                                          FROM `jdr`.`passif`";
+            var cmd = new MySqlCommand(elementPerso, Conn);
+
+            var passifs = new List<Passif>();
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                if (reader == null)
+                    throw new Exception("Une erreur est survenue");
+
+                if (!reader.HasRows)
+                {
+                    reader.Close();
+                    return null;
+                }
+
+                while (await reader.ReadAsync())
+                {
+                    passifs.Add(new Passif
+                    {
+                        Libelle = reader["Libelle"].ToString(),
+                        Description = reader["Description"].ToString()
+                    });
+                }
+            }
+
+            return passifs;
         }
 
-        public async Task GetDemonPerso(object perso)
+        public async Task<List<Demon>> GetAllDemons()
         {
-            await Task.CompletedTask;
+            const string elementPerso = @"SELECT
+                                            `demon`.`Nom`
+                                          FROM `jdr`.`demon`";
+            var cmd = new MySqlCommand(elementPerso, Conn);
+
+            var demons = new List<Demon>();
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                if (reader == null)
+                    throw new Exception("Une erreur est survenue");
+
+                if (!reader.HasRows)
+                {
+                    reader.Close();
+                    return null;
+                }
+
+                while (await reader.ReadAsync())
+                {
+                    demons.Add(new Demon
+                    {
+                        Nom = reader["Nom"].ToString()
+                    });
+                }
+            }
+
+            return demons;
         }
 
-        public async Task GetInventairePerso(object perso)
+        public async Task<List<Demon>> GetDemonPerso(string nomPerso)
         {
-            await Task.CompletedTask;
+            const string elementPerso = @"SELECT
+                                            `viewdemonperso`.`Demon`
+                                          FROM `jdr`.`viewdemonperso`
+                                          WHERE Pseudo = @NomPerso";
+            var cmd = new MySqlCommand(elementPerso, Conn);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+
+            var demons = new List<Demon>();
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                if (reader == null)
+                    throw new Exception("Une erreur est survenue");
+
+                if (!reader.HasRows)
+                {
+                    reader.Close();
+                    return null;
+                }
+
+                while (await reader.ReadAsync())
+                {
+                    demons.Add(new Demon
+                    {
+                        Nom = reader["Demon"].ToString()
+                    });
+                }
+            }
+
+            return demons;
         }
 
-        public async Task GetAllInventaires()
+        public async Task<Inventaire> GetInventairePerso(string nomPerso)
         {
-            await Task.CompletedTask;
+            const string elementPerso = @"SELECT
+                                            `viewinventaire`.`Item`,
+                                            `viewinventaire`.`Description`,
+                                            `viewinventaire`.`Type d'item`,
+                                            `viewinventaire`.`Prix`,
+                                            `viewinventaire`.`Commentaire`,
+                                            `viewinventaire`.`Quantite`
+                                          FROM `jdr`.`viewinventaire`
+                                          WHERE Pseudo = @NomPerso";
+            var cmd = new MySqlCommand(elementPerso, Conn);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+
+            var inventaire = new Inventaire();
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                if (reader == null)
+                    throw new Exception("Une erreur est survenue");
+
+                if (!reader.HasRows)
+                {
+                    reader.Close();
+                    return null;
+                }
+
+                while (await reader.ReadAsync())
+                {
+                    inventaire.Items.Add(new Item
+                    {
+                        Nom = reader["Item"].ToString(),
+                        Description = reader["Description"].ToString(),
+                        TypeItem = reader["Type d'item"].ToString(),
+                        Prix = Convert.ToInt16(reader["Prix"]),
+                        Commentaire = reader["Commentaire"].ToString(),
+                        Quantite = Convert.ToInt16(reader["Quantite"])
+                    });
+                }
+            }
+
+            return inventaire;
         }
 
-        public async Task GetItemByNom(object perso)
+        public async Task<Item> GetItemByNom(string nomItem)
         {
-            await Task.CompletedTask;
+            const string elementPerso = @"SELECT
+                                            `item`.`Nom`,
+                                            `item`.`Description`,
+                                            `item`.`Type_Item`,
+                                            `item`.`Prix`,
+                                            `item`.`Commentaire`,
+                                            `item`.`Quantite`
+                                          FROM `jdr`.`item`
+                                          WHERE Nom = @nomItem";
+            var cmd = new MySqlCommand(elementPerso, Conn);
+            cmd.Parameters.AddWithValue("@nomItem", nomItem);
+
+            Item item;
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                if (reader == null)
+                    throw new Exception("Une erreur est survenue");
+
+                if (!reader.HasRows)
+                {
+                    reader.Close();
+                    return null;
+                }
+
+                await reader.ReadAsync();
+                item = new Item
+                {
+                    Nom = reader["Item"].ToString(),
+                    Description = reader["Description"].ToString(),
+                    TypeItem = reader["Type d'item"].ToString(),
+                    Prix = Convert.ToInt16(reader["Prix"]),
+                    Commentaire = reader["Commentaire"].ToString(),
+                    Quantite = Convert.ToInt16(reader["Quantite"])
+                };
+            }
+
+            return item;
         }
 
-        public async Task GetItemsPerso(object perso)
+        public async Task<Character> GetPersoByName(string nomPerso)
         {
-            await Task.CompletedTask;
+            const string sql = @"SELECT
+                                    perso.Nom,
+                                    perso.Xp,
+                                    perso.Lvl,
+                                    perso.Po,
+                                    perso.Race,
+                                    perso.Type_Perso
+                                 FROM jdr.perso
+                                 WHERE perso.Nom = @nomPerso";
+            var cmd = new MySqlCommand(sql, Conn);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+
+            Character charac;
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                if (reader == null)
+                    throw new Exception("Une erreur est survenue");
+
+                if (!reader.HasRows)
+                {
+                    reader.Close();
+                    return null;
+                }
+
+                await reader.ReadAsync();
+                charac = new Character
+                {
+                    Nom = reader["Nom"].ToString(),
+                    Xp = Convert.ToInt16(reader["Xp"]),
+                    Lvl = Convert.ToInt16(reader["Lvl"]),
+                    Po = Convert.ToInt16(reader["Po"]),
+                    Race = reader["Race"].ToString(),
+                    TypePerso = reader["Type_Perso"].ToString()
+
+                };
+            }
+
+            return charac;
         }
 
-        public async Task GetAllItemsByPerso()
+        public async Task<List<Skill>> GetSkillsPerso(string nomPerso)
         {
-            await Task.CompletedTask;
+            const string elementPerso = @"SELECT
+                                            `viewskillperso`.`Skill`,
+                                            `viewskillperso`.`Description`,
+                                            `viewskillperso`.`Taux`,
+                                            `viewskillperso`.`Degats`
+                                          FROM `jdr`.`viewskillperso`
+                                          WHERE Pseudo = @NomPerso";
+            var cmd = new MySqlCommand(elementPerso, Conn);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+
+            var skills = new List<Skill>();
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                if (reader == null)
+                    throw new Exception("Une erreur est survenue");
+
+                if (!reader.HasRows)
+                {
+                    reader.Close();
+                    return null;
+                }
+
+                while (await reader.ReadAsync())
+                {
+                    skills.Add(new Skill
+                    {
+                        Libelle = reader["Skill"].ToString(),
+                        Description = reader["Description"].ToString(),
+                        Taux = Convert.ToInt16(reader["Taux"]),
+                        Degats = reader["Description"].ToString()
+                    });
+                }
+            }
+
+            return skills;
         }
 
-        public async Task GetSkillsPerso(object perso)
+        public async Task<List<Skill>> GetAllSkills()
         {
-            await Task.CompletedTask;
+            const string elementPerso = @"SELECT
+                                            `skill`.`Libelle`,
+                                            `skill`.`Description`,
+                                            `skill`.`Taux`,
+                                            `skill`.`Degats`
+                                          FROM `jdr`.`skill`";
+            var cmd = new MySqlCommand(elementPerso, Conn);
+
+            var skills = new List<Skill>();
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                if (reader == null)
+                    throw new Exception("Une erreur est survenue");
+
+                if (!reader.HasRows)
+                {
+                    reader.Close();
+                    return null;
+                }
+
+                while (await reader.ReadAsync())
+                {
+                    skills.Add(new Skill
+                    {
+                        Libelle = reader["Skill"].ToString(),
+                        Description = reader["Description"].ToString(),
+                        Taux = Convert.ToInt16(reader["Taux"]),
+                        Degats = reader["Description"].ToString()
+                    });
+                }
+            }
+
+            return skills;
         }
 
-        public async Task GetAllSkills()
+        public async Task<List<Element>> GetAllEllements()
         {
-            await Task.CompletedTask;
-        }
+            const string elementPerso = @"SELECT
+                                            `element`.`Libelle`,
+                                            `element`.`Description`
+                                          FROM `jdr`.`element``";
+            var cmd = new MySqlCommand(elementPerso, Conn);
 
-        public async Task GetAllEllements()
-        {
-            await Task.CompletedTask;
+            var elements = new List<Element>();
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                if (reader == null)
+                    throw new Exception("Une erreur est survenue");
+
+                if (!reader.HasRows)
+                {
+                    reader.Close();
+                    return null;
+                }
+
+                while (await reader.ReadAsync())
+                {
+                    elements.Add(new Element
+                    {
+                        Libelle = reader["Libelle"].ToString(),
+                        Description = reader["Description"].ToString()
+                    });
+                }
+            }
+
+            return elements;
         }
 
         public async Task<List<Element>> GetElementPerso(string nomPerso)
         {
-            const string elementPerso = @"SELECT `viewelementperso`.`Libelle`,
+            const string elementPerso = @"SELECT
+                                              `viewelementperso`.`Libelle`,
                                               `viewelementperso`.`Description`,
                                               `viewelementperso`.`Pseudo`
                                           FROM `jdr`.`viewelementperso`
@@ -238,7 +640,7 @@ namespace DTM.DbManager.Services
                     return null;
                 }
 
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     elements.Add(new Element
                     {
