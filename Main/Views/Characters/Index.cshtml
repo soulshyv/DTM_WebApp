@@ -3,7 +3,7 @@
     ViewData["Title"] = "Gestion des personnages";
 }
 
-<h2>Gestion des personnages</h2>
+@*<h2>Gestion des personnages</h2>
 
 <table class="table">
     <tr>
@@ -29,4 +29,40 @@
             </td>
         </tr>
     }
-</table>
+</table>*@
+<div id="container-left" class="pull-left">
+    <table class="table table-hover">
+        <tr>
+            <th>Pseudo</th>
+            <th>Xp</th>
+            <th>Lvl</th>
+            <th>Po</th>
+            <th>Race</th>
+            <th>Type</th>
+        </tr>
+        @foreach (var charac in Model.Characters)
+        {
+            <tr id="@charac.Nom">
+                    <td class="details">@charac.Nom</td>
+                    <td class="details">@charac.Xp</td>
+                    <td class="details">@charac.Lvl</td>
+                    <td class="details">@charac.Po</td>
+                    <td class="details">@charac.Race</td>
+                    <td class="details">@charac.TypePerso</td>
+            </tr>
+        }
+    </table>
+</div>
+<div id="container-right" class="pull-right">
+    <form asp-control="Characters" asp-action="Details" class="col-lg-12">
+        <div class="form-group">
+            <input type="text"/>
+        </div>
+        <div class="form-group">
+            
+        </div>
+        <div class="form-group">
+            
+        </div>
+    </form>
+</div>

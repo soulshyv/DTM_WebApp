@@ -63,32 +63,36 @@ namespace DTM.DbManager.Services
 
         public async Task<CharacterFull> GetFullPersoByName(string nomPerso)
         {
-            Character Perso;
-            CaracsPerso Caracs;
-            JaugesPerso Jauges;
-            StatsPerso Stats;
+            Character Charac;
+            Caracs Caracs;
+            Jauges Jauges;
+            Stats Stats;
+            Inventaire Inventaire;
             var Elements = new List<Element>();
+            var Skills = new List<Skill>();
+            var Dons = new List<DonPerso>();
+            var Demons = new List<Demon>();
+
             const string viewFullPerso = @"SELECT
-                                    `viewpersofull`.`Pseudo`,
-                                    `viewpersofull`.`Experience`,
-                                    `viewpersofull`.`Niveau`,
-                                    `viewpersofull`.`Piece d'or`,
-                                    `viewpersofull`.`Race`,
-                                    `viewpersofull`.`Type de perso`,
-                                    `viewpersofull`.`Attaque`,
-                                    `viewpersofull`.`Defense`,
-                                    `viewpersofull`.`Rapidite`,
-                                    `viewpersofull`.`Point de vie`,
-                                    `viewpersofull`.`Point de vie max`,
-                                    `viewpersofull`.`Point de psy`,
-                                    `viewpersofull`.`Point de psy max`,
-                                    `viewpersofull`.`Point de synchro`,
-                                    `viewpersofull`.`Point de synchro max`,
-                                    `viewpersofull`.`Physique`,
-                                    `viewpersofull`.`Mental`,
-                                    `viewpersofull`.`Social`
-                                FROM `jdr`.`viewpersofull`
-                                WHERE `Perso` = @nomPerso";
+                                            `viewpersofull`.`Experience`,
+                                            `viewpersofull`.`Niveau`,
+                                            `viewpersofull`.`Piece d'or`,
+                                            `viewpersofull`.`Race`,
+                                            `viewpersofull`.`Type de perso`,
+                                            `viewpersofull`.`Attaque`,
+                                            `viewpersofull`.`Defense`,
+                                            `viewpersofull`.`Rapidite`,
+                                            `viewpersofull`.`Point de vie`,
+                                            `viewpersofull`.`Point de vie max`,
+                                            `viewpersofull`.`Point de psy`,
+                                            `viewpersofull`.`Point de psy max`,
+                                            `viewpersofull`.`Point de synchro`,
+                                            `viewpersofull`.`Point de synchro max`,
+                                            `viewpersofull`.`Physique`,
+                                            `viewpersofull`.`Mental`,
+                                            `viewpersofull`.`Social`
+                                          FROM `jdr`.`viewpersofull`
+                                          WHERE `Perso` = @nomPerso";
             var cmd = new MySqlCommand(viewFullPerso, Conn);
             cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
 
@@ -104,7 +108,7 @@ namespace DTM.DbManager.Services
                 }
 
                 await reader.ReadAsync();
-                Perso = new Character
+                Charac = new Character
                 {
                     Nom = reader["Pseudo"].ToString(),
                     Xp = Convert.ToInt16(reader["Experience"]),
@@ -114,16 +118,14 @@ namespace DTM.DbManager.Services
                     TypePerso = reader["Type de perso"].ToString()
 
                 };
-                Caracs = new CaracsPerso
+                Caracs = new Caracs
                 {
-                    NomPerso = reader["Pseudo"].ToString(),
                     Attaque = Convert.ToInt16(reader["Attaque"]),
                     Defense = Convert.ToInt16(reader["Defense"]),
                     Rapidite = Convert.ToInt16(reader["Rapidite"])
                 };
-                Jauges = new JaugesPerso
+                Jauges = new Jauges
                 {
-                    NomPerso = reader["Pseudo"].ToString(),
                     Pv = Convert.ToInt16(reader["Point de vie"]),
                     PvMax = Convert.ToInt16(reader["Point de vie max"]),
                     Psy = Convert.ToInt16(reader["Point de psy"]),
@@ -131,22 +133,39 @@ namespace DTM.DbManager.Services
                     Synchro = Convert.ToInt16(reader["Point de synchro"]),
                     SynchroMax = Convert.ToInt16(reader["Point de synchro max"]),
                 };
-                Stats = new StatsPerso
+                Stats = new Stats
                 {
-                    NomPerso = reader["Pseudo"].ToString(),
                     Physique = Convert.ToInt16(reader["Physique"]),
                     Mental = Convert.ToInt16(reader["Mental"]),
                     Social = Convert.ToInt16(reader["Social"]),
                 };
             }
 
+            Inventaire = await GetInventairePerso(nomPerso);
             Elements = await GetElementPerso(nomPerso);
+            Skills = await GetSkillsPerso(nomPerso);
+            Dons = await GetDonsPerso(nomPerso);
+            Demons = await GetDemonPerso(nomPerso);
 
-
-            return ret;
+            return new CharacterFull(Charac, Caracs, Jauges, Stats, Elements, Skills, Dons, Demons, Inventaire);
         }
 
-        public async Task<List<DonsPerso>> GetDonsPerso(string nomPerso)
+        public Task<Caracs> GetCaracsPerso(string nomPerso)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Jauges> GetJaugesPerso(string nomPerso)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Stats> GetStatsPerso(string nomPerso)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<DonPerso>> GetDonsPerso(string nomPerso)
         {
             const string elementPerso = @"SELECT
                                             `viewdonperso`.`Pseudo`,
@@ -158,7 +177,7 @@ namespace DTM.DbManager.Services
             var cmd = new MySqlCommand(elementPerso, Conn);
             cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
 
-            var dons = new List<DonsPerso>();
+            var dons = new List<DonPerso>();
             using (var reader = await cmd.ExecuteReaderAsync())
             {
                 if (reader == null)
@@ -172,7 +191,7 @@ namespace DTM.DbManager.Services
 
                 while (await reader.ReadAsync())
                 {
-                    dons.Add(new DonsPerso
+                    dons.Add(new DonPerso
                     {
                         Libelle = reader["Libelle"].ToString(),
                         Description = reader["Description"].ToString(),
@@ -466,7 +485,7 @@ namespace DTM.DbManager.Services
             return item;
         }
 
-        public async Task<Character> GetPersoByName(string nomPerso)
+        public async Task<Character> GetPersoByNom(string nomPerso)
         {
             const string sql = @"SELECT
                                     perso.Nom,

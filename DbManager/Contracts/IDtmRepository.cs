@@ -12,12 +12,15 @@ namespace DTM.DbManager.Contracts
         Task<List<Passif>> GetAllPassifs();
         Task<List<Character>> GetAllPerso();
         Task<List<Skill>> GetAllSkills();
+        Task<Caracs> GetCaracsPerso(string nomPerso);
+        Task<Jauges> GetJaugesPerso(string nomPerso);
+        Task<Stats> GetStatsPerso(string nomPerso);
         Task<List<Demon>> GetDemonPerso(string nomPerso);
-        Task<List<DonsPerso>> GetDonsPerso(string nomPerso);
+        Task<List<DonPerso>> GetDonsPerso(string nomPerso);
         Task<List<Element>> GetElementPerso(string nomPerso);
         Task<Inventaire> GetInventairePerso(string nomPerso);
         Task<Item> GetItemByNom(string nomItem);
-        Task<Character> GetPersoByName(string nomPerso);
+        Task<Character> GetPersoByNom(string nomPerso);
         Task<List<Skill>> GetSkillsPerso(string nomPerso);
         Task<List<Passif>> PassifsPerso(string nomPerso);
         Task<List<Passif>> PassifsDemon(string nomDemon);

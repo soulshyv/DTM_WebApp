@@ -5,12 +5,12 @@ namespace DTM.DbManager.Models
     public class CharacterFull
     {
         public CharacterFull(Character charac,
-            CaracsPerso caracs,
-            JaugesPerso jauges,
-            StatsPerso stats,
+            Caracs caracs,
+            Jauges jauges,
+            Stats stats,
             List<Element> elements,
             List<Skill> skills,
-            List<Don> dons,
+            List<DonPerso> dons,
             List<Demon> demons,
             Inventaire inventaire)
         {
@@ -26,12 +26,12 @@ namespace DTM.DbManager.Models
         }
 
         private Character Charac { get; set; }
-        private CaracsPerso Caracs { get; set; }
-        private JaugesPerso Jauges { get; set; }
-        private StatsPerso Stats { get; set; }
+        private Caracs Caracs { get; set; }
+        private Jauges Jauges { get; set; }
+        private Stats Stats { get; set; }
         private List<Element> Elements { get; set; }
         private List<Skill> Skills { get; set; }
-        private List<Don> Dons { get; set; }
+        private List<DonPerso> Dons { get; set; }
         private List<Demon> Demons { get; set; }
         private Inventaire Inventaire { get; set; }
     }

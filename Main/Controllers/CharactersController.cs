@@ -30,9 +30,9 @@ namespace Main.Controllers
             return View();
         }
 
-        public string DetailsPerso(string nomPerso)
+        public string Details(string nomPerso)
         {
-            var perso = DtmRepository.GetPersoByName(nomPerso);
+           var perso = DtmRepository.GetPersoByNom(nomPerso);
 
             var ret = "<div id=\"DetailsPerso\" class=\"modal fade\" role=\"dialog\">" +
                                    "< div class=\"modal-dialog\">" +

@@ -4,9 +4,8 @@ using System.Text;
 
 namespace DTM.DbManager.Models
 {
-    public class JaugesPerso
+    public class Jauges
     {
-        public string NomPerso { get; set; }
         public int Pv { get; set; }
         public int PvMax { get; set; }
         public int Psy { get; set; }

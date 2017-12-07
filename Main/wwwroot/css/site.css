@@ -8,13 +8,8 @@
     font-size: 16px;
 }
 
-/* Wrapping element */
-
-/* Set some basic padding to keep content from hitting the edges */
-
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: lightsteelblue;
 }
 
 /* Carousel */

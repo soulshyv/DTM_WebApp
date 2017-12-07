@@ -1,6 +1,6 @@
 ﻿namespace DTM.DbManager.Models
 {
-    public class DonsPerso
+    public class DonPerso
     {
         public string Libelle { get; set; }
         public string Description { get; set; }
