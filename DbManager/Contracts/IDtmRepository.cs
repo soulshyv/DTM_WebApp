@@ -12,6 +12,7 @@ namespace DTM.DbManager.Contracts
         Task<List<Passif>> GetAllPassifs();
         Task<List<Character>> GetAllPerso();
         Task<List<Skill>> GetAllSkills();
+        Task<CharacterFull> GetFullPersoByName(string nomPerso);
         Task<Caracs> GetCaracsPerso(string nomPerso);
         Task<Jauges> GetJaugesPerso(string nomPerso);
         Task<Stats> GetStatsPerso(string nomPerso);

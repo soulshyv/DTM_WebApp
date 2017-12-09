@@ -30,29 +30,15 @@ namespace Main.Controllers
             return View();
         }
 
-        public string Details(string nomPerso)
+        [HttpPost]
+        public async Task<CharactersViewModel> Details([FromForm]string nomPerso)
         {
-           var perso = DtmRepository.GetPersoByNom(nomPerso);
+            var perso = await DtmRepository.GetFullPersoByName(nomPerso);
 
-            var ret = "<div id=\"DetailsPerso\" class=\"modal fade\" role=\"dialog\">" +
-                                   "< div class=\"modal-dialog\">" +
-
-                                       "<div class=\"modal-content\">" +
-                                           "<div class=\"modal-header\">" +
-                                                $"<p>Détails de {nomPerso}</p>" +
-                                           "</div>" +
-                                           "<div class=\"modal-body\">" +
-
-                                           "</div>" +
-                                           "<div class=\"modal-footer\">" +
-
-                                           "</div>" +
-                                       "</div>" +
-
-                                   "</div>" +
-                               "</div>";
-
-            return ret;
+            return new CharactersViewModel
+            {
+                DetailsPerso = perso
+            };
         }
     }
 }

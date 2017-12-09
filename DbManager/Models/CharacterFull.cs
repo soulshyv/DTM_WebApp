@@ -25,14 +25,14 @@ namespace DTM.DbManager.Models
             Inventaire = inventaire;
         }
 
-        private Character Charac { get; set; }
-        private Caracs Caracs { get; set; }
-        private Jauges Jauges { get; set; }
-        private Stats Stats { get; set; }
-        private List<Element> Elements { get; set; }
-        private List<Skill> Skills { get; set; }
-        private List<DonPerso> Dons { get; set; }
-        private List<Demon> Demons { get; set; }
-        private Inventaire Inventaire { get; set; }
-    }
+        public Character Charac;
+        public Caracs Caracs;
+        public Jauges Jauges;
+        public Stats Stats;
+        public List<Element> Elements;
+        public List<Skill> Skills;
+        public List<DonPerso> Dons;
+        public List<Demon> Demons;
+        public Inventaire Inventaire;
+        }
 }

@@ -48,9 +48,9 @@ namespace DTM.DbManager.Services
                     characs.Add(new Character
                     {
                         Nom = reader["Nom"].ToString(),
-                        Xp = Convert.ToInt16(reader["Xp"]),
-                        Lvl = Convert.ToInt16(reader["Lvl"]),
-                        Po = Convert.ToInt16(reader["Po"]),
+                        Xp = reader["Xp"] != DBNull.Value ? Convert.ToInt16(reader["Xp"]) : 0,
+                        Lvl = reader["Lvl"] != DBNull.Value ? Convert.ToInt16(reader["Lvl"]) : 0,
+                        Po = reader["Po"] != DBNull.Value ? Convert.ToInt16(reader["Po"]) : 0,
                         Race = reader["Race"].ToString(),
                         TypePerso = reader["Type_Perso"].ToString()
 
@@ -92,7 +92,7 @@ namespace DTM.DbManager.Services
                                             `viewpersofull`.`Mental`,
                                             `viewpersofull`.`Social`
                                           FROM `jdr`.`viewpersofull`
-                                          WHERE `Perso` = @nomPerso";
+                                          WHERE `viewpersofull`.`Pseudo` = @nomPerso";
             var cmd = new MySqlCommand(viewFullPerso, Conn);
             cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
 
@@ -110,34 +110,34 @@ namespace DTM.DbManager.Services
                 await reader.ReadAsync();
                 Charac = new Character
                 {
-                    Nom = reader["Pseudo"].ToString(),
-                    Xp = Convert.ToInt16(reader["Experience"]),
-                    Lvl = Convert.ToInt16(reader["Niveau"]),
-                    Po = Convert.ToInt16(reader["Piece d'or"]),
+                    Nom = nomPerso,
+                    Xp = reader["Experience"] != DBNull.Value ? Convert.ToInt16(reader["Experience"]) : 0,
+                    Lvl = reader["Niveau"] != DBNull.Value ? Convert.ToInt16(reader["Niveau"]) : 0,
+                    Po = reader["Piece d'or"] != DBNull.Value ? Convert.ToInt16(reader["Piece d'or"]) : 0,
                     Race = reader["Race"].ToString(),
                     TypePerso = reader["Type de perso"].ToString()
 
                 };
                 Caracs = new Caracs
                 {
-                    Attaque = Convert.ToInt16(reader["Attaque"]),
-                    Defense = Convert.ToInt16(reader["Defense"]),
-                    Rapidite = Convert.ToInt16(reader["Rapidite"])
+                    Attaque = reader["Piece d'or"] != DBNull.Value ? Convert.ToInt16(reader["Piece d'or"]) : 0,
+                    Defense = reader["Defense"] != DBNull.Value ? Convert.ToInt16(reader["Defense"]) : 0,
+                    Rapidite = reader["Rapidite"] != DBNull.Value ? Convert.ToInt16(reader["Rapidite"]) : 0
                 };
                 Jauges = new Jauges
                 {
-                    Pv = Convert.ToInt16(reader["Point de vie"]),
-                    PvMax = Convert.ToInt16(reader["Point de vie max"]),
-                    Psy = Convert.ToInt16(reader["Point de psy"]),
-                    PsyMax = Convert.ToInt16(reader["Point de psy max"]),
-                    Synchro = Convert.ToInt16(reader["Point de synchro"]),
-                    SynchroMax = Convert.ToInt16(reader["Point de synchro max"]),
+                    Pv = reader["Point de vie"] != DBNull.Value ? Convert.ToInt16(reader["Point de vie"]) : 0,
+                    PvMax = reader["Point de vie max"] != DBNull.Value ? Convert.ToInt16(reader["Point de vie max"]) : 0,
+                    Psy = reader["Point de psy"] != DBNull.Value ? Convert.ToInt16(reader["Point de psy"]) : 0,
+                    PsyMax = reader["Point de psy max"] != DBNull.Value ? Convert.ToInt16(reader["Point de psy max"]) : 0,
+                    Synchro = reader["Point de synchro"] != DBNull.Value ? Convert.ToInt16(reader["Point de synchro"]) : 0,
+                    SynchroMax = reader["Point de synchro max"] != DBNull.Value ? Convert.ToInt16(reader["Point de synchro max"]) : 0,
                 };
                 Stats = new Stats
                 {
-                    Physique = Convert.ToInt16(reader["Physique"]),
-                    Mental = Convert.ToInt16(reader["Mental"]),
-                    Social = Convert.ToInt16(reader["Social"]),
+                    Physique = reader["Physique"] != DBNull.Value ? Convert.ToInt16(reader["Physique"]) : 0,
+                    Mental = reader["Mental"] != DBNull.Value ? Convert.ToInt16(reader["Mental"]) : 0,
+                    Social = reader["Social"] != DBNull.Value ? Convert.ToInt16(reader["Social"]) : 0,
                 };
             }
 
@@ -193,9 +193,9 @@ namespace DTM.DbManager.Services
                 {
                     dons.Add(new DonPerso
                     {
-                        Libelle = reader["Libelle"].ToString(),
+                        Libelle = reader["Competence"].ToString(),
                         Description = reader["Description"].ToString(),
-                        Taux = Convert.ToInt16(reader["Taux"])
+                        Taux = reader["Taux"] != DBNull.Value ? Convert.ToInt16(reader["Taux"]) : 0
                     });
                 }
             }
@@ -434,9 +434,9 @@ namespace DTM.DbManager.Services
                         Nom = reader["Item"].ToString(),
                         Description = reader["Description"].ToString(),
                         TypeItem = reader["Type d'item"].ToString(),
-                        Prix = Convert.ToInt16(reader["Prix"]),
+                        Prix = reader["Prix"] != DBNull.Value ? Convert.ToInt16(reader["Prix"]) : 0,
                         Commentaire = reader["Commentaire"].ToString(),
-                        Quantite = Convert.ToInt16(reader["Quantite"])
+                        Quantite = reader["Quantite"] != DBNull.Value ? Convert.ToInt16(reader["Quantite"]) : 0
                     });
                 }
             }
@@ -476,9 +476,9 @@ namespace DTM.DbManager.Services
                     Nom = reader["Item"].ToString(),
                     Description = reader["Description"].ToString(),
                     TypeItem = reader["Type d'item"].ToString(),
-                    Prix = Convert.ToInt16(reader["Prix"]),
+                    Prix = reader["Prix"] != DBNull.Value ? Convert.ToInt16(reader["Prix"]) : 0,
                     Commentaire = reader["Commentaire"].ToString(),
-                    Quantite = Convert.ToInt16(reader["Quantite"])
+                    Quantite = reader["Quantite"] != DBNull.Value ? Convert.ToInt16(reader["Quantite"]) : 0
                 };
             }
 
@@ -515,9 +515,9 @@ namespace DTM.DbManager.Services
                 charac = new Character
                 {
                     Nom = reader["Nom"].ToString(),
-                    Xp = Convert.ToInt16(reader["Xp"]),
-                    Lvl = Convert.ToInt16(reader["Lvl"]),
-                    Po = Convert.ToInt16(reader["Po"]),
+                    Xp = reader["Xp"] != DBNull.Value ? Convert.ToInt16(reader["Xp"]) : 0,
+                    Lvl = reader["Lvl"] != DBNull.Value ? Convert.ToInt16(reader["Lvl"]) : 0,
+                    Po = reader["Po"] != DBNull.Value ? Convert.ToInt16(reader["Po"]) : 0,
                     Race = reader["Race"].ToString(),
                     TypePerso = reader["Type_Perso"].ToString()
 
@@ -557,7 +557,7 @@ namespace DTM.DbManager.Services
                     {
                         Libelle = reader["Skill"].ToString(),
                         Description = reader["Description"].ToString(),
-                        Taux = Convert.ToInt16(reader["Taux"]),
+                        Taux = reader["Taux"] != DBNull.Value ? Convert.ToInt16(reader["Taux"]) : 0,
                         Degats = reader["Description"].ToString()
                     });
                 }
@@ -594,7 +594,7 @@ namespace DTM.DbManager.Services
                     {
                         Libelle = reader["Skill"].ToString(),
                         Description = reader["Description"].ToString(),
-                        Taux = Convert.ToInt16(reader["Taux"]),
+                        Taux = reader["Taux"] != DBNull.Value ? Convert.ToInt16(reader["Taux"]) : 0,
                         Degats = reader["Description"].ToString()
                     });
                 }
@@ -643,7 +643,7 @@ namespace DTM.DbManager.Services
                                               `viewelementperso`.`Description`,
                                               `viewelementperso`.`Pseudo`
                                           FROM `jdr`.`viewelementperso`
-                                          WHERE `Perso` =  @nomPerso";
+                                          WHERE `Pseudo` =  @nomPerso";
             var cmd = new MySqlCommand(elementPerso, Conn);
             cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
 

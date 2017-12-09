@@ -6,6 +6,6 @@ namespace Main.ViewModels
     public class CharactersViewModel
     {
         public List<Character> Characters { get; set; }
-        public Character Perso { get; set; }
+        public CharacterFull DetailsPerso { get; set; }
     }
 }
