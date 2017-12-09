@@ -12,6 +12,14 @@
     background-color: lightsteelblue;
 }
 
+#container-left {
+    width: 30%;
+}
+
+#container-right {
+    width: 70%;
+}
+
 /* Carousel */
 
 .carousel-caption p {

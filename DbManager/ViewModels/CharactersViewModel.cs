@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DTM.DbManager.Models;
 
-namespace Main.ViewModels
+namespace DTM.DbManager.ViewModels
 {
     public class CharactersViewModel
     {

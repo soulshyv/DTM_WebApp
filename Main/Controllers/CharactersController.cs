@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using UserManager.Contracts;
 using DTM.DbManager.Contracts;
-using Main.ViewModels;
+using DTM.DbManager.ViewModels;
 
 namespace Main.Controllers
 {
