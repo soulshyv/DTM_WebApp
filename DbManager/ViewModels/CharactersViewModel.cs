@@ -7,5 +7,6 @@ namespace DTM.DbManager.ViewModels
     {
         public List<Character> Characters { get; set; }
         public CharacterFull DetailsPerso { get; set; }
+        public string CharacterPicture { get; set; }
     }
 }

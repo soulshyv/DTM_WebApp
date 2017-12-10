@@ -1,171 +1,41 @@
 ﻿@model DTM.DbManager.ViewModels.CharactersViewModel
 @{
     ViewData["Title"] = "Gestion des personnages";
-    Layout = "_LayoutCharacters";
 }
 
+<div id="container-left" class="pull-left">
+    <h1 class="text-center">Liste des persos</h1>
 
-@if (Model.DetailsPerso != null)
-{
-    <h1 class="text-center">Détails de @Model.DetailsPerso.Charac.Nom</h1>
-}
-else
-{
-    <h1 class="text-center">Détails</h1>
-}
-
-<img class="center-block" src="~/images/CharacterPicture_Soulshyv.jpg" alt="Character picture"/><br />
-
-<table class="table">
-<tr>
-    <!-- Jauge de vie -->
-    <td class="form-group">
-        <label asp-for="DetailsPerso.Jauges.Pv">Vie : </label>
-        <select asp-for="DetailsPerso.Jauges.Pv">
-            <option selected="selected" value="none"></option>
-            @for (var i = 0; i <= 100; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-
-        <label asp-for="DetailsPerso.Jauges.PvMax">/</label>
-        <select asp-for="DetailsPerso.Jauges.Pv">
-            <option selected="selected" value="none"></option>
-            @for (var i = 0; i < 100; i++)
-            {
-                <option value="@(i + 1)">@(i + 1)</option>
-            }
-        </select>
-    </td>
-    <!-- Jauge de psy -->
-    <td class="form-group">
-        <label asp-for="DetailsPerso.Jauges.Psy">Psy : </label>
-        <select asp-for="DetailsPerso.Jauges.Psy">
-            <option selected="selected" value="none"></option>
-            @for (var i = 0; i <= 100; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-
-        <label asp-for="DetailsPerso.Jauges.PsyMax">/</label>
-        <select asp-for="DetailsPerso.Jauges.Psy">
-            <option selected="selected" value="none"></option>
-            @for (var i = 1; i <= 100; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-    </td>
-    <!-- Jauge de synchro -->
-    <td class="form-group">
-        <label asp-for="DetailsPerso.Jauges.Synchro">Synchro : </label>
-        <select asp-for="DetailsPerso.Jauges.Synchro">
-            <option selected="selected" value="none"></option>
-            @for (var i = 0; i <= 5; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-
-        <label asp-for="DetailsPerso.Jauges.SynchroMax">/</label>
-        <select asp-for="DetailsPerso.Jauges.Synchro">
-            <option selected="selected" value="none"></option>
-            @for (var i = 1; i <= 5; i++)
-            {
-                <option value="@i">@i</option>
-            }
-        </select>
-    </td>
-</tr>
-<tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-</tr>
-</table>
-
-    @*<form>
-        <div class="form-group text-center">
-            
-            <br />
-        </div>
-        <table class="table">
-            <tr>
-                <td colspan="3">
-                    <label asp-for="DetailsPerso.Charac.Nom" class="control-label">Pseudo : </label>
-                    <input type="text" asp-for="DetailsPerso.Charac.Nom" />
+    <table class="table table-hover">
+        <tr>
+            <th>Pseudo</th>
+            <th>Xp</th>
+            <th>Lvl</th>
+            <th>Po</th>
+            <th>Race</th>
+            <th>Type</th>
+            <th></th>
+        </tr>
+        @foreach (var charac in Model.Characters)
+        {
+            <tr id="@charac.Nom">
+                <td class="details">@charac.Nom</td>
+                <td class="details">@charac.Xp</td>
+                <td class="details">@charac.Lvl</td>
+                <td class="details">@charac.Po</td>
+                <td class="details">@charac.Race</td>
+                <td class="details">@charac.TypePerso</td>
+                <td>
+                    @Html.ActionLink("Voir", "Details", "Characters", new {nomPerso = ViewBag.Nom})
                 </td>
             </tr>
-            <tr>
-                <!-- Jauge de vie -->
-                <td class="form-group">
-                    <label asp-for="DetailsPerso.Jauges.Pv">Vie : </label>
-                    <select asp-for="DetailsPerso.Jauges.Pv">
-                        <option selected="selected" value="none"></option>
-                        @for (var i = 0; i <= 100; i++)
-                        {
-                            <option value="@i">@i</option>
-                        }
-                    </select>
-
-                    <label asp-for="DetailsPerso.Jauges.PvMax">/</label>
-                    <select asp-for="DetailsPerso.Jauges.Pv">
-                        <option selected="selected" value="none"></option>
-                        @for (var i = 0; i < 100; i++)
-                        {
-                            <option value="@(i + 1)">@(i + 1)</option>
-                        }
-                    </select>
-                </td>
-                <!-- Jauge de psy -->
-                <td class="form-group">
-                    <label asp-for="DetailsPerso.Jauges.Psy">Psy : </label>
-                    <select asp-for="DetailsPerso.Jauges.Psy">
-                        <option selected="selected" value="none"></option>
-                        @for (var i = 0; i <= 100; i++)
-                        {
-                            <option value="@i">@i</option>
-                        }
-                    </select>
-
-                    <label asp-for="DetailsPerso.Jauges.PsyMax">/</label>
-                    <select asp-for="DetailsPerso.Jauges.Psy">
-                        <option selected="selected" value="none"></option>
-                        @for (var i = 1; i <= 100; i++)
-                        {
-                            <option value="@i">@i</option>
-                        }
-                    </select>
-                </td>
-                <!-- Jauge de synchro -->
-                <td class="form-group">
-                    <label asp-for="DetailsPerso.Jauges.Synchro">Synchro : </label>
-                    <select asp-for="DetailsPerso.Jauges.Synchro">
-                        <option selected="selected" value="none"></option>
-                        @for (var i = 0; i <= 5; i++)
-                        {
-                            <option value="@i">@i</option>
-                        }
-                    </select>
-
-                    <label asp-for="DetailsPerso.Jauges.SynchroMax">/</label>
-                    <select asp-for="DetailsPerso.Jauges.Synchro">
-                        <option selected="selected" value="none"></option>
-                        @for (var i = 1; i <= 5; i++)
-                        {
-                            <option value="@i">@i</option>
-                        }
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
-    </form>*@
+        }
+    </table>
+</div>
+<div id="container-right" class="pull-right">
+    <div id="detailsPerso">
+        @{
+           Html.Partial("Details");
+        }
+    </div>
+</div>

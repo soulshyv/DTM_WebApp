@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using UserManager.Contracts;
 using DTM.DbManager.Contracts;
@@ -31,14 +32,19 @@ namespace Main.Controllers
         }
 
         [HttpPost]
-        public async Task<CharactersViewModel> Details([FromForm]string nomPerso)
+        public async Task<IActionResult> Details(/*[FromForm]*/string nomPerso)
         {
+            if (nomPerso == null)
+            {
+                return PartialView();
+            }
+
             var perso = await DtmRepository.GetFullPersoByName(nomPerso);
 
-            return new CharactersViewModel
+            return PartialView(new CharactersViewModel
             {
                 DetailsPerso = perso
-            };
+            });
         }
     }
 }

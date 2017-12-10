@@ -1,19 +1,83 @@
-﻿@model Main.ViewModels.CharactersViewModel
+﻿@model DTM.DbManager.ViewModels.CharactersViewModel
 
-<div id="DetailsPerso" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+@if (Model.DetailsPerso != null)
+{
+    <h1 class="text-center">Détails de @Model.DetailsPerso.Charac.Nom</h1>
+}
+else
+{
+    <h1 class="text-center">Détails</h1>
+}
 
-        <div class="modal-content">
-            <div class="modal-header">
-                <p></p>
-            </div>
-            <div class="modal-body">
+<img class="center-block" src="@Model.CharacterPicture" alt="Character picture"/><br />
 
-            </div>
-            <div class="modal-footer">
+<table class="table">
+    <tr>
+        <!-- Jauge de vie -->
+        <td class="form-group">
+            <label asp-for="DetailsPerso.Jauges.Pv">Vie : </label>
+            <select asp-for="DetailsPerso.Jauges.Pv">
+                <option selected="selected" value="none"></option>
+                @for (var i = 0; i <= 100; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
 
-            </div>
-        </div>
+            <label asp-for="DetailsPerso.Jauges.PvMax">/</label>
+            <select asp-for="DetailsPerso.Jauges.Pv">
+                <option selected="selected" value="none"></option>
+                @for (var i = 0; i < 100; i++)
+                {
+                    <option value="@(i + 1)">@(i + 1)</option>
+                }
+            </select>
+        </td>
+        <!-- Jauge de psy -->
+        <td class="form-group">
+            <label asp-for="DetailsPerso.Jauges.Psy">Psy : </label>
+            <select asp-for="DetailsPerso.Jauges.Psy">
+                <option selected="selected" value="none"></option>
+                @for (var i = 0; i <= 100; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
 
-    </div>
-</div>
+            <label asp-for="DetailsPerso.Jauges.PsyMax">/</label>
+            <select asp-for="DetailsPerso.Jauges.Psy">
+                <option selected="selected" value="none"></option>
+                @for (var i = 1; i <= 100; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+        </td>
+        <!-- Jauge de synchro -->
+        <td class="form-group">
+            <label asp-for="DetailsPerso.Jauges.Synchro">Synchro : </label>
+            <select asp-for="DetailsPerso.Jauges.Synchro">
+                <option selected="selected" value="none"></option>
+                @for (var i = 0; i <= 5; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+
+            <label asp-for="DetailsPerso.Jauges.SynchroMax">/</label>
+            <select asp-for="DetailsPerso.Jauges.Synchro">
+                <option selected="selected" value="none"></option>
+                @for (var i = 1; i <= 5; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
