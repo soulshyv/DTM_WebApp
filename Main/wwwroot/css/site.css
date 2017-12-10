@@ -1,8 +1,9 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-image: url(../images/Wallpaper_new.jpg);
+    background-image: url(../images/Wallpaper.jpg);
     background-size: cover;
+    background-position: right 45px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: aliceblue;
     font-size: 16px;
@@ -13,11 +14,24 @@
 }
 
 #container-left {
-    width: 30%;
+    width: 25%;
 }
 
 #container-right {
-    width: 70%;
+    width: 74%;
+}
+
+/*.table-borderless > tbody > tr > td,
+.table-borderless > tbody > tr > th,
+.table-borderless > tfoot > tr > td,
+.table-borderless > tfoot > tr > th,
+.table-borderless > thead > tr > td,
+.table-borderless > thead > tr > th {
+    border: none;
+}*/
+
+select,option {
+    background-color: dimgrey;
 }
 
 /* Carousel */
