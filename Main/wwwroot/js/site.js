@@ -14,7 +14,7 @@ $(document).ready(function() {
     //    });
     //});
     $(".details").click(function () {
-        window.ViewBag.Nom = $(this).attr("id");
-        console.log(window.ViewBag.Nom);
+        var nomPerso = $(this).parent().attr("id");
+        $("#detailsPerso").load("Characters/GetDetails?nomPerso=" + nomPerso);
     });
 });

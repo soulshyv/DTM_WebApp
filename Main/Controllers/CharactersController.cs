@@ -1,23 +1,25 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using UserManager.Contracts;
-using DTM.DbManager.Contracts;
+﻿using DTM.DbManager.Contracts;
 using DTM.DbManager.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using UserManager.Contracts;
 
 namespace Main.Controllers
 {
     public class CharactersController : Controller
     {
-        public CharactersController(IUserManager userManager, IDtmRepository dtmRepository)
+        public CharactersController(IUserManager userManager, IDtmRepository dtmRepository, ICharacPicSearcher characPicSearcher)
         {
             UserManager = userManager;
             DtmRepository = dtmRepository;
+            CharacPicSearcher = characPicSearcher;
         }
 
         private IUserManager UserManager { get; }
         private IDtmRepository DtmRepository { get; }
+        private ICharacPicSearcher CharacPicSearcher { get; }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var allPersos = await DtmRepository.GetAllPerso();
@@ -31,19 +33,21 @@ namespace Main.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Details(/*[FromForm]*/string nomPerso)
+        [HttpGet]
+        public async Task<IActionResult> GetDetails(string nomPerso)
         {
             if (nomPerso == null)
             {
-                return PartialView();
+                return PartialView("Details");
             }
 
             var perso = await DtmRepository.GetFullPersoByName(nomPerso);
+            var characPic = CharacPicSearcher.GetPicture(nomPerso);
 
-            return PartialView(new CharactersViewModel
+            return PartialView("Details", new CharactersViewModel
             {
-                DetailsPerso = perso
+                DetailsPerso = perso,
+                CharacterPicture = characPic
             });
         }
     }

@@ -25,9 +25,6 @@
                 <td class="details">@charac.Po</td>
                 <td class="details">@charac.Race</td>
                 <td class="details">@charac.TypePerso</td>
-                <td>
-                    @Html.ActionLink("Voir", "Details", "Characters", new {nomPerso = ViewBag.Nom})
-                </td>
             </tr>
         }
     </table>
@@ -35,7 +32,7 @@
 <div id="container-right" class="pull-right">
     <div id="detailsPerso">
         @{
-           Html.Partial("Details");
+           Html.RenderPartial("Details", Model);
         }
     </div>
 </div>
