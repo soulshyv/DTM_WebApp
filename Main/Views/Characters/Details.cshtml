@@ -14,11 +14,12 @@ else
     }
 
     <h1 class="text-center">Fiche de personnage</h1>
-    <h2 class="text-center">@Model.DetailsPerso.Charac.Nom</h2>
+    <h2 class="text-center">@Model.DetailsPerso.Charac.Nom - @Model.DetailsPerso.Charac.Race</h2>
 
     <img class="center-block" src="@imagePath"/><br/>
 
     <table class="table">
+        <!-- Jauges -->
         <tr>
             <!-- Jauge de vie -->
             <td class="form-group">
@@ -81,10 +82,152 @@ else
                 </select>
             </td>
         </tr>
+    </table>
+
+    if (Model.DetailsPerso.Stats != null)
+    {
+        <table class="table table-bordered detailsPerso">
+            <!-- Stats -->
+            <tr>
+                <th class="text-center">Physique</th>
+                <th class="text-center">Mental</th>
+                <th class="text-center">Social</th>
+            </tr>
+            <tr class="text-center">
+                <!-- Physique -->
+                <td class="form-group">
+                    <select asp-for="DetailsPerso.Stats.Physique">
+                        <option selected="selected" value="none"></option>
+                        @for (var i = 0; i <= 100; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <label asp-for="DetailsPerso.Stats.Physique"> %</label>
+                </td>
+                <!-- Mental -->
+                <td class="form-group">
+                    <select asp-for="DetailsPerso.Stats.Mental">
+                        <option selected="selected" value="none"></option>
+                        @for (var i = 0; i <= 100; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <label asp-for="DetailsPerso.Stats.Mental"> %</label>
+                </td>
+                <!-- Social -->
+                <td class="form-group">
+                    <select asp-for="DetailsPerso.Stats.Social">
+                        <option selected="selected" value="none"></option>
+                        @for (var i = 0; i <= 100; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <label asp-for="DetailsPerso.Stats.Social"> %</label>
+                </td>
+            </tr>
+        </table>
+         
+    }
+    <table class="table table-bordered detailsPerso">
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
+            <th>Passifs</th>
+            <th>Compétences</th>
+            <th>Langues</th>
+            <th>Or</th>
         </tr>
+        <tr>
+            <td>
+                @if (Model.DetailsPerso.Caracs != null)
+                {
+                    <p>
+                        Passif :<br/>
+                        <span>Attaque : @Model.DetailsPerso.Caracs.Attaque<br/></span>
+                        <span>Défense : @Model.DetailsPerso.Caracs.Defense<br/></span>
+                        <span>Rapidité : @Model.DetailsPerso.Caracs.Rapidite<br/></span>
+                    </p>
+                }
+            </td>
+            <td>
+                @if (Model.DetailsPerso.Dons != null)
+                {
+                    <p>
+                        Compétences<br/>
+                        @foreach (var don in @Model.DetailsPerso.Dons.OrderBy(ob => ob.Taux).ToList())
+                        {
+                            <span>[@don.Taux%] @don.Libelle @don.Description<br/></span>
+                        }
+                    </p>
+                }
+            </td>
+            <td>
+                
+            </td>
+            <td>
+                
+            </td>
+        </tr>
+    </table>
+
+    if (Model.DetailsPerso.Skills != null)
+    {
+        <table class="table table-bordered detailsPerso">
+            <tr>
+                <th colspan="4" class="text-center">Skills</th>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Taux</th>
+                <th>Dégats</th>
+            </tr>
+            @foreach (var skill in Model.DetailsPerso.Skills)
+            {
+                <tr>
+                    <td>@skill.Libelle</td>
+                    <td>@skill.Description</td>
+                    <td>@skill.Taux</td>
+                    <td>@skill.Degats</td>
+                </tr>
+            }
+        </table>
+    }
+
+    <table class="table table-bordered detailsPerso">
+        <tr>
+            <th colspan="6" class="text-center">Inventaire</th>
+        </tr>
+        <tr>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Quantite</th>
+            <th>Prix</th>
+            <th>Commentaire</th>
+        </tr>
+        
+        @if (Model.DetailsPerso.Inventaire != null)
+        {
+            foreach (var item in Model.DetailsPerso.Inventaire.Items.OrderBy(ob => ob.Nom).ToList())
+            {
+                <tr>
+                    <td>@item.Nom</td>
+                    <td>@item.Description</td>
+                    <td>@item.TypeItem.ToLower()</td>
+                    <td>@item.Quantite</td>
+                    @if (item.Prix == null)
+                    {
+                        <td>N/A</td>
+                    }
+                    else
+                    {
+                        <td>@item.Prix</td>
+                    }
+                    <td>@item.Commentaire</td>
+                </tr>
+            }
+        }
     </table>
 }

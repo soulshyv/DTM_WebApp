@@ -21,6 +21,10 @@
     width: 70%;
 }
 
+/*.detailsPerso tbody tr {
+    background-color: dimgrey !important;
+}*/
+
 /*.table-borderless > tbody > tr > td,
 .table-borderless > tbody > tr > th,
 .table-borderless > tfoot > tr > td,
@@ -29,8 +33,7 @@
 .table-borderless > thead > tr > th {
     border: none;
 }*/
-
-select,option {
+select, option {
     background-color: dimgrey;
 }
 

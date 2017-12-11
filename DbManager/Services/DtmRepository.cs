@@ -429,15 +429,21 @@ namespace DTM.DbManager.Services
 
                 while (await reader.ReadAsync())
                 {
-                    inventaire.Items.Add(new Item
+                    var item = new Item
                     {
                         Nom = reader["Item"].ToString(),
                         Description = reader["Description"].ToString(),
                         TypeItem = reader["Type d'item"].ToString(),
-                        Prix = reader["Prix"] != DBNull.Value ? Convert.ToInt16(reader["Prix"]) : 0,
                         Commentaire = reader["Commentaire"].ToString(),
                         Quantite = reader["Quantite"] != DBNull.Value ? Convert.ToInt16(reader["Quantite"]) : 0
-                    });
+                    };
+
+                    if (reader["Prix"] == DBNull.Value)
+                        item.Prix = null;
+                    else
+                        item.Prix = Convert.ToInt16(reader["Prix"]);
+
+                    inventaire.Items.Add(item);
                 }
             }
 
