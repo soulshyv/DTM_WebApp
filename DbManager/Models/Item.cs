@@ -7,6 +7,6 @@
         public string TypeItem { get; set; }
         public int? Prix { get; set; }
         public string Commentaire { get; set; }
-        public int Quantite { get; set; }
+        public int? Quantite { get; set; }
     }
 }

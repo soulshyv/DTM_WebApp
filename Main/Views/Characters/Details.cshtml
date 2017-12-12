@@ -16,7 +16,11 @@ else
     <h1 class="text-center">Fiche de personnage</h1>
     <h2 class="text-center">@Model.DetailsPerso.Charac.Nom - @Model.DetailsPerso.Charac.Race</h2>
 
-    <img class="center-block" src="@imagePath"/><br/>
+    <img class="center-block" src="@imagePath" alt=""/><br/>
+
+    <button class="btn btn-primary center-block" type="button">Modifier</button>
+
+    <br />
 
     <table class="table">
         <!-- Jauges -->
@@ -81,11 +85,14 @@ else
                     }
                 </select>
             </td>
+            <td><button class="btn btn-primary center-block" type="button">Modifier</button></td>
         </tr>
     </table>
 
     if (Model.DetailsPerso.Stats != null)
     {
+        <button class="btn btn-primary center-block" type="button">Modifier</button>
+
         <table class="table table-bordered detailsPerso">
             <!-- Stats -->
             <tr>
@@ -133,33 +140,27 @@ else
     }
     <table class="table table-bordered detailsPerso">
         <tr>
-            <th>Passifs</th>
-            <th>Compétences</th>
-            <th>Langues</th>
-            <th>Or</th>
+            <th>Passifs<button class="btn btn-primary pull-right" type="button">Modifier</button></th>
+            <th>Compétences<button class="btn btn-primary pull-right" type="button">Modifier</button></th>
+            <th>Langues<button class="btn btn-primary pull-right" type="button" disabled>Modifier</button></th>
+            <th>Or<button class="btn btn-primary pull-right" type="button" disabled>Modifier</button></th>
         </tr>
         <tr>
             <td>
                 @if (Model.DetailsPerso.Caracs != null)
                 {
-                    <p>
-                        Passif :<br/>
-                        <span>Attaque : @Model.DetailsPerso.Caracs.Attaque<br/></span>
-                        <span>Défense : @Model.DetailsPerso.Caracs.Defense<br/></span>
-                        <span>Rapidité : @Model.DetailsPerso.Caracs.Rapidite<br/></span>
-                    </p>
+                    <span>Attaque : @Model.DetailsPerso.Caracs.Attaque<br/></span>
+                    <span>Défense : @Model.DetailsPerso.Caracs.Defense<br/></span>
+                    <span>Rapidité : @Model.DetailsPerso.Caracs.Rapidite<br/></span>
                 }
             </td>
-            <td>
+            <td width="300px">
                 @if (Model.DetailsPerso.Dons != null)
                 {
-                    <p>
-                        Compétences<br/>
-                        @foreach (var don in @Model.DetailsPerso.Dons.OrderBy(ob => ob.Taux).ToList())
-                        {
-                            <span>[@don.Taux%] @don.Libelle @don.Description<br/></span>
-                        }
-                    </p>
+                    foreach (var don in @Model.DetailsPerso.Dons.OrderBy(ob => ob.Taux).ToList())
+                    {
+                        <span>[@don.Taux%] @don.Libelle @don.Description<br/></span>
+                    }
                 }
             </td>
             <td>
@@ -175,7 +176,7 @@ else
     {
         <table class="table table-bordered detailsPerso">
             <tr>
-                <th colspan="4" class="text-center">Skills</th>
+                <th colspan="4" class="text-center">Skills<button class="btn btn-primary pull-right" type="button">Modifier</button></th>
             </tr>
             <tr>
                 <th>Nom</th>
@@ -195,39 +196,41 @@ else
         </table>
     }
 
-    <table class="table table-bordered detailsPerso">
-        <tr>
-            <th colspan="6" class="text-center">Inventaire</th>
-        </tr>
-        <tr>
-            <th>Nom</th>
-            <th>Description</th>
-            <th>Type</th>
-            <th>Quantite</th>
-            <th>Prix</th>
-            <th>Commentaire</th>
-        </tr>
-        
-        @if (Model.DetailsPerso.Inventaire != null)
-        {
-            foreach (var item in Model.DetailsPerso.Inventaire.Items.OrderBy(ob => ob.Nom).ToList())
-            {
-                <tr>
-                    <td>@item.Nom</td>
-                    <td>@item.Description</td>
-                    <td>@item.TypeItem.ToLower()</td>
-                    <td>@item.Quantite</td>
-                    @if (item.Prix == null)
-                    {
-                        <td>N/A</td>
-                    }
-                    else
-                    {
-                        <td>@item.Prix</td>
-                    }
-                    <td>@item.Commentaire</td>
-                </tr>
-            }
-        }
-    </table>
+    if (Model.DetailsPerso.Inventaire != null)
+     {
+         <table class="table table-bordered detailsPerso">
+             <tr>
+                 <th colspan="6" class="text-center">Inventaire<button class="btn btn-primary pull-right" type="button">Modifier</button></th>
+             </tr>
+             <tr>
+                 <th>Nom</th>
+                 <th>Description</th>
+                 <th>Type</th>
+                 <th>Quantite</th>
+                 <th>Prix</th>
+                 <th>Commentaire</th>
+             </tr>
+
+
+             @foreach (var item in Model.DetailsPerso.Inventaire.Items.OrderBy(ob => ob.Nom).ToList())
+             {
+                 <tr>
+                     <td>@item.Nom</td>
+                     <td>@item.Description</td>
+                     <td>@item.TypeItem.ToLower()</td>
+                     <td>@item.Quantite</td>
+                     @if (item.Prix == null)
+                     {
+                         <td>N/A</td>
+                     }
+                     else
+                     {
+                         <td>@item.Prix</td>
+                     }
+                     <td>@item.Commentaire</td>
+                 </tr>
+             }
+
+         </table>
+    }
 }

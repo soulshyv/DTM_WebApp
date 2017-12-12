@@ -21,9 +21,9 @@
     width: 70%;
 }
 
-/*.detailsPerso tbody tr {
-    background-color: dimgrey !important;
-}*/
+.detailsPerso tbody tr {
+    background-image: radial-gradient(grey, black);
+}
 
 /*.table-borderless > tbody > tr > td,
 .table-borderless > tbody > tr > th,

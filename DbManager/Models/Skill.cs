@@ -4,7 +4,7 @@
     {
         public string Libelle { get; set; }
         public string Description { get; set; }
-        public int Taux { get; set; }
+        public int? Taux { get; set; }
         public string Degats { get; set; }
     }
 }

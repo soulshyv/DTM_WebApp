@@ -111,34 +111,87 @@ namespace DTM.DbManager.Services
                 Charac = new Character
                 {
                     Nom = nomPerso,
-                    Xp = reader["Experience"] != DBNull.Value ? Convert.ToInt16(reader["Experience"]) : 0,
-                    Lvl = reader["Niveau"] != DBNull.Value ? Convert.ToInt16(reader["Niveau"]) : 0,
-                    Po = reader["Piece d'or"] != DBNull.Value ? Convert.ToInt16(reader["Piece d'or"]) : 0,
                     Race = reader["Race"].ToString(),
                     TypePerso = reader["Type de perso"].ToString()
 
                 };
-                Caracs = new Caracs
-                {
-                    Attaque = reader["Piece d'or"] != DBNull.Value ? Convert.ToInt16(reader["Piece d'or"]) : 0,
-                    Defense = reader["Defense"] != DBNull.Value ? Convert.ToInt16(reader["Defense"]) : 0,
-                    Rapidite = reader["Rapidite"] != DBNull.Value ? Convert.ToInt16(reader["Rapidite"]) : 0
-                };
-                Jauges = new Jauges
-                {
-                    Pv = reader["Point de vie"] != DBNull.Value ? Convert.ToInt16(reader["Point de vie"]) : 0,
-                    PvMax = reader["Point de vie max"] != DBNull.Value ? Convert.ToInt16(reader["Point de vie max"]) : 0,
-                    Psy = reader["Point de psy"] != DBNull.Value ? Convert.ToInt16(reader["Point de psy"]) : 0,
-                    PsyMax = reader["Point de psy max"] != DBNull.Value ? Convert.ToInt16(reader["Point de psy max"]) : 0,
-                    Synchro = reader["Point de synchro"] != DBNull.Value ? Convert.ToInt16(reader["Point de synchro"]) : 0,
-                    SynchroMax = reader["Point de synchro max"] != DBNull.Value ? Convert.ToInt16(reader["Point de synchro max"]) : 0,
-                };
-                Stats = new Stats
-                {
-                    Physique = reader["Physique"] != DBNull.Value ? Convert.ToInt16(reader["Physique"]) : 0,
-                    Mental = reader["Mental"] != DBNull.Value ? Convert.ToInt16(reader["Mental"]) : 0,
-                    Social = reader["Social"] != DBNull.Value ? Convert.ToInt16(reader["Social"]) : 0,
-                };
+                if (reader["Experience"] == DBNull.Value)
+                    Charac.Xp = null;
+                else
+                    Charac.Xp = Convert.ToInt16(reader["Experience"]);
+
+                if (reader["Niveau"] == DBNull.Value)
+                    Charac.Lvl = null;
+                else
+                    Charac.Lvl = Convert.ToInt16(reader["Niveau"]);
+
+                if (reader["Piece d'or"] == DBNull.Value)
+                    Charac.Po = null;
+                else
+                    Charac.Po = Convert.ToInt16(reader["Piece d'or"]);
+
+                Caracs = new Caracs();
+                if (reader["Attaque"] == DBNull.Value)
+                    Caracs.Attaque = null;
+                else
+                    Caracs.Attaque = Convert.ToInt16(reader["Attaque"]);
+
+                if (reader["Defense"] == DBNull.Value)
+                    Caracs.Defense = null;
+                else
+                    Caracs.Defense = Convert.ToInt16(reader["Defense"]);
+
+                if (reader["Rapidite"] == DBNull.Value)
+                    Caracs.Rapidite = null;
+                else
+                    Caracs.Rapidite = Convert.ToInt16(reader["Rapidite"]);
+
+                Jauges = new Jauges();
+                if (reader["Point de vie"] == DBNull.Value)
+                    Jauges.Pv = null;
+                else
+                    Jauges.Pv = Convert.ToInt16(reader["Point de vie"]);
+
+                if (reader["Point de vie max"] == DBNull.Value)
+                    Jauges.PvMax = null;
+                else
+                    Jauges.PvMax = Convert.ToInt16(reader["Point de vie max"]);
+
+                if (reader["Point de psy"] == DBNull.Value)
+                    Jauges.Psy = null;
+                else
+                    Jauges.Psy = Convert.ToInt16(reader["Point de psy"]);
+
+                if (reader["Point de psy max"] == DBNull.Value)
+                    Jauges.PsyMax = null;
+                else
+                    Jauges.PsyMax = Convert.ToInt16(reader["Point de psy max"]);
+
+                if (reader["Point de synchro"] == DBNull.Value)
+                    Jauges.Synchro = null;
+                else
+                    Jauges.Synchro = Convert.ToInt16(reader["Point de synchro"]);
+
+                if (reader["Point de synchro max"] == DBNull.Value)
+                    Jauges.SynchroMax = null;
+                else
+                    Jauges.SynchroMax = Convert.ToInt16(reader["Point de synchro max"]);
+
+                Stats = new Stats();
+                if (reader["Physique"] == DBNull.Value)
+                    Stats.Physique = null;
+                else
+                    Stats.Physique = Convert.ToInt16(reader["Physique"]);
+
+                if (reader["Mental"] == DBNull.Value)
+                    Stats.Mental = null;
+                else
+                    Stats.Mental = Convert.ToInt16(reader["Mental"]);
+
+                if (reader["Social"] == DBNull.Value)
+                    Stats.Social = null;
+                else
+                    Stats.Social = Convert.ToInt16(reader["Social"]);
             }
 
             Inventaire = await GetInventairePerso(nomPerso);
@@ -191,12 +244,18 @@ namespace DTM.DbManager.Services
 
                 while (await reader.ReadAsync())
                 {
-                    dons.Add(new DonPerso
+                    var donPerso = new DonPerso
                     {
                         Libelle = reader["Competence"].ToString(),
-                        Description = reader["Description"].ToString(),
-                        Taux = reader["Taux"] != DBNull.Value ? Convert.ToInt16(reader["Taux"]) : 0
-                    });
+                        Description = reader["Description"].ToString()
+                    };
+
+                    if (reader["Taux"] == DBNull.Value)
+                        donPerso.Taux = null;
+                    else
+                        donPerso.Taux = Convert.ToInt16(reader["Taux"]);
+
+                    dons.Add(donPerso);
                 }
             }
 
@@ -434,14 +493,18 @@ namespace DTM.DbManager.Services
                         Nom = reader["Item"].ToString(),
                         Description = reader["Description"].ToString(),
                         TypeItem = reader["Type d'item"].ToString(),
-                        Commentaire = reader["Commentaire"].ToString(),
-                        Quantite = reader["Quantite"] != DBNull.Value ? Convert.ToInt16(reader["Quantite"]) : 0
+                        Commentaire = reader["Commentaire"].ToString()
                     };
 
                     if (reader["Prix"] == DBNull.Value)
                         item.Prix = null;
                     else
                         item.Prix = Convert.ToInt16(reader["Prix"]);
+
+                    if (reader["Quantite"] == DBNull.Value)
+                        item.Quantite = null;
+                    else
+                        item.Quantite = Convert.ToInt16(reader["Quantite"]);
 
                     inventaire.Items.Add(item);
                 }
@@ -482,10 +545,18 @@ namespace DTM.DbManager.Services
                     Nom = reader["Item"].ToString(),
                     Description = reader["Description"].ToString(),
                     TypeItem = reader["Type d'item"].ToString(),
-                    Prix = reader["Prix"] != DBNull.Value ? Convert.ToInt16(reader["Prix"]) : 0,
                     Commentaire = reader["Commentaire"].ToString(),
-                    Quantite = reader["Quantite"] != DBNull.Value ? Convert.ToInt16(reader["Quantite"]) : 0
                 };
+
+                if (reader["Prix"] == DBNull.Value)
+                    item.Prix = null;
+                else
+                    item.Prix = Convert.ToInt16(reader["Prix"]);
+
+                if (reader["Quantite"] == DBNull.Value)
+                    item.Quantite = null;
+                else
+                    item.Quantite = Convert.ToInt16(reader["Quantite"]);
             }
 
             return item;
@@ -521,13 +592,25 @@ namespace DTM.DbManager.Services
                 charac = new Character
                 {
                     Nom = reader["Nom"].ToString(),
-                    Xp = reader["Xp"] != DBNull.Value ? Convert.ToInt16(reader["Xp"]) : 0,
-                    Lvl = reader["Lvl"] != DBNull.Value ? Convert.ToInt16(reader["Lvl"]) : 0,
-                    Po = reader["Po"] != DBNull.Value ? Convert.ToInt16(reader["Po"]) : 0,
                     Race = reader["Race"].ToString(),
                     TypePerso = reader["Type_Perso"].ToString()
 
                 };
+
+                if (reader["Xp"] == DBNull.Value)
+                    charac.Xp = null;
+                else
+                    charac.Xp = Convert.ToInt16(reader["Xp"]);
+
+                if (reader["Lvl"] == DBNull.Value)
+                    charac.Lvl = null;
+                else
+                    charac.Lvl = Convert.ToInt16(reader["Lvl"]);
+
+                if (reader["Po"] == DBNull.Value)
+                    charac.Po = null;
+                else
+                    charac.Po = Convert.ToInt16(reader["Po"]);
             }
 
             return charac;
@@ -535,14 +618,14 @@ namespace DTM.DbManager.Services
 
         public async Task<List<Skill>> GetSkillsPerso(string nomPerso)
         {
-            const string elementPerso = @"SELECT
+            const string skillsPerso = @"SELECT
                                             `viewskillperso`.`Skill`,
                                             `viewskillperso`.`Description`,
                                             `viewskillperso`.`Taux`,
                                             `viewskillperso`.`Degats`
                                           FROM `jdr`.`viewskillperso`
                                           WHERE Pseudo = @NomPerso";
-            var cmd = new MySqlCommand(elementPerso, Conn);
+            var cmd = new MySqlCommand(skillsPerso, Conn);
             cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
 
             var skills = new List<Skill>();
@@ -559,13 +642,19 @@ namespace DTM.DbManager.Services
 
                 while (await reader.ReadAsync())
                 {
-                    skills.Add(new Skill
+                    var skill = new Skill
                     {
                         Libelle = reader["Skill"].ToString(),
                         Description = reader["Description"].ToString(),
-                        Taux = reader["Taux"] != DBNull.Value ? Convert.ToInt16(reader["Taux"]) : 0,
                         Degats = reader["Description"].ToString()
-                    });
+                    };
+
+                    if (reader["Taux"] == DBNull.Value)
+                        skill.Taux = null;
+                    else
+                        skill.Taux = Convert.ToInt16(reader["Taux"]);
+
+                    skills.Add(skill);
                 }
             }
 
@@ -596,13 +685,19 @@ namespace DTM.DbManager.Services
 
                 while (await reader.ReadAsync())
                 {
-                    skills.Add(new Skill
+                    var skill = new Skill
                     {
                         Libelle = reader["Skill"].ToString(),
                         Description = reader["Description"].ToString(),
-                        Taux = reader["Taux"] != DBNull.Value ? Convert.ToInt16(reader["Taux"]) : 0,
-                        Degats = reader["Description"].ToString()
-                    });
+                        Degats = reader["Degats"] == DBNull.Value ? null : reader["Degats"].ToString()
+                    };
+
+                    if (reader["Taux"] == DBNull.Value)
+                        skill.Taux = null;
+                    else
+                        skill.Taux = Convert.ToInt16(reader["Taux"]);
+
+                    skills.Add(skill);
                 }
             }
 
