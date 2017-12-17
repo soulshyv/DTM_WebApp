@@ -1,12 +1,15 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-image: url(../images/Wallpaper.jpg);
-    background-size: cover;
-    background-position: right 45px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: aliceblue;
     font-size: 16px;
+}
+
+#mainContent {
+    background-image: url(../images/Wallpaper.jpg);
+    background-size: 100%;
+    background-repeat: no-repeat;
 }
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
@@ -14,14 +17,19 @@
 }
 
 #container-left {
-    width: 25%;
+    width: 30%;
 }
 
 #container-right {
     width: 70%;
 }
 
-.detailsPerso tbody tr {
+#detailsPersoScrolling {
+    height: 550px;
+    overflow-y: auto;
+}
+
+.detailsTab tbody tr {
     background-image: radial-gradient(grey, black);
 }
 

@@ -1,9 +1,10 @@
 ﻿@model DTM.DbManager.ViewModels.CharactersViewModel
+    
+<h1 class="text-center col-lg-12 col-lg-offset-1">Fiche de personnage</h1>    
 
 @if (Model.DetailsPerso == null)
 {
-    <h1 class="text-center">Fiche de personnage</h1>
-    <h3 class="text-center">Sélectionnez un personnage dans le tableau pour voir sa fiche complète</h3>
+    <h3 class="text-center col-lg-12 col-lg-offset-1">Sélectionnez un personnage dans le tableau pour voir sa fiche complète</h3>
 }
 else
 {
@@ -12,225 +13,332 @@ else
     {
         imagePath = @"/images/" + Model.CharacterPicture;
     }
+    
+    <div id="detailsPersoScrolling" class="col-lg-12 col-lg-offset-1">
+        <div id="detailsPerso">
+            <h2 class="text-center">@Model.DetailsPerso.Charac.Nom - @Model.DetailsPerso.Charac.Race</h2>
 
-    <h1 class="text-center">Fiche de personnage</h1>
-    <h2 class="text-center">@Model.DetailsPerso.Charac.Nom - @Model.DetailsPerso.Charac.Race</h2>
+            <img class="center-block" src="@imagePath" alt=""/><br/>
 
-    <img class="center-block" src="@imagePath" alt=""/><br/>
+            <button class="btn btn-primary center-block" type="button">Modifier</button>
 
-    <button class="btn btn-primary center-block" type="button">Modifier</button>
+            <br/>
 
-    <br />
-
-    <table class="table">
-        <!-- Jauges -->
-        <tr>
-            <!-- Jauge de vie -->
-            <td class="form-group">
-                <label asp-for="DetailsPerso.Jauges.Pv">Vie : </label>
-                <select asp-for="DetailsPerso.Jauges.Pv">
-                    <option selected="selected" value="none"></option>
-                    @for (var i = 0; i <= 100; i++)
-                    {
-                        <option value="@i">@i</option>
-                    }
-                </select>
-
-                <label asp-for="DetailsPerso.Jauges.PvMax">/</label>
-                <select asp-for="DetailsPerso.Jauges.Pv">
-                    <option selected="selected" value="none"></option>
-                    @for (var i = 0; i < 100; i++)
-                    {
-                        <option value="@(i + 1)">@(i + 1)</option>
-                    }
-                </select>
-            </td>
-            <!-- Jauge de psy -->
-            <td class="form-group">
-                <label asp-for="DetailsPerso.Jauges.Psy">Psy : </label>
-                <select asp-for="DetailsPerso.Jauges.Psy">
-                    <option selected="selected" value="none"></option>
-                    @for (var i = 0; i <= 100; i++)
-                    {
-                        <option value="@i">@i</option>
-                    }
-                </select>
-
-                <label asp-for="DetailsPerso.Jauges.PsyMax">/</label>
-                <select asp-for="DetailsPerso.Jauges.Psy">
-                    <option selected="selected" value="none"></option>
-                    @for (var i = 1; i <= 100; i++)
-                    {
-                        <option value="@i">@i</option>
-                    }
-                </select>
-            </td>
-            <!-- Jauge de synchro -->
-            <td class="form-group">
-                <label asp-for="DetailsPerso.Jauges.Synchro">Synchro : </label>
-                <select asp-for="DetailsPerso.Jauges.Synchro">
-                    <option selected="selected" value="none"></option>
-                    @for (var i = 0; i <= 5; i++)
-                    {
-                        <option value="@i">@i</option>
-                    }
-                </select>
-
-                <label asp-for="DetailsPerso.Jauges.SynchroMax">/</label>
-                <select asp-for="DetailsPerso.Jauges.Synchro">
-                    <option selected="selected" value="none"></option>
-                    @for (var i = 1; i <= 5; i++)
-                    {
-                        <option value="@i">@i</option>
-                    }
-                </select>
-            </td>
-            <td><button class="btn btn-primary center-block" type="button">Modifier</button></td>
-        </tr>
-    </table>
-
-    if (Model.DetailsPerso.Stats != null)
-    {
-        <button class="btn btn-primary center-block" type="button">Modifier</button>
-
-        <table class="table table-bordered detailsPerso">
-            <!-- Stats -->
-            <tr>
-                <th class="text-center">Physique</th>
-                <th class="text-center">Mental</th>
-                <th class="text-center">Social</th>
-            </tr>
-            <tr class="text-center">
-                <!-- Physique -->
-                <td class="form-group">
-                    <select asp-for="DetailsPerso.Stats.Physique">
-                        <option selected="selected" value="none"></option>
-                        @for (var i = 0; i <= 100; i++)
-                        {
-                            <option value="@i">@i</option>
-                        }
-                    </select>
-                    <label asp-for="DetailsPerso.Stats.Physique"> %</label>
-                </td>
-                <!-- Mental -->
-                <td class="form-group">
-                    <select asp-for="DetailsPerso.Stats.Mental">
-                        <option selected="selected" value="none"></option>
-                        @for (var i = 0; i <= 100; i++)
-                        {
-                            <option value="@i">@i</option>
-                        }
-                    </select>
-                    <label asp-for="DetailsPerso.Stats.Mental"> %</label>
-                </td>
-                <!-- Social -->
-                <td class="form-group">
-                    <select asp-for="DetailsPerso.Stats.Social">
-                        <option selected="selected" value="none"></option>
-                        @for (var i = 0; i <= 100; i++)
-                        {
-                            <option value="@i">@i</option>
-                        }
-                    </select>
-                    <label asp-for="DetailsPerso.Stats.Social"> %</label>
-                </td>
-            </tr>
-        </table>
-         
-    }
-    <table class="table table-bordered detailsPerso">
-        <tr>
-            <th>Passifs<button class="btn btn-primary pull-right" type="button">Modifier</button></th>
-            <th>Compétences<button class="btn btn-primary pull-right" type="button">Modifier</button></th>
-            <th>Langues<button class="btn btn-primary pull-right" type="button" disabled>Modifier</button></th>
-            <th>Or<button class="btn btn-primary pull-right" type="button" disabled>Modifier</button></th>
-        </tr>
-        <tr>
-            <td>
-                @if (Model.DetailsPerso.Caracs != null)
-                {
-                    <span>Attaque : @Model.DetailsPerso.Caracs.Attaque<br/></span>
-                    <span>Défense : @Model.DetailsPerso.Caracs.Defense<br/></span>
-                    <span>Rapidité : @Model.DetailsPerso.Caracs.Rapidite<br/></span>
-                }
-            </td>
-            <td width="300px">
-                @if (Model.DetailsPerso.Dons != null)
-                {
-                    foreach (var don in @Model.DetailsPerso.Dons.OrderBy(ob => ob.Taux).ToList())
-                    {
-                        <span>[@don.Taux%] @don.Libelle @don.Description<br/></span>
-                    }
-                }
-            </td>
-            <td>
-                
-            </td>
-            <td>
-                
-            </td>
-        </tr>
-    </table>
-
-    if (Model.DetailsPerso.Skills != null)
-    {
-        <table class="table table-bordered detailsPerso">
-            <tr>
-                <th colspan="4" class="text-center">Skills<button class="btn btn-primary pull-right" type="button">Modifier</button></th>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <th>Description</th>
-                <th>Taux</th>
-                <th>Dégats</th>
-            </tr>
-            @foreach (var skill in Model.DetailsPerso.Skills)
-            {
+            <table class="table">
+                <!-- Jauges -->
                 <tr>
-                    <td>@skill.Libelle</td>
-                    <td>@skill.Description</td>
-                    <td>@skill.Taux</td>
-                    <td>@skill.Degats</td>
+                    <!-- Jauge de vie -->
+                    <td class="form-group">
+                        <label asp-for="DetailsPerso.Jauges.Pv">Vie : </label>
+                        <select asp-for="DetailsPerso.Jauges.Pv">
+                            <option selected="selected" value="none"></option>
+                            @for (var i = 0; i <= 100; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+
+                        <label asp-for="DetailsPerso.Jauges.PvMax">/</label>
+                        <select asp-for="DetailsPerso.Jauges.Pv">
+                            <option selected="selected" value="none"></option>
+                            @for (var i = 0; i < 100; i++)
+                            {
+                                <option value="@(i + 1)">@(i + 1)</option>
+                            }
+                        </select>
+                    </td>
+                    <!-- Jauge de psy -->
+                    <td class="form-group">
+                        <label asp-for="DetailsPerso.Jauges.Psy">Psy : </label>
+                        <select asp-for="DetailsPerso.Jauges.Psy">
+                            <option selected="selected" value="none"></option>
+                            @for (var i = 0; i <= 100; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+
+                        <label asp-for="DetailsPerso.Jauges.PsyMax">/</label>
+                        <select asp-for="DetailsPerso.Jauges.Psy">
+                            <option selected="selected" value="none"></option>
+                            @for (var i = 1; i <= 100; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </td>
+                    <!-- Jauge de synchro -->
+                    <td class="form-group">
+                        <label asp-for="DetailsPerso.Jauges.Synchro">Synchro : </label>
+                        <select asp-for="DetailsPerso.Jauges.Synchro">
+                            <option selected="selected" value="none"></option>
+                            @for (var i = 0; i <= 5; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+
+                        <label asp-for="DetailsPerso.Jauges.SynchroMax">/</label>
+                        <select asp-for="DetailsPerso.Jauges.Synchro">
+                            <option selected="selected" value="none"></option>
+                            @for (var i = 1; i <= 5; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary center-block" type="button" disabled>Enregistrer</button>
+                    </td>
                 </tr>
+            </table>
+
+            @if (Model.DetailsPerso.Stats != null)
+            {
+                <table class="table table-bordered detailsTab">
+                    <!-- Stats -->
+                    <tr>
+                        <th class="text-center">Physique</th>
+                        <th class="text-center">Mental</th>
+                        <th class="text-center">Social</th>
+                        <th class="text-center"></th>
+                    </tr>
+                    <tr class="text-center">
+                        <!-- Physique -->
+                        <td class="form-group">
+                            <select asp-for="DetailsPerso.Stats.Physique">
+                                <option selected="selected" value="none"></option>
+                                @for (var i = 0; i <= 100; i++)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                            <label asp-for="DetailsPerso.Stats.Physique"> %</label>
+                        </td>
+                        <!-- Mental -->
+                        <td class="form-group">
+                            <select asp-for="DetailsPerso.Stats.Mental">
+                                <option selected="selected" value="none"></option>
+                                @for (var i = 0; i <= 100; i++)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                            <label asp-for="DetailsPerso.Stats.Mental"> %</label>
+                        </td>
+                        <!-- Social -->
+                        <td class="form-group">
+                            <select asp-for="DetailsPerso.Stats.Social">
+                                <option selected="selected" value="none"></option>
+                                @for (var i = 0; i <= 100; i++)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                            <label asp-for="DetailsPerso.Stats.Social"> %</label>
+                        </td>
+                        <td width="135px">
+                            <button class="btn btn-primary"type="button" disabled>Enregistrer</button>
+                        </td>
+                    </tr>
+                </table>
+
             }
-        </table>
-    }
+            <table class="table table-bordered detailsTab">
+                <tr>
+                    <th>Passifs<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#modifPassifs" type="button">Modifier</button></th>
+                    <th>Compétences<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#modifDons" type="button">Modifier</button></th>
+                    <th>Langues<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#modifLangues" type="button" disabled>Modifier</button></th>
+                    <th>Or<button class="btn btn-primary pull-right" type="button" disabled>Modifier</button></th>
+                </tr>
+                <tr>
+                    <td>
+                        @if (Model.DetailsPerso.Caracs != null)
+                        {
+                            <span>Attaque : @Model.DetailsPerso.Caracs.Attaque<br/></span>
+                            <span>Défense : @Model.DetailsPerso.Caracs.Defense<br/></span>
+                            <span>Rapidité : @Model.DetailsPerso.Caracs.Rapidite<br/></span>
+                        }
+                    </td>
+                    <td width="300px">
+                        @if (Model.DetailsPerso.Dons != null)
+                        {
+                            foreach (var don in @Model.DetailsPerso.Dons.OrderBy(ob => ob.Taux).ToList())
+                            {
+                                <span>[@don.Taux%] @don.Libelle @don.Description<br/></span>
+                            }
+                        }
+                    </td>
+                    <td>
 
-    if (Model.DetailsPerso.Inventaire != null)
-     {
-         <table class="table table-bordered detailsPerso">
-             <tr>
-                 <th colspan="6" class="text-center">Inventaire<button class="btn btn-primary pull-right" type="button">Modifier</button></th>
-             </tr>
-             <tr>
-                 <th>Nom</th>
-                 <th>Description</th>
-                 <th>Type</th>
-                 <th>Quantite</th>
-                 <th>Prix</th>
-                 <th>Commentaire</th>
-             </tr>
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+            </table>
+
+            @if (Model.DetailsPerso.Skills != null)
+            {
+                <table class="table table-bordered detailsTab">
+                    <tr>
+                        <th colspan="4" class="text-center">Skills<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#modifSkills" type="button">Modifier</button></th>
+                    </tr>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Taux</th>
+                        <th>Dégats</th>
+                    </tr>
+                    @foreach (var skill in Model.DetailsPerso.Skills)
+                    {
+                        <tr>
+                            <td>@skill.Libelle</td>
+                            <td>@skill.Description</td>
+                            <td>@skill.Taux</td>
+                            <td>@skill.Degats</td>
+                        </tr>
+                    }
+                </table>
+            }
+
+            @if (Model.DetailsPerso.Inventaire != null)
+            {
+                <table class="table table-bordered detailsTab">
+                    <tr>
+                        <th colspan="6" class="text-center">Inventaire<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#modifInventaire" type="button">Modifier</button></th>
+                    </tr>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Quantite</th>
+                        <th>Prix</th>
+                        <th>Commentaire</th>
+                    </tr>
 
 
-             @foreach (var item in Model.DetailsPerso.Inventaire.Items.OrderBy(ob => ob.Nom).ToList())
-             {
-                 <tr>
-                     <td>@item.Nom</td>
-                     <td>@item.Description</td>
-                     <td>@item.TypeItem.ToLower()</td>
-                     <td>@item.Quantite</td>
-                     @if (item.Prix == null)
-                     {
-                         <td>N/A</td>
-                     }
-                     else
-                     {
-                         <td>@item.Prix</td>
-                     }
-                     <td>@item.Commentaire</td>
-                 </tr>
-             }
+                    @foreach (var item in Model.DetailsPerso.Inventaire.Items.OrderBy(ob => ob.Nom).ToList())
+                    {
+                        <tr>
+                            <td>@item.Nom</td>
+                            <td>@item.Description</td>
+                            <td>@item.TypeItem.ToLower()</td>
+                            <td>@item.Quantite</td>
+                            @if (item.Prix == null)
+                            {
+                                <td>N/A</td>
+                            }
+                            else
+                            {
+                                <td>@item.Prix</td>
+                            }
+                            <td>@item.Commentaire</td>
+                        </tr>
+                    }
 
-         </table>
-    }
+                </table>
+            }
+        </div>
+    </div>
+
+    <div id="modifPassifs" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modifDons" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modifLangues" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modifSkills" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modifInventaire" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 }

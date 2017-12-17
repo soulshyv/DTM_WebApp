@@ -15,6 +15,6 @@ $(document).ready(function() {
     //});
     $(".details").click(function () {
         var nomPerso = $(this).parent().attr("id");
-        $("#detailsPerso").load("Characters/GetDetails?nomPerso=" + nomPerso);
+        $("#details").load("Characters/GetDetails?nomPerso=" + nomPerso);
     });
 });
