@@ -2,6 +2,7 @@
 using DTM.DbManager.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using DTM.DbManager.Models;
 using UserManager.Contracts;
 
 namespace Main.Controllers
@@ -49,6 +50,15 @@ namespace Main.Controllers
                 DetailsPerso = perso,
                 CharacterPicture = characPic
             });
+        }
+
+        [HttpPost]
+        public async Task UpdateCaracs(Caracs caracs)
+        {
+            if (caracs != null)
+            {
+                
+            }
         }
     }
 }

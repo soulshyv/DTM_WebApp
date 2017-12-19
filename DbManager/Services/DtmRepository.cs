@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DTM.Core.Contracts;
+﻿using DTM.Core.Contracts;
 using DTM.DbManager.Contracts;
-using MySql.Data.MySqlClient;
-using Dapper;
 using DTM.DbManager.Models;
+using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DTM.DbManager.Services
 {
@@ -18,6 +16,9 @@ namespace DTM.DbManager.Services
         }
 
         private MySqlConnection Conn { get; }
+
+
+        /**************** SELECT ****************/
 
         public async Task<List<Character>> GetAllPerso()
         {
@@ -63,17 +64,17 @@ namespace DTM.DbManager.Services
 
         public async Task<CharacterFull> GetFullPersoByName(string nomPerso)
         {
-            Character Charac;
-            Caracs Caracs;
-            Jauges Jauges;
-            Stats Stats;
+            Character charac;
+            Caracs caracs;
+            Jauges jauges;
+            Stats stats;
             Inventaire Inventaire;
-            var Elements = new List<Element>();
-            var Skills = new List<Skill>();
-            var Dons = new List<DonPerso>();
-            var Demons = new List<Demon>();
+            var elements = new List<Element>();
+            var skills = new List<Skill>();
+            var dons = new List<DonPerso>();
+            var demons = new List<Demon>();
 
-            const string viewFullPerso = @"SELECT
+            const string sql = @"SELECT
                                             `viewpersofull`.`Experience`,
                                             `viewpersofull`.`Niveau`,
                                             `viewpersofull`.`Piece d'or`,
@@ -93,7 +94,7 @@ namespace DTM.DbManager.Services
                                             `viewpersofull`.`Social`
                                           FROM `jdr`.`viewpersofull`
                                           WHERE `viewpersofull`.`Pseudo` = @nomPerso";
-            var cmd = new MySqlCommand(viewFullPerso, Conn);
+            var cmd = new MySqlCommand(sql, Conn);
             cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
 
             using (var reader = await cmd.ExecuteReaderAsync())
@@ -108,7 +109,7 @@ namespace DTM.DbManager.Services
                 }
 
                 await reader.ReadAsync();
-                Charac = new Character
+                charac = new Character
                 {
                     Nom = nomPerso,
                     Race = reader["Race"].ToString(),
@@ -116,91 +117,91 @@ namespace DTM.DbManager.Services
 
                 };
                 if (reader["Experience"] == DBNull.Value)
-                    Charac.Xp = null;
+                    charac.Xp = null;
                 else
-                    Charac.Xp = Convert.ToInt16(reader["Experience"]);
+                    charac.Xp = Convert.ToInt16(reader["Experience"]);
 
                 if (reader["Niveau"] == DBNull.Value)
-                    Charac.Lvl = null;
+                    charac.Lvl = null;
                 else
-                    Charac.Lvl = Convert.ToInt16(reader["Niveau"]);
+                    charac.Lvl = Convert.ToInt16(reader["Niveau"]);
 
                 if (reader["Piece d'or"] == DBNull.Value)
-                    Charac.Po = null;
+                    charac.Po = null;
                 else
-                    Charac.Po = Convert.ToInt16(reader["Piece d'or"]);
+                    charac.Po = Convert.ToInt16(reader["Piece d'or"]);
 
-                Caracs = new Caracs();
+                caracs = new Caracs();
                 if (reader["Attaque"] == DBNull.Value)
-                    Caracs.Attaque = null;
+                    caracs.Attaque = null;
                 else
-                    Caracs.Attaque = Convert.ToInt16(reader["Attaque"]);
+                    caracs.Attaque = Convert.ToInt16(reader["Attaque"]);
 
                 if (reader["Defense"] == DBNull.Value)
-                    Caracs.Defense = null;
+                    caracs.Defense = null;
                 else
-                    Caracs.Defense = Convert.ToInt16(reader["Defense"]);
+                    caracs.Defense = Convert.ToInt16(reader["Defense"]);
 
                 if (reader["Rapidite"] == DBNull.Value)
-                    Caracs.Rapidite = null;
+                    caracs.Rapidite = null;
                 else
-                    Caracs.Rapidite = Convert.ToInt16(reader["Rapidite"]);
+                    caracs.Rapidite = Convert.ToInt16(reader["Rapidite"]);
 
-                Jauges = new Jauges();
+                jauges = new Jauges();
                 if (reader["Point de vie"] == DBNull.Value)
-                    Jauges.Pv = null;
+                    jauges.Pv = null;
                 else
-                    Jauges.Pv = Convert.ToInt16(reader["Point de vie"]);
+                    jauges.Pv = Convert.ToInt16(reader["Point de vie"]);
 
                 if (reader["Point de vie max"] == DBNull.Value)
-                    Jauges.PvMax = null;
+                    jauges.PvMax = null;
                 else
-                    Jauges.PvMax = Convert.ToInt16(reader["Point de vie max"]);
+                    jauges.PvMax = Convert.ToInt16(reader["Point de vie max"]);
 
                 if (reader["Point de psy"] == DBNull.Value)
-                    Jauges.Psy = null;
+                    jauges.Psy = null;
                 else
-                    Jauges.Psy = Convert.ToInt16(reader["Point de psy"]);
+                    jauges.Psy = Convert.ToInt16(reader["Point de psy"]);
 
                 if (reader["Point de psy max"] == DBNull.Value)
-                    Jauges.PsyMax = null;
+                    jauges.PsyMax = null;
                 else
-                    Jauges.PsyMax = Convert.ToInt16(reader["Point de psy max"]);
+                    jauges.PsyMax = Convert.ToInt16(reader["Point de psy max"]);
 
                 if (reader["Point de synchro"] == DBNull.Value)
-                    Jauges.Synchro = null;
+                    jauges.Synchro = null;
                 else
-                    Jauges.Synchro = Convert.ToInt16(reader["Point de synchro"]);
+                    jauges.Synchro = Convert.ToInt16(reader["Point de synchro"]);
 
                 if (reader["Point de synchro max"] == DBNull.Value)
-                    Jauges.SynchroMax = null;
+                    jauges.SynchroMax = null;
                 else
-                    Jauges.SynchroMax = Convert.ToInt16(reader["Point de synchro max"]);
+                    jauges.SynchroMax = Convert.ToInt16(reader["Point de synchro max"]);
 
-                Stats = new Stats();
+                stats = new Stats();
                 if (reader["Physique"] == DBNull.Value)
-                    Stats.Physique = null;
+                    stats.Physique = null;
                 else
-                    Stats.Physique = Convert.ToInt16(reader["Physique"]);
+                    stats.Physique = Convert.ToInt16(reader["Physique"]);
 
                 if (reader["Mental"] == DBNull.Value)
-                    Stats.Mental = null;
+                    stats.Mental = null;
                 else
-                    Stats.Mental = Convert.ToInt16(reader["Mental"]);
+                    stats.Mental = Convert.ToInt16(reader["Mental"]);
 
                 if (reader["Social"] == DBNull.Value)
-                    Stats.Social = null;
+                    stats.Social = null;
                 else
-                    Stats.Social = Convert.ToInt16(reader["Social"]);
+                    stats.Social = Convert.ToInt16(reader["Social"]);
             }
 
             Inventaire = await GetInventairePerso(nomPerso);
-            Elements = await GetElementPerso(nomPerso);
-            Skills = await GetSkillsPerso(nomPerso);
-            Dons = await GetDonsPerso(nomPerso);
-            Demons = await GetDemonPerso(nomPerso);
+            elements = await GetElementPerso(nomPerso);
+            skills = await GetSkillsPerso(nomPerso);
+            dons = await GetDonsPerso(nomPerso);
+            demons = await GetDemonPerso(nomPerso);
 
-            return new CharacterFull(Charac, Caracs, Jauges, Stats, Elements, Skills, Dons, Demons, Inventaire);
+            return new CharacterFull(charac, caracs, jauges, stats, elements, skills, dons, demons, Inventaire);
         }
 
         public Task<Caracs> GetCaracsPerso(string nomPerso)
@@ -220,14 +221,14 @@ namespace DTM.DbManager.Services
 
         public async Task<List<DonPerso>> GetDonsPerso(string nomPerso)
         {
-            const string elementPerso = @"SELECT
+            const string sql = @"SELECT
                                             `viewdonperso`.`Pseudo`,
                                             `viewdonperso`.`Competence`,
                                             `viewdonperso`.`Description`,
                                             `viewdonperso`.`Taux`
                                           FROM `jdr`.`viewdonperso`
                                           WHERE Pseudo = @NomPerso";
-            var cmd = new MySqlCommand(elementPerso, Conn);
+            var cmd = new MySqlCommand(sql, Conn);
             cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
 
             var dons = new List<DonPerso>();
@@ -264,11 +265,11 @@ namespace DTM.DbManager.Services
 
         public async Task<List<Don>> GetAllDons()
         {
-            const string elementPerso = @"SELECT
+            const string sql = @"SELECT
                                             `don`.`Libelle`,
                                             `don`.`Description`
                                           FROM `jdr`.`don`";
-            var cmd = new MySqlCommand(elementPerso, Conn);
+            var cmd = new MySqlCommand(sql, Conn);
 
             var demons = new List<Don>();
             using (var reader = await cmd.ExecuteReaderAsync())
@@ -297,11 +298,11 @@ namespace DTM.DbManager.Services
 
         public async Task<List<Passif>> PassifsPerso(string nomPerso)
         {
-            const string elementPerso = @"SELECT
+            const string sql = @"SELECT
                                             `viewpassifdemon`.`Passif`
                                           FROM `jdr`.`viewpassifdemon`
                                           WHERE Pseudo = @nomPerso";
-            var cmd = new MySqlCommand(elementPerso, Conn);
+            var cmd = new MySqlCommand(sql, Conn);
             cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
 
             var passifs = new List<Passif>();
@@ -331,11 +332,11 @@ namespace DTM.DbManager.Services
 
         public async Task<List<Passif>> PassifsDemon(string nomDemon)
         {
-            const string elementPerso = @"SELECT
+            const string sql = @"SELECT
                                             `viewpassifdemon`.`Passif`
                                           FROM `jdr`.`viewpassifdemon`
                                           WHERE Demon = @nomDemon";
-            var cmd = new MySqlCommand(elementPerso, Conn);
+            var cmd = new MySqlCommand(sql, Conn);
             cmd.Parameters.AddWithValue("@nomDemon", nomDemon);
 
             var passifs = new List<Passif>();
@@ -365,11 +366,11 @@ namespace DTM.DbManager.Services
 
         public async Task<List<Passif>> GetAllPassifs()
         {
-            const string elementPerso = @"SELECT
+            const string sql = @"SELECT
                                             `passif`.`Libelle`,
                                             `passif`.`Description`
                                           FROM `jdr`.`passif`";
-            var cmd = new MySqlCommand(elementPerso, Conn);
+            var cmd = new MySqlCommand(sql, Conn);
 
             var passifs = new List<Passif>();
             using (var reader = await cmd.ExecuteReaderAsync())
@@ -398,10 +399,10 @@ namespace DTM.DbManager.Services
 
         public async Task<List<Demon>> GetAllDemons()
         {
-            const string elementPerso = @"SELECT
+            const string sql = @"SELECT
                                             `demon`.`Nom`
                                           FROM `jdr`.`demon`";
-            var cmd = new MySqlCommand(elementPerso, Conn);
+            var cmd = new MySqlCommand(sql, Conn);
 
             var demons = new List<Demon>();
             using (var reader = await cmd.ExecuteReaderAsync())
@@ -429,11 +430,11 @@ namespace DTM.DbManager.Services
 
         public async Task<List<Demon>> GetDemonPerso(string nomPerso)
         {
-            const string elementPerso = @"SELECT
+            const string sql = @"SELECT
                                             `viewdemonperso`.`Demon`
                                           FROM `jdr`.`viewdemonperso`
                                           WHERE Pseudo = @NomPerso";
-            var cmd = new MySqlCommand(elementPerso, Conn);
+            var cmd = new MySqlCommand(sql, Conn);
             cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
 
             var demons = new List<Demon>();
@@ -462,7 +463,7 @@ namespace DTM.DbManager.Services
 
         public async Task<Inventaire> GetInventairePerso(string nomPerso)
         {
-            const string elementPerso = @"SELECT
+            const string sql = @"SELECT
                                             `viewinventaire`.`Item`,
                                             `viewinventaire`.`Description`,
                                             `viewinventaire`.`Type d'item`,
@@ -471,7 +472,7 @@ namespace DTM.DbManager.Services
                                             `viewinventaire`.`Quantite`
                                           FROM `jdr`.`viewinventaire`
                                           WHERE Pseudo = @NomPerso";
-            var cmd = new MySqlCommand(elementPerso, Conn);
+            var cmd = new MySqlCommand(sql, Conn);
             cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
 
             var inventaire = new Inventaire();
@@ -515,7 +516,7 @@ namespace DTM.DbManager.Services
 
         public async Task<Item> GetItemByNom(string nomItem)
         {
-            const string elementPerso = @"SELECT
+            const string sql = @"SELECT
                                             `item`.`Nom`,
                                             `item`.`Description`,
                                             `item`.`Type_Item`,
@@ -524,7 +525,7 @@ namespace DTM.DbManager.Services
                                             `item`.`Quantite`
                                           FROM `jdr`.`item`
                                           WHERE Nom = @nomItem";
-            var cmd = new MySqlCommand(elementPerso, Conn);
+            var cmd = new MySqlCommand(sql, Conn);
             cmd.Parameters.AddWithValue("@nomItem", nomItem);
 
             Item item;
@@ -618,14 +619,14 @@ namespace DTM.DbManager.Services
 
         public async Task<List<Skill>> GetSkillsPerso(string nomPerso)
         {
-            const string skillsPerso = @"SELECT
+            const string sql = @"SELECT
                                             `viewskillperso`.`Skill`,
                                             `viewskillperso`.`Description`,
                                             `viewskillperso`.`Taux`,
                                             `viewskillperso`.`Degats`
                                           FROM `jdr`.`viewskillperso`
                                           WHERE Pseudo = @NomPerso";
-            var cmd = new MySqlCommand(skillsPerso, Conn);
+            var cmd = new MySqlCommand(sql, Conn);
             cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
 
             var skills = new List<Skill>();
@@ -663,13 +664,13 @@ namespace DTM.DbManager.Services
 
         public async Task<List<Skill>> GetAllSkills()
         {
-            const string elementPerso = @"SELECT
+            const string sql = @"SELECT
                                             `skill`.`Libelle`,
                                             `skill`.`Description`,
                                             `skill`.`Taux`,
                                             `skill`.`Degats`
                                           FROM `jdr`.`skill`";
-            var cmd = new MySqlCommand(elementPerso, Conn);
+            var cmd = new MySqlCommand(sql, Conn);
 
             var skills = new List<Skill>();
             using (var reader = await cmd.ExecuteReaderAsync())
@@ -706,11 +707,11 @@ namespace DTM.DbManager.Services
 
         public async Task<List<Element>> GetAllEllements()
         {
-            const string elementPerso = @"SELECT
+            const string sql = @"SELECT
                                             `element`.`Libelle`,
                                             `element`.`Description`
                                           FROM `jdr`.`element``";
-            var cmd = new MySqlCommand(elementPerso, Conn);
+            var cmd = new MySqlCommand(sql, Conn);
 
             var elements = new List<Element>();
             using (var reader = await cmd.ExecuteReaderAsync())
@@ -739,13 +740,13 @@ namespace DTM.DbManager.Services
 
         public async Task<List<Element>> GetElementPerso(string nomPerso)
         {
-            const string elementPerso = @"SELECT
+            const string sql = @"SELECT
                                               `viewelementperso`.`Libelle`,
                                               `viewelementperso`.`Description`,
                                               `viewelementperso`.`Pseudo`
                                           FROM `jdr`.`viewelementperso`
                                           WHERE `Pseudo` =  @nomPerso";
-            var cmd = new MySqlCommand(elementPerso, Conn);
+            var cmd = new MySqlCommand(sql, Conn);
             cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
 
             var elements = new List<Element>();
@@ -772,5 +773,269 @@ namespace DTM.DbManager.Services
 
             return elements;
         }
+
+        public async Task UpdateCaracsPerso(Caracs caracs, string nomPerso)
+        {
+            const string sql = @"UPDATE carac
+                                 SET
+                                 Atk = @atk,
+                                 Def = @def,
+                                 Rap = @rapi
+                                 WHERE Perso_Nom = @nomPerso";
+            var cmd = new MySqlCommand(sql, Conn);
+            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
+            cmd.Parameters.AddWithValue("@def", caracs.Defense);
+            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task UpdatePerso(Character charac)
+        {
+            const string sql = @"UPDATE carac
+                                 SET
+                                 Xp = @xp,
+                                 Lvl = @lvl,
+                                 Po = @po,
+                                 Race = @race,
+                                 Type_Perso = @type
+                                 WHERE Perso_Nom = @nomPerso";
+            var cmd = new MySqlCommand(sql, Conn);
+            cmd.Parameters.AddWithValue("@xp", charac.Xp);
+            cmd.Parameters.AddWithValue("@lvl", charac.Lvl);
+            cmd.Parameters.AddWithValue("@po", charac.Po);
+            cmd.Parameters.AddWithValue("@race", charac.Race);
+            cmd.Parameters.AddWithValue("@type", charac.TypePerso);
+            cmd.Parameters.AddWithValue("@nomPerso", charac.Nom);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        /**************** UPDATE ****************/
+
+        public async Task UpdateStatsPerso(Caracs caracs, string nomPerso)
+        {
+            const string sql = @"UPDATE carac
+                                 SET
+                                 Atk = @atk,
+                                 Def = @def,
+                                 Rap = @rapi
+                                 WHERE Perso_Nom = @nomPerso";
+            var cmd = new MySqlCommand(sql, Conn);
+            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
+            cmd.Parameters.AddWithValue("@def", caracs.Defense);
+            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task UpdateDemon(List<Demon> demons)
+        {
+            const string sql = @"UPDATE demons
+                                 SET
+                                 Nom = @nom
+                                 WHERE Nom = @nom";
+            var cmd = new MySqlCommand(sql, Conn);
+            foreach(var demon in demons)
+            {
+                cmd.Parameters.AddWithValue("@nom", demon.Nom);
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
+        public async Task UpdateDemonPerso(List<Demon> demons, string nomPerso)
+        {
+            const string sql = @"UPDATE demon_perso
+                                 SET
+                                 Demon_Nom = @nomDemon,
+                                 WHERE Perso_Nom = @nomPerso";
+            var cmd = new MySqlCommand(sql, Conn);
+            foreach (var demon in demons)
+            {
+                cmd.Parameters.AddWithValue("@nomDemon", demon.Nom);
+                cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
+        public async Task UpdateDons(List<Don> dons)
+        {
+            const string sql = @"UPDATE carac
+                                 SET
+                                 Atk = @atk,
+                                 Def = @def,
+                                 Rap = @rapi
+                                 WHERE Perso_Nom = @nomPerso";
+            var cmd = new MySqlCommand(sql, Conn);
+            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
+            cmd.Parameters.AddWithValue("@def", caracs.Defense);
+            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task UpdateDonsPerso(List<Don> dons, string nomPerso)
+        {
+            const string sql = @"UPDATE carac
+                                 SET
+                                 Atk = @atk,
+                                 Def = @def,
+                                 Rap = @rapi
+                                 WHERE Perso_Nom = @nomPerso";
+            var cmd = new MySqlCommand(sql, Conn);
+            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
+            cmd.Parameters.AddWithValue("@def", caracs.Defense);
+            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task UpdateElement(List<Element> elements)
+        {
+            const string sql = @"UPDATE carac
+                                 SET
+                                 Atk = @atk,
+                                 Def = @def,
+                                 Rap = @rapi
+                                 WHERE Perso_Nom = @nomPerso";
+            var cmd = new MySqlCommand(sql, Conn);
+            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
+            cmd.Parameters.AddWithValue("@def", caracs.Defense);
+            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task UpdateElementPerso(List<Element> elements, string nomPerso)
+        {
+            const string sql = @"UPDATE carac
+                                 SET
+                                 Atk = @atk,
+                                 Def = @def,
+                                 Rap = @rapi
+                                 WHERE Perso_Nom = @nomPerso";
+            var cmd = new MySqlCommand(sql, Conn);
+            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
+            cmd.Parameters.AddWithValue("@def", caracs.Defense);
+            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task UpdateInventairePerso(Inventaire inventaire, string nomPerso)
+        {
+            const string sql = @"UPDATE carac
+                                 SET
+                                 Atk = @atk,
+                                 Def = @def,
+                                 Rap = @rapi
+                                 WHERE Perso_Nom = @nomPerso";
+            var cmd = new MySqlCommand(sql, Conn);
+            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
+            cmd.Parameters.AddWithValue("@def", caracs.Defense);
+            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task UpdateItem(Item item)
+        {
+            const string sql = @"UPDATE carac
+                                 SET
+                                 Atk = @atk,
+                                 Def = @def,
+                                 Rap = @rapi
+                                 WHERE Perso_Nom = @nomPerso";
+            var cmd = new MySqlCommand(sql, Conn);
+            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
+            cmd.Parameters.AddWithValue("@def", caracs.Defense);
+            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task UpdateJaugesPerso(Jauges jauge, string nomPerso)
+        {
+            const string sql = @"UPDATE carac
+                                 SET
+                                 Atk = @atk,
+                                 Def = @def,
+                                 Rap = @rapi
+                                 WHERE Perso_Nom = @nomPerso";
+            var cmd = new MySqlCommand(sql, Conn);
+            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
+            cmd.Parameters.AddWithValue("@def", caracs.Defense);
+            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task UpdatePassifs(List<Passif> passifs)
+        {
+            const string sql = @"UPDATE carac
+                                 SET
+                                 Atk = @atk,
+                                 Def = @def,
+                                 Rap = @rapi
+                                 WHERE Perso_Nom = @nomPerso";
+            var cmd = new MySqlCommand(sql, Conn);
+            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
+            cmd.Parameters.AddWithValue("@def", caracs.Defense);
+            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task UpdatePassifsPerso(List<Passif> passifs, string nomPerso)
+        {
+            const string sql = @"UPDATE carac
+                                 SET
+                                 Atk = @atk,
+                                 Def = @def,
+                                 Rap = @rapi
+                                 WHERE Perso_Nom = @nomPerso";
+            var cmd = new MySqlCommand(sql, Conn);
+            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
+            cmd.Parameters.AddWithValue("@def", caracs.Defense);
+            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task UpdateSkills(List<Skill> skills)
+        {
+            const string sql = @"UPDATE carac
+                                 SET
+                                 Atk = @atk,
+                                 Def = @def,
+                                 Rap = @rapi
+                                 WHERE Perso_Nom = @nomPerso";
+            var cmd = new MySqlCommand(sql, Conn);
+            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
+            cmd.Parameters.AddWithValue("@def", caracs.Defense);
+            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task UpdateSkillsPerso(List<Skill> skills, string nomPerso)
+        {
+            const string sql = @"UPDATE carac
+                                 SET
+                                 Atk = @atk,
+                                 Def = @def,
+                                 Rap = @rapi
+                                 WHERE Perso_Nom = @nomPerso";
+            var cmd = new MySqlCommand(sql, Conn);
+            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
+            cmd.Parameters.AddWithValue("@def", caracs.Defense);
+            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
+            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        /**************** DELETE ****************/
+
+        /**************** INSERT ****************/
     }
 }
+ 

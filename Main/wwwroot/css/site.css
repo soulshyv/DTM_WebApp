@@ -13,7 +13,7 @@
 }
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-    background-color: lightsteelblue;
+    background-color: dimgrey;
 }
 
 #container-left {
@@ -31,6 +31,11 @@
 
 .detailsTab tbody tr {
     background-image: radial-gradient(grey, black);
+}
+
+.modal-content {
+    background-color: slategrey;
+    color: black;
 }
 
 /*.table-borderless > tbody > tr > td,

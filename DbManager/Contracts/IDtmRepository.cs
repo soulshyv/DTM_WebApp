@@ -6,6 +6,7 @@ namespace DTM.DbManager.Contracts
 {
     public interface IDtmRepository
     {
+        /* SELECT */
         Task<List<Demon>> GetAllDemons();
         Task<List<Don>> GetAllDons();
         Task<List<Element>> GetAllEllements();
@@ -25,5 +26,28 @@ namespace DTM.DbManager.Contracts
         Task<List<Skill>> GetSkillsPerso(string nomPerso);
         Task<List<Passif>> PassifsPerso(string nomPerso);
         Task<List<Passif>> PassifsDemon(string nomDemon);
+
+        /* UPDATE */
+        Task UpdateCaracsPerso(Caracs caracs, string nomPerso);
+        Task UpdateCharacterInfo(Character charac);
+        Task UpdateDemon(List<Demon> demons);
+        Task UpdateDemonPerso(List<Demon> demons, string nomPerso);
+        Task UpdateDons(List<Don> dons);
+        Task UpdateDonsPerso(List<Don> dons, string nomPerso);
+        Task UpdateElement(List<Element> elements);
+        Task UpdateElementPerso(List<Element> elements, string nomPerso);
+        Task UpdateInventairePerso(Inventaire inventaire, string nomPerso);
+        Task UpdateItem(Item item);
+        Task UpdateJaugesPerso(Jauges jauge, string nomPerso);
+        Task UpdatePassifs(List<Passif> passifs);
+        Task UpdatePassifsPerso(List<Passif> passifs, string nomPerso);
+        Task UpdateSkills(List<Skill> skills);
+        Task UpdateSkillsPerso(List<Skill> skills, string nomPerso);
+        Task UpdateStatsPerso(Caracs caracs, string nomPerso);
+
+        /* DELETE */
+
+
+        /* INSERT */
     }
 }
