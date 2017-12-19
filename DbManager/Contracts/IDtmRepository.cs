@@ -29,7 +29,7 @@ namespace DTM.DbManager.Contracts
 
         /* UPDATE */
         Task UpdateCaracsPerso(Caracs caracs, string nomPerso);
-        Task UpdateCharacterInfo(Character charac);
+        Task UpdatePerso(Character charac);
         Task UpdateDemon(List<Demon> demons);
         Task UpdateDemonPerso(List<Demon> demons, string nomPerso);
         Task UpdateDons(List<Don> dons);
