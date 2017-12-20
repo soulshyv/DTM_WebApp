@@ -41,6 +41,7 @@ namespace DTM.DbManager.Contracts
         Task UpdateJaugesPerso(Jauges jauge, string nomPerso);
         Task UpdatePassifs(List<Passif> passifs);
         Task UpdatePassifsPerso(List<Passif> passifs, string nomPerso);
+        Task UpdatePassifsDemon(List<Passif> passifs, string nomDemon);
         Task UpdateSkills(List<Skill> skills);
         Task UpdateSkillsPerso(List<Skill> skills, string nomPerso);
         Task UpdateStatsPerso(Caracs caracs, string nomPerso);

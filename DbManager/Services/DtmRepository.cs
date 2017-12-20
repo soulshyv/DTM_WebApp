@@ -859,178 +859,212 @@ namespace DTM.DbManager.Services
 
         public async Task UpdateDons(List<Don> dons)
         {
-            const string sql = @"UPDATE carac
+            const string sql = @"UPDATE don
                                  SET
-                                 Atk = @atk,
-                                 Def = @def,
-                                 Rap = @rapi
-                                 WHERE Perso_Nom = @nomPerso";
+                                 Libelle = @libelle,
+                                 Description = @desc
+                                 WHERE Libelle = @libelle";
             var cmd = new MySqlCommand(sql, Conn);
-            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
-            cmd.Parameters.AddWithValue("@def", caracs.Defense);
-            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
-            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
-            await cmd.ExecuteNonQueryAsync();
+
+            foreach (var don in dons)
+            {
+                cmd.Parameters.AddWithValue("@libelle", don.Libelle);
+                cmd.Parameters.AddWithValue("@desc", don.Description);
+                await cmd.ExecuteNonQueryAsync();
+            }
         }
 
         public async Task UpdateDonsPerso(List<Don> dons, string nomPerso)
         {
-            const string sql = @"UPDATE carac
+            const string sql = @"UPDATE don
                                  SET
-                                 Atk = @atk,
-                                 Def = @def,
-                                 Rap = @rapi
-                                 WHERE Perso_Nom = @nomPerso";
+                                 Libelle = @libelle,
+                                 Description = @desc
+                                 WHERE Libelle = @libelle";
             var cmd = new MySqlCommand(sql, Conn);
-            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
-            cmd.Parameters.AddWithValue("@def", caracs.Defense);
-            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
-            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
-            await cmd.ExecuteNonQueryAsync();
+
+            foreach (var don in dons)
+            {
+                cmd.Parameters.AddWithValue("@libelle", don.Libelle);
+                cmd.Parameters.AddWithValue("@desc", don.Description);
+                await cmd.ExecuteNonQueryAsync();
+            }
         }
 
         public async Task UpdateElement(List<Element> elements)
         {
-            const string sql = @"UPDATE carac
+            const string sql = @"UPDATE element`
                                  SET
-                                 Atk = @atk,
-                                 Def = @def,
-                                 Rap = @rapi
-                                 WHERE Perso_Nom = @nomPerso";
+                                 Libelle = @libelle,
+                                 Description @desc= 
+                                 WHERE Libelle = @libelle";
             var cmd = new MySqlCommand(sql, Conn);
-            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
-            cmd.Parameters.AddWithValue("@def", caracs.Defense);
-            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
-            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
-            await cmd.ExecuteNonQueryAsync();
+
+            foreach (var element in elements)
+            {
+                cmd.Parameters.AddWithValue("@libelle", element.Libelle);
+                cmd.Parameters.AddWithValue("@desc", element.Description);
+                await cmd.ExecuteNonQueryAsync();
+            }
         }
 
         public async Task UpdateElementPerso(List<Element> elements, string nomPerso)
         {
-            const string sql = @"UPDATE carac
+            const string sql = @"UPDATE element_perso
                                  SET
-                                 Atk = @atk,
-                                 Def = @def,
-                                 Rap = @rapi
+                                 Element_Libelle = @element
                                  WHERE Perso_Nom = @nomPerso";
             var cmd = new MySqlCommand(sql, Conn);
-            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
-            cmd.Parameters.AddWithValue("@def", caracs.Defense);
-            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
-            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
-            await cmd.ExecuteNonQueryAsync();
+
+            foreach (var element in elements)
+            {
+                cmd.Parameters.AddWithValue("@element", element.Libelle);
+                cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+                await cmd.ExecuteNonQueryAsync();
+            }
         }
 
         public async Task UpdateInventairePerso(Inventaire inventaire, string nomPerso)
         {
-            const string sql = @"UPDATE carac
+            const string sql = @"UPDATE inventaire
                                  SET
-                                 Atk = @atk,
-                                 Def = @def,
-                                 Rap = @rapi
-                                 WHERE Perso_Nom = @nomPerso";
+                                 Item_Nom = @itemNom,
+                                 WHERE Perso_Nom = nomPerso";
             var cmd = new MySqlCommand(sql, Conn);
-            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
-            cmd.Parameters.AddWithValue("@def", caracs.Defense);
-            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
-            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
-            await cmd.ExecuteNonQueryAsync();
+
+            foreach (var item in inventaire.Items)
+            {
+                cmd.Parameters.AddWithValue("@itemNom", item.Nom);
+                cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+                await cmd.ExecuteNonQueryAsync();
+            }
         }
 
         public async Task UpdateItem(Item item)
         {
-            const string sql = @"UPDATE carac
+            const string sql = @"UPDATE item
                                  SET
-                                 Atk = @atk,
-                                 Def = @def,
-                                 Rap = @rapi
-                                 WHERE Perso_Nom = @nomPerso";
+                                 Nom = @nom,
+                                 Description = @desc,
+                                 Type_Item = @type,
+                                 Prix = @prix,
+                                 Commentaire = @comm,
+                                 Quantite = @qte
+                                 WHERE `Nom` = @nom";
             var cmd = new MySqlCommand(sql, Conn);
-            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
-            cmd.Parameters.AddWithValue("@def", caracs.Defense);
-            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
-            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+            cmd.Parameters.AddWithValue("@nom", item.Nom);
+            cmd.Parameters.AddWithValue("@desc", item.Description);
+            cmd.Parameters.AddWithValue("@type", item.TypeItem);
+            cmd.Parameters.AddWithValue("@prix", item.Prix);
+            cmd.Parameters.AddWithValue("@comm", item.Commentaire);
+            cmd.Parameters.AddWithValue("@qte", item.Quantite);
             await cmd.ExecuteNonQueryAsync();
         }
 
         public async Task UpdateJaugesPerso(Jauges jauge, string nomPerso)
         {
-            const string sql = @"UPDATE carac
+            const string sql = @"UPDATE jauge
                                  SET
-                                 Atk = @atk,
-                                 Def = @def,
-                                 Rap = @rapi
+                                 Vie = @vie,
+                                 Vie_Max = @vieMax,
+                                 Psy = @psy,
+                                 Psy_Max = @psyMax,
+                                 Sync = @sync,
+                                 Sync_Max = @syncMax
                                  WHERE Perso_Nom = @nomPerso";
             var cmd = new MySqlCommand(sql, Conn);
-            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
-            cmd.Parameters.AddWithValue("@def", caracs.Defense);
-            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
+            cmd.Parameters.AddWithValue("@vie", jauge.Pv);
+            cmd.Parameters.AddWithValue("@vieMax", jauge.PvMax);
+            cmd.Parameters.AddWithValue("@psy", jauge.Psy);
+            cmd.Parameters.AddWithValue("@psyMax", jauge.PsyMax);
+            cmd.Parameters.AddWithValue("@sync", jauge.Synchro);
+            cmd.Parameters.AddWithValue("@syncMax", jauge.SynchroMax);
             cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
             await cmd.ExecuteNonQueryAsync();
         }
 
         public async Task UpdatePassifs(List<Passif> passifs)
         {
-            const string sql = @"UPDATE carac
+            const string sql = @"UPDATE passif
                                  SET
-                                 Atk = @atk,
-                                 Def = @def,
-                                 Rap = @rapi
-                                 WHERE Perso_Nom = @nomPerso";
+                                 Libelle = @libelle,
+                                 Description = @desc
+                                 WHERE Libelle = @libelle";
             var cmd = new MySqlCommand(sql, Conn);
-            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
-            cmd.Parameters.AddWithValue("@def", caracs.Defense);
-            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
-            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
-            await cmd.ExecuteNonQueryAsync();
+
+            foreach (var passif in passifs)
+            {
+                cmd.Parameters.AddWithValue("@libelle", passif.Libelle);
+                cmd.Parameters.AddWithValue("@desc", passif.Description);
+                await cmd.ExecuteNonQueryAsync();
+            }
         }
 
         public async Task UpdatePassifsPerso(List<Passif> passifs, string nomPerso)
         {
-            const string sql = @"UPDATE carac
-                                 SET
-                                 Atk = @atk,
-                                 Def = @def,
-                                 Rap = @rapi
-                                 WHERE Perso_Nom = @nomPerso";
+            const string sql = @"UPDATE passif_perso
+                                 Passif_Libelle = @passif
+                                 WHERE `Perso_Nom = @nomPerso";
             var cmd = new MySqlCommand(sql, Conn);
-            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
-            cmd.Parameters.AddWithValue("@def", caracs.Defense);
-            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
-            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
-            await cmd.ExecuteNonQueryAsync();
+
+            foreach (var passif in passifs)
+            {
+                cmd.Parameters.AddWithValue("@passif", passif.Libelle);
+                cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
+        public async Task UpdatePassifsDemon(List<Passif> passifs, string nomDemon)
+        {
+            const string sql = @"UPDATE passif_demon
+                                 Passif_Libelle = @passif
+                                 WHERE `Demon_Nom = @nomDemon";
+            var cmd = new MySqlCommand(sql, Conn);
+
+            foreach (var passif in passifs)
+            {
+                cmd.Parameters.AddWithValue("@passif", passif.Libelle);
+                cmd.Parameters.AddWithValue("@nomDemon", nomDemon);
+                await cmd.ExecuteNonQueryAsync();
+            }
         }
 
         public async Task UpdateSkills(List<Skill> skills)
         {
-            const string sql = @"UPDATE carac
+            const string sql = @"UPDATE skill
                                  SET
-                                 Atk = @atk,
-                                 Def = @def,
-                                 Rap = @rapi
-                                 WHERE Perso_Nom = @nomPerso";
+                                 Libelle = @libelle,
+                                 Description = @desc,
+                                 Taux = @taux,
+                                 Degats = @degats
+                                 WHERE Libelle = @libelle";
             var cmd = new MySqlCommand(sql, Conn);
-            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
-            cmd.Parameters.AddWithValue("@def", caracs.Defense);
-            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
-            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
-            await cmd.ExecuteNonQueryAsync();
+
+            foreach (var skill in skills)
+            {
+                cmd.Parameters.AddWithValue("@libelle", skill.Libelle);
+                cmd.Parameters.AddWithValue("@desc", skill.Description);
+                cmd.Parameters.AddWithValue("@taux", skill.Taux);
+                cmd.Parameters.AddWithValue("@libelle", skill.Degats);
+                await cmd.ExecuteNonQueryAsync();
+            }
         }
 
         public async Task UpdateSkillsPerso(List<Skill> skills, string nomPerso)
         {
-            const string sql = @"UPDATE carac
+            const string sql = @"UPDATE skill_perso`
                                  SET
-                                 Atk = @atk,
-                                 Def = @def,
-                                 Rap = @rapi
-                                 WHERE Perso_Nom = @nomPerso";
+                                 Skill_Libelle = @skill
+                                 WHERE Perso_Nom` = @nomPerso";
             var cmd = new MySqlCommand(sql, Conn);
-            cmd.Parameters.AddWithValue("@atk", caracs.Attaque);
-            cmd.Parameters.AddWithValue("@def", caracs.Defense);
-            cmd.Parameters.AddWithValue("@rapi", caracs.Rapidite);
-            cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
-            await cmd.ExecuteNonQueryAsync();
+
+            foreach (var skill in skills)
+            {
+                cmd.Parameters.AddWithValue("@skill", skill.Libelle);
+                cmd.Parameters.AddWithValue("@nomPerso", nomPerso);
+                await cmd.ExecuteNonQueryAsync();
+            }
         }
 
         /**************** DELETE ****************/
