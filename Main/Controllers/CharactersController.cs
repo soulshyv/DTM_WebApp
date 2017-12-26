@@ -9,7 +9,7 @@ namespace Main.Controllers
 {
     public class CharactersController : Controller
     {
-        public CharactersController(IUserManager userManager, IDtmRepository dtmRepository, ICharacPicSearcher characPicSearcher)
+        public CharactersController(IUserManager userManager, IDtmRepositorySelect dtmRepository, ICharacPicSearcher characPicSearcher)
         {
             UserManager = userManager;
             DtmRepository = dtmRepository;
@@ -17,7 +17,7 @@ namespace Main.Controllers
         }
 
         private IUserManager UserManager { get; }
-        private IDtmRepository DtmRepository { get; }
+        private IDtmRepositorySelect DtmRepository { get; }
         private ICharacPicSearcher CharacPicSearcher { get; }
 
         [HttpGet]

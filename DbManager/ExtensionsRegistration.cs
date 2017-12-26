@@ -9,7 +9,7 @@ namespace DTM.DbManager
     {
         public static IServiceCollection AddDbManager(this IServiceCollection sc)
         {
-            sc.TryAddScoped<IDtmRepository, DtmRepository>();
+            sc.TryAddScoped<IDtmRepositorySelect, DtmRepositorySelect>();
             sc.TryAddScoped<ICharacPicSearcher>(_ =>
                 new CharacPicSearcher(@"./wwwRoot/images/"));
 
