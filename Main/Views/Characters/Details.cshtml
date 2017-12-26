@@ -252,13 +252,12 @@ else
                     <h4 class="modal-title text-center">Modification des passifs</h4>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form asp-action="UpdateCaracs" asp-controller="Characters" method="post">
                         <table class="table table-bordered">
                             <tr>
                                 <td>
-                                    <label asp-for="DetailsPerso.Caracs.Attaque">Attaque</label>
-
-                                    <select asp-for="DetailsPerso.Caracs.Attaque">
+                                    <label asp-for="@Model.DetailsPerso.Caracs.Attaque">Attaque</label>
+                                    <select asp-for="@Model.DetailsPerso.Caracs.Attaque">
                                         <option selected="selected" value="none"></option>
                                         @for (var i = 0; i <= 150; i++)
                                         {
@@ -267,8 +266,8 @@ else
                                     </select>
                                 </td>
                                 <td>
-                                    <label asp-for="DetailsPerso.Caracs.Defense">Défense</label>
-                                    <select asp-for="DetailsPerso.Caracs.Defense">
+                                    <label asp-for="@Model.DetailsPerso.Caracs.Defense">Défense</label>
+                                    <select asp-for="@Model.DetailsPerso.Caracs.Defense">
                                         <option selected="selected" value="none"></option>
                                         @for (var i = 0; i <= 50; i++)
                                         {
@@ -277,8 +276,8 @@ else
                                     </select>
                                 </td>
                                 <td>
-                                    <label asp-for="DetailsPerso.Caracs.Rapidite">Rapidité</label>
-                                    <select asp-for="DetailsPerso.Caracs.Rapidite">
+                                    <label asp-for="@Model.DetailsPerso.Caracs.Rapidite">Rapidité</label>
+                                    <select asp-for="@Model.DetailsPerso.Caracs.Rapidite">
                                         <option selected="selected" value="none"></option>
                                         @for (var i = 0; i <= 50; i++)
                                         {
@@ -288,6 +287,7 @@ else
                                 </td>
                             </tr>
                         </table>
+                        <input asp-for="@Model.DetailsPerso.Charac.Nom" type="hidden"/>
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary">Enregistrer</button>
                             <button type="button" class="btn" data-dismiss="modal">Annuler</button>

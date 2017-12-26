@@ -1,29 +1,32 @@
-﻿using DTM.DbManager.Contracts;
+﻿using System.Threading.Tasks;
+using DTM.DbManager.Contracts;
+using DTM.DbManager.Models;
 using DTM.DbManager.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using DTM.DbManager.Models;
 using UserManager.Contracts;
 
 namespace Main.Controllers
 {
     public class CharactersController : Controller
     {
-        public CharactersController(IUserManager userManager, IDtmRepositorySelect dtmRepository, ICharacPicSearcher characPicSearcher)
+        public CharactersController(IUserManager userManager, IDtmRepositorySelect dtmRepositorySelect,
+            IDtmRepositoryUpdate dtmRepositoryUpdate, ICharacPicSearcher characPicSearcher)
         {
             UserManager = userManager;
-            DtmRepository = dtmRepository;
+            DtmRepositorySelect = dtmRepositorySelect;
+            DtmRepositoryUpdate = dtmRepositoryUpdate;
             CharacPicSearcher = characPicSearcher;
         }
 
         private IUserManager UserManager { get; }
-        private IDtmRepositorySelect DtmRepository { get; }
+        private IDtmRepositorySelect DtmRepositorySelect { get; }
+        private IDtmRepositoryUpdate DtmRepositoryUpdate { get; }
         private ICharacPicSearcher CharacPicSearcher { get; }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var allPersos = await DtmRepository.GetAllPerso();
+            var allPersos = await DtmRepositorySelect.GetAllPerso();
 
             if (allPersos != null)
                 return View(new CharactersViewModel
@@ -38,11 +41,9 @@ namespace Main.Controllers
         public async Task<IActionResult> GetDetails(string nomPerso)
         {
             if (nomPerso == null)
-            {
                 return PartialView("Details");
-            }
 
-            var perso = await DtmRepository.GetFullPersoByName(nomPerso);
+            var perso = await DtmRepositorySelect.GetFullPersoByName(nomPerso);
             var characPic = CharacPicSearcher.GetPicture(nomPerso);
 
             return PartialView("Details", new CharactersViewModel
@@ -53,12 +54,12 @@ namespace Main.Controllers
         }
 
         [HttpPost]
-        public async Task UpdateCaracs(Caracs caracs)
+        public async Task UpdateCaracs(CharacterFull perso)
         {
-            if (caracs != null)
-            {
-                
-            }
+            if (perso?.Caracs != null && string.IsNullOrWhiteSpace(perso.Charac.Nom))
+                await DtmRepositoryUpdate.UpdateCaracsPerso(perso.Caracs, perso.Charac.Nom);
+
+            RedirectToAction("Index", perso.Charac.Nom);
         }
     }
 }

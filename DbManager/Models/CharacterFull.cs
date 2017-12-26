@@ -25,6 +25,8 @@ namespace DTM.DbManager.Models
             Inventaire = inventaire;
         }
 
+        public CharacterFull(){}
+
         public Character Charac;
         public Caracs Caracs;
         public Jauges Jauges;
