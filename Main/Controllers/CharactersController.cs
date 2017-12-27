@@ -54,12 +54,12 @@ namespace Main.Controllers
         }
 
         [HttpPost]
-        public async Task UpdateCaracs(CharacterFull perso)
+        public async Task UpdateCaracs(CharacterFull detailsPerso)
         {
-            if (perso?.Caracs != null && string.IsNullOrWhiteSpace(perso.Charac.Nom))
-                await DtmRepositoryUpdate.UpdateCaracsPerso(perso.Caracs, perso.Charac.Nom);
+            if (detailsPerso?.Caracs != null && string.IsNullOrWhiteSpace(detailsPerso.Charac.Nom))
+                await DtmRepositoryUpdate.UpdateCaracsPerso(detailsPerso.Caracs, detailsPerso.Charac.Nom);
 
-            RedirectToAction("Index", perso.Charac.Nom);
+            RedirectToAction("GetDetails", detailsPerso?.Charac?.Nom);
         }
     }
 }
