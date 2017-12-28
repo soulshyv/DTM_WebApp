@@ -16,7 +16,8 @@ else
     
     <div id="detailsPersoScrolling" class="col-lg-12 col-lg-offset-1">
         <div id="detailsPerso">
-            <h2 class="text-center">@Model.DetailsPerso.Charac.Nom - @Model.DetailsPerso.Charac.Race</h2>
+            <h2 id="nomPerso" class="text-center">@Model.DetailsPerso.Charac.Nom</h2>
+            <h3 class="text-center">@Model.DetailsPerso.Charac.Race</h3>
 
             <img class="center-block" src="@imagePath" alt=""/><br/>
 
@@ -252,7 +253,7 @@ else
                     <h4 class="modal-title text-center">Modification des passifs</h4>
                 </div>
                 <div class="modal-body">
-                    <form asp-action="UpdateCaracs" asp-controller="Characters" data-ajax="true" data-ajax-method="post">
+                    <form asp-action="UpdateCaracs" asp-controller="Characters" data-ajax-success="onSuccess" data-ajax="true" data-ajax-method="post">
                         <table class="table table-bordered">
                             <tr>
                                 <td>
