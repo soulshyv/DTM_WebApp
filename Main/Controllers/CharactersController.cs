@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using DTM.Core.Extensions;
 using DTM.DbManager.Contracts;
 using DTM.DbManager.Models;
 using DTM.DbManager.ViewModels;
@@ -54,12 +55,14 @@ namespace Main.Controllers
         }
 
         [HttpPost]
-        public async Task UpdateCaracs(Caracs carac, string nomPerso)
+        public async Task UpdateCaracs(object data)
         {
-            if (carac != null && string.IsNullOrWhiteSpace(nomPerso))
-                await DtmRepositoryUpdate.UpdateCaracsPerso(carac, nomPerso);
+            //if (!carac.IsAnyNullOrEmpty() && string.IsNullOrWhiteSpace(nomPerso))
+            //    await DtmRepositoryUpdate.UpdateCaracsPerso(carac, nomPerso);
 
-            RedirectToAction("GetDetails", nomPerso);
+            //RedirectToAction("GetDetails", nomPerso);
+            if (data == null)
+                RedirectToAction("Index");
         }
     }
 }
