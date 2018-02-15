@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using DTM.Core.Extensions;
 using DTM.DbManager.Contracts;
 using DTM.DbManager.Models;
 using DTM.DbManager.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using UserManager.Contracts;
 
 namespace Main.Controllers
@@ -47,7 +49,7 @@ namespace Main.Controllers
             var perso = await DtmRepositorySelect.GetFullPersoByName(nomPerso);
             var characPic = CharacPicSearcher.GetPicture(nomPerso);
 
-            return PartialView("Details", new CharactersViewModel
+            return PartialView("Details", new CharacterDetailsViewModel
             {
                 DetailsPerso = perso,
                 CharacterPicture = characPic
@@ -55,14 +57,49 @@ namespace Main.Controllers
         }
 
         [HttpPost]
-        public async Task UpdateCaracs(object data)
+        public async Task<IActionResult> UpdateCaracs([FromBody]string data)
         {
-            //if (!carac.IsAnyNullOrEmpty() && string.IsNullOrWhiteSpace(nomPerso))
-            //    await DtmRepositoryUpdate.UpdateCaracsPerso(carac, nomPerso);
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
 
-            //RedirectToAction("GetDetails", nomPerso);
-            if (data == null)
-                RedirectToAction("Index");
+
+            if (data.IsAnyNullOrEmpty())
+            {
+                return NotFound();
+            }
+
+            var dico = JsonConvert.DeserializeObject<Dictionary<string, string>>(data);
+            Caracs caracs = null;
+            string nom = null;
+
+            if (dico.ContainsKey("Attaque") && dico.ContainsKey("Defense") && dico.ContainsKey("Rapidite") && dico.ContainsKey("Name"))
+            {
+                if (!dico.TryGetValue("Attaque", out var atk) || !dico.TryGetValue("Defense", out var def) ||
+                    !dico.TryGetValue("Rapidite", out var rpt) || !dico.TryGetValue("Defense", out nom))
+                {
+                    return NotFound();
+                }
+
+                if (!int.TryParse(atk, out var attaque) || !int.TryParse(def, out var defense) ||
+                    !int.TryParse(rpt, out var rapidite))
+                {
+                    return NotFound();
+                }
+
+                caracs = new Caracs
+                {
+                    Attaque = attaque,
+                    Defense = defense,
+                    Rapidite = rapidite
+                };
+
+                await DtmRepositoryUpdate.UpdateCaracsPerso(caracs, nom);
+            }
+
+            return Ok();
+
         }
     }
 }

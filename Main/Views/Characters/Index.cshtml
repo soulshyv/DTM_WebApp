@@ -1,4 +1,5 @@
-﻿@model DTM.DbManager.ViewModels.CharactersViewModel
+﻿@using DTM.DbManager.ViewModels
+@model DTM.DbManager.ViewModels.CharactersViewModel
 @{
     ViewData["Title"] = "Gestion des personnages";
 }
@@ -31,7 +32,7 @@
 <div id="container-right" class="pull-right">
     <div id="details">
         @{
-           Html.RenderPartial("Details", Model);
+            Html.RenderPartial("Details", new CharacterDetailsViewModel());
         }
     </div>
 </div>
