@@ -57,49 +57,27 @@ namespace Main.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateCaracs([FromBody]string data)
+        public async Task<IActionResult> UpdateCaracs(CharacterDetailsViewModel details)
         {
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Index");
             }
 
-
-            if (data.IsAnyNullOrEmpty())
+            if (details == null)
             {
                 return NotFound();
             }
 
-            var dico = JsonConvert.DeserializeObject<Dictionary<string, string>>(data);
-            Caracs caracs = null;
-            string nom = null;
-
-            if (dico.ContainsKey("Attaque") && dico.ContainsKey("Defense") && dico.ContainsKey("Rapidite") && dico.ContainsKey("Name"))
+            if (details.Caracs.IsAnyNullOrEmpty() || string.IsNullOrWhiteSpace(details.Charac.Nom))
             {
-                if (!dico.TryGetValue("Attaque", out var atk) || !dico.TryGetValue("Defense", out var def) ||
-                    !dico.TryGetValue("Rapidite", out var rpt) || !dico.TryGetValue("Defense", out nom))
-                {
-                    return NotFound();
-                }
-
-                if (!int.TryParse(atk, out var attaque) || !int.TryParse(def, out var defense) ||
-                    !int.TryParse(rpt, out var rapidite))
-                {
-                    return NotFound();
-                }
-
-                caracs = new Caracs
-                {
-                    Attaque = attaque,
-                    Defense = defense,
-                    Rapidite = rapidite
-                };
-
-                await DtmRepositoryUpdate.UpdateCaracsPerso(caracs, nom);
+                return NotFound();
             }
 
-            return Ok();
+            await DtmRepositoryUpdate.UpdateCaracsPerso(details.Caracs, details.Charac.Nom);
 
+            //return Redirect("GetDetails?nomPerso=" + details.Charac.Nom);
+            return Ok();
         }
     }
 }

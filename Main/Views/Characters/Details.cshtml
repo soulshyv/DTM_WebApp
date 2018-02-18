@@ -260,7 +260,14 @@ else
                                     <select asp-for="@details.Caracs.Attaque">
                                         @for (var i = 0; i <= 150; i++)
                                         {
-                                            <option value="@i">@i</option>
+                                            if(i == details.Caracs.Attaque)
+                                            {
+                                                <option selected="selected" value="@i">@i</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@i">@i</option>
+                                            }
                                         }
                                     </select>
                                 </td>
@@ -269,7 +276,14 @@ else
                                     <select asp-for="@details.Caracs.Defense">
                                         @for (var i = 0; i <= 50; i++)
                                         {
-                                            <option value="@i">@i</option>
+                                            if (i == details.Caracs.Defense)
+                                            {
+                                                <option selected="selected" value="@i">@i</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@i">@i</option>
+                                            }
                                         }
                                     </select>
                                 </td>
@@ -278,7 +292,14 @@ else
                                     <select asp-for="@details.Caracs.Rapidite">
                                         @for (var i = 0; i <= 50; i++)
                                         {
-                                            <option value="@i">@i</option>
+                                            if (i == details.Caracs.Rapidite)
+                                            {
+                                                <option selected="selected" value="@i">@i</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@i">@i</option>
+                                            }
                                         }
                                     </select>
                                 </td>
@@ -287,7 +308,7 @@ else
                         <input asp-for="@details.Charac.Nom" type="hidden" />
 
                         <div class="text-center">
-                            <button type="button" class="btn btn-primar" id="btn-submit-form-carac">Enregistrer</button>
+                            <button type="button" class="btn btn-primary btn-submit-form" data-dismiss="modal">Enregistrer</button>
                             <button type="button" class="btn" data-dismiss="modal">Annuler</button>
                         </div>
                     </form>
@@ -310,7 +331,7 @@ else
                     <p>Some text in the modal.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default form-submit" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default btn-submit-form" data-dismiss="modal">Close</button>
                 </div>
             </div>
 
@@ -377,26 +398,29 @@ else
         </div>
     </div>
 }
-
-@*RenderSection("CharacScripts", required: true)*@
     
 <script type="text/javascript">
     $(document).ready(function () {
-        $(".modifs").on("shown.bs.modal",
-            function () {
-            console.log("modal opened");
-            }
-        );
+        function loadDetails(nomPerso) {
+            $("#details").empty();
+            $("#details").load("Characters/GetDetails?nomPerso=" + nomPerso);
+        }
 
-        $("#btn-submit-form-carac").click(function () {
+        function sleep(delay) {
+            var start = new Date().getTime();
+            while (new Date().getTime() < start + delay);
+        }
+
+        $(".btn-submit-form").click(function () {
             var form = $(this).parent().parent().serialize();
-            console.log(form);
+            var nomPerso = $(document).find("#nomPerso").text();
+            $(".modal-backdrop").remove();
             $.ajax({
                 url: "Characters/UpdateCaracs",
                 type: "POST",
                 data: form,
-                success: function(data) {
-                    console.log(data);
+                success: function () {
+                    loadDetails(nomPerso);
                 },
                 error: function(data) {
                     console.log(data);
