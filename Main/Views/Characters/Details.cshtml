@@ -22,16 +22,16 @@ else
     <div id="detailsPersoScrolling" class="col-lg-12 col-lg-offset-1">
         <div id="detailsPerso">
             <h2 id="nomPerso" class="text-center">@details.Charac.Nom</h2>
-            <select asp-for="@details.Charac.TypePerso">
-                @foreach (var type in EnumUtil.GetValues<CharacterTypeEnum>())
+            <select class="text-center" asp-for="@details.Charac.TypePerso">
+                @foreach (var race in EnumUtil.GetValues<CharacterRaceEnum>())
                 {
-                    if (type.ToString() == details.Charac.TypePerso)
+                    if (race.ToString() == details.Charac.Race)
                     {
-                        <option selected="selected" value="@details.Charac.TypePerso">@details.Charac.TypePerso</option>
+                        <option selected="selected" value="@race.ToString()">@race.ToString()</option>
                     }
                     else
                     {
-                        <option value="@details.Charac.TypePerso">@details.Charac.TypePerso</option>
+                        <option value="@race.ToString()">@race.ToString()</option>
                     }
                 }
             </select>
@@ -44,23 +44,50 @@ else
             
             <table class="table table-bordered detailsTab">
                 <tr class="text-center">
-                    <td>Lvl : @details.Charac.Lvl</td>
-                    <td>Xp : @details.Charac.Xp</td>
-                    <td>Po : @details.Charac.Po</td>
                     <td>
-                        <label asp-for="@details.Charac.TypePerso">Défense</label>
+                        <label asp-for="@details.Charac.Lvl">Lvl: </label>
+                        <select asp-for="@details.Charac.Lvl">
+                            <option selected="selected" value="none"></option>
+                            @for (var i = 1; i <= 100; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <label asp-for="@details.Charac.Xp">Xp : </label>
+                        <select asp-for="@details.Charac.Po">
+                            <option selected="selected" value="none"></option>
+                            @for (var i = 0; i <= 99; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <label asp-for="@details.Charac.Po">Po : </label>
+                        <select asp-for="@details.Charac.Po">
+                            <option selected="selected" value="none"></option>
+                            @for (var i = 0; i <= 99999; i++)
+            {
+                <option value="@i">@i</option>
+}
+                        </select>
+                    </td>
+                    <td>
+                        Type :
                         <select asp-for="@details.Charac.TypePerso">
                             @foreach (var type in EnumUtil.GetValues<CharacterTypeEnum>())
-                            {
-                                if (type.Equals(details.Caracs.Defense))
-                                {
-                                    <option selected="selected" value="@details.Caracs.Defense">@details.Caracs.Defense</option>
-                                }
-                                else
-                                {
-                                    <option value="@details.Caracs.Defense">@details.Caracs.Defense</option>
-                                }
-                            }
+            {
+                if (type.ToString() == details.Charac.TypePerso)
+                {
+                    <option selected="selected" value="@type.ToString()">@type.ToString()</option>
+}
+else
+{
+                <option value="@type.ToString()">@type.ToString()</option>
+}
+}
                         </select>
                     </td>
                     <td class="text-center"><button class="btn btn-primary center-block" type="button" disabled>Enregistrer</button></td>
