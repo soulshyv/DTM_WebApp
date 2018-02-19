@@ -25,13 +25,13 @@ else
             <select asp-for="@details.Charac.TypePerso">
                 @foreach (var type in EnumUtil.GetValues<CharacterTypeEnum>())
                 {
-                    if (type.Equals(details.Caracs.Defense))
+                    if (type.ToString() == details.Charac.TypePerso)
                     {
-                        <option selected="selected" value="@details.Caracs.Defense">@details.Caracs.Defense</option>
+                        <option selected="selected" value="@details.Charac.TypePerso">@details.Charac.TypePerso</option>
                     }
                     else
                     {
-                        <option value="@details.Caracs.Defense">@details.Caracs.Defense</option>
+                        <option value="@details.Charac.TypePerso">@details.Charac.TypePerso</option>
                     }
                 }
             </select>
