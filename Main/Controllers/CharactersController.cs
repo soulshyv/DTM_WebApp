@@ -57,6 +57,29 @@ namespace Main.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> UpdateCharac(CharacterDetailsViewModel details)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (details == null)
+            {
+                return NotFound();
+            }
+
+            if (details.Charac.IsAnyNullOrEmpty() || string.IsNullOrWhiteSpace(details.Charac.Nom))
+            {
+                return NotFound();
+            }
+
+            await DtmRepositoryUpdate.UpdatePerso(details.Charac);
+
+            return Ok();
+        }
+
+        [HttpPost]
         public async Task<IActionResult> UpdateCaracs(CharacterDetailsViewModel details)
         {
             if (!ModelState.IsValid)
@@ -76,7 +99,167 @@ namespace Main.Controllers
 
             await DtmRepositoryUpdate.UpdateCaracsPerso(details.Caracs, details.Charac.Nom);
 
-            //return Redirect("GetDetails?nomPerso=" + details.Charac.Nom);
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateJauges(CharacterDetailsViewModel details)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (details == null)
+            {
+                return NotFound();
+            }
+
+            if (details.Jauges.IsAnyNullOrEmpty() || string.IsNullOrWhiteSpace(details.Charac.Nom))
+            {
+                return NotFound();
+            }
+
+            await DtmRepositoryUpdate.UpdateJaugesPerso(details.Jauges, details.Charac.Nom);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateStats(CharacterDetailsViewModel details)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (details == null)
+            {
+                return NotFound();
+            }
+
+            if (details.Stats.IsAnyNullOrEmpty() || string.IsNullOrWhiteSpace(details.Charac.Nom))
+            {
+                return NotFound();
+            }
+
+            await DtmRepositoryUpdate.UpdateStatsPerso(details.Stats, details.Charac.Nom);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateElements(CharacterDetailsViewModel details)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (details == null)
+            {
+                return NotFound();
+            }
+
+            if (details.Elements.IsAnyNullOrEmpty() || string.IsNullOrWhiteSpace(details.Charac.Nom))
+            {
+                return NotFound();
+            }
+
+            await DtmRepositoryUpdate.UpdateElementPerso(details.Elements, details.Charac.Nom);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateSkills(CharacterDetailsViewModel details)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (details == null)
+            {
+                return NotFound();
+            }
+
+            if (details.Skills.IsAnyNullOrEmpty() || string.IsNullOrWhiteSpace(details.Charac.Nom))
+            {
+                return NotFound();
+            }
+
+            await DtmRepositoryUpdate.UpdateSkillsPerso(details.Skills, details.Charac.Nom);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateDonsPerso(CharacterDetailsViewModel details)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (details == null)
+            {
+                return NotFound();
+            }
+
+            if (details.Dons.IsAnyNullOrEmpty() || string.IsNullOrWhiteSpace(details.Charac.Nom))
+            {
+                return NotFound();
+            }
+
+            await DtmRepositoryUpdate.UpdateDonsPerso(details.Dons, details.Charac.Nom);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateDemons(CharacterDetailsViewModel details)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (details == null)
+            {
+                return NotFound();
+            }
+
+            if (details.Demons.IsAnyNullOrEmpty() || string.IsNullOrWhiteSpace(details.Charac.Nom))
+            {
+                return NotFound();
+            }
+
+            await DtmRepositoryUpdate.UpdateDemonsPerso(details.Demons, details.Charac.Nom);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateInventaire(CharacterDetailsViewModel details)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (details == null)
+            {
+                return NotFound();
+            }
+
+            if (details.Inventaire.IsAnyNullOrEmpty() || string.IsNullOrWhiteSpace(details.Charac.Nom))
+            {
+                return NotFound();
+            }
+
+            await DtmRepositoryUpdate.UpdateInventairePerso(details.Inventaire, details.Charac.Nom);
+
             return Ok();
         }
     }

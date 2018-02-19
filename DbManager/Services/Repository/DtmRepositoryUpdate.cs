@@ -107,7 +107,7 @@ namespace DTM.DbManager.Services.Repository
             }
         }
 
-        public async Task UpdateDemonPerso(IEnumerable<Demon> demons, string nomPerso)
+        public async Task UpdateDemonsPerso(IEnumerable<Demon> demons, string nomPerso)
         {
             const string sql = @"UPDATE demon_perso
                                  SET
@@ -124,7 +124,7 @@ namespace DTM.DbManager.Services.Repository
 
         public async Task UpdateDons(IEnumerable<Don> dons)
         {
-            const string sql = @"UPDATE don
+            const string sql = @"UPDATE don_perso
                                  SET
                                  Libelle = @libelle,
                                  Description = @desc
@@ -139,12 +139,13 @@ namespace DTM.DbManager.Services.Repository
             }
         }
 
-        public async Task UpdateDonsPerso(IEnumerable<Don> dons, string nomPerso)
+        public async Task UpdateDonsPerso(IEnumerable<DonPerso> dons, string nomPerso)
         {
             const string sql = @"UPDATE don
                                  SET
                                  Libelle = @libelle,
-                                 Description = @desc
+                                 Description = @desc,
+                                 Taux = @taux
                                  WHERE Libelle = @libelle";
             var cmd = new MySqlCommand(sql, Conn);
 
@@ -152,6 +153,7 @@ namespace DTM.DbManager.Services.Repository
             {
                 cmd.Parameters.AddWithValue("@libelle", don.Libelle);
                 cmd.Parameters.AddWithValue("@desc", don.Description);
+                cmd.Parameters.AddWithValue("@taux", don.Taux);
                 await cmd.ExecuteNonQueryAsync();
             }
         }

@@ -8,9 +8,9 @@ namespace DTM.DbManager.Contracts
     {
         Task UpdateCaracsPerso(Caracs caracs, string nomPerso);
         Task UpdateDemon(IEnumerable<Demon> demons);
-        Task UpdateDemonPerso(IEnumerable<Demon> demons, string nomPerso);
+        Task UpdateDemonsPerso(IEnumerable<Demon> demons, string nomPerso);
         Task UpdateDons(IEnumerable<Don> dons);
-        Task UpdateDonsPerso(IEnumerable<Don> dons, string nomPerso);
+        Task UpdateDonsPerso(IEnumerable<DonPerso> dons, string nomPerso);
         Task UpdateElement(IEnumerable<Element> elements);
         Task UpdateElementPerso(IEnumerable<Element> elements, string nomPerso);
         Task UpdateInventairePerso(Inventaire inventaire, string nomPerso);

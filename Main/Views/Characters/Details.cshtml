@@ -1,4 +1,6 @@
-﻿@model DTM.DbManager.ViewModels.CharacterDetailsViewModel
+﻿@using DTM.Core.Utils
+@using DTM.DbManager.Enums
+@model DTM.DbManager.ViewModels.CharacterDetailsViewModel
 @{
     var details = Model.DetailsPerso;
 }
@@ -20,17 +22,54 @@ else
     <div id="detailsPersoScrolling" class="col-lg-12 col-lg-offset-1">
         <div id="detailsPerso">
             <h2 id="nomPerso" class="text-center">@details.Charac.Nom</h2>
-            <h3 class="text-center">@details.Charac.Race</h3>
+            <select asp-for="@details.Charac.TypePerso">
+                @foreach (var type in EnumUtil.GetValues<CharacterTypeEnum>())
+                {
+                    if (type.Equals(details.Caracs.Defense))
+                    {
+                        <option selected="selected" value="@details.Caracs.Defense">@details.Caracs.Defense</option>
+                    }
+                    else
+                    {
+                        <option value="@details.Caracs.Defense">@details.Caracs.Defense</option>
+                    }
+                }
+            </select>
 
             <img class="center-block" src="@imagePath" alt="" /><br />
 
             <button class="btn btn-primary center-block" type="button">Modifier</button>
 
             <br />
+            
+            <table class="table table-bordered detailsTab">
+                <tr class="text-center">
+                    <td>Lvl : @details.Charac.Lvl</td>
+                    <td>Xp : @details.Charac.Xp</td>
+                    <td>Po : @details.Charac.Po</td>
+                    <td>
+                        <label asp-for="@details.Charac.TypePerso">Défense</label>
+                        <select asp-for="@details.Charac.TypePerso">
+                            @foreach (var type in EnumUtil.GetValues<CharacterTypeEnum>())
+                            {
+                                if (type.Equals(details.Caracs.Defense))
+                                {
+                                    <option selected="selected" value="@details.Caracs.Defense">@details.Caracs.Defense</option>
+                                }
+                                else
+                                {
+                                    <option value="@details.Caracs.Defense">@details.Caracs.Defense</option>
+                                }
+                            }
+                        </select>
+                    </td>
+                    <td class="text-center"><button class="btn btn-primary center-block" type="button" disabled>Enregistrer</button></td>
+                </tr>
+            </table>
 
-            <table class="table">
+            <table class="table table-bordered detailsTab">
                 <!-- Jauges -->
-                <tr>
+                <tr class="text-center">
                     <!-- Jauge de vie -->
                     <td class="form-group">
                         <label asp-for="@details.Jauges.Pv">Vie : </label>
