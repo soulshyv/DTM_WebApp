@@ -60,20 +60,14 @@ namespace Main.Controllers
         public async Task<IActionResult> Update(CharacterDetailsViewModel details)
         {
             if (!ModelState.IsValid)
-            {
                 return RedirectToAction("Index");
-            }
 
             if (details == null)
-            {
                 return NotFound();
-            }
 
             var nomPerso = details.Charac.Nom;
             if (string.IsNullOrWhiteSpace(nomPerso))
-            {
                 return NotFound();
-            }
 
             if (!details.Caracs.IsAnyNullOrEmpty())
             {
@@ -124,9 +118,7 @@ namespace Main.Controllers
                                         else
                                         {
                                             if (!details.Stats.IsAnyNullOrEmpty())
-                                            {
                                                 await DtmRepositoryUpdate.UpdateStatsPerso(details.Stats, nomPerso);
-                                            }
                                         }
                                     }
                                 }
