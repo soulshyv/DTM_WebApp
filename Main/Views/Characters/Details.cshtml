@@ -22,143 +22,50 @@ else
     <div id="detailsPersoScrolling" class="col-lg-12 col-lg-offset-1">
         <div id="detailsPerso">
             <h2 id="nomPerso" class="text-center">@details.Charac.Nom</h2>
-            <select class="text-center" asp-for="@details.Charac.TypePerso">
-                @foreach (var race in EnumUtil.GetValues<CharacterRaceEnum>())
-                {
-                    if (race.ToString() == details.Charac.Race)
-                    {
-                        <option selected="selected" value="@race.ToString()">@race.ToString()</option>
-                    }
-                    else
-                    {
-                        <option value="@race.ToString()">@race.ToString()</option>
-                    }
-                }
-            </select>
 
-            <img class="center-block" src="@imagePath" alt="" /><br />
-
-            <button class="btn btn-primary center-block" type="button">Modifier</button>
-
+            <img class="center-block" src="@imagePath" alt="" />
+            
             <br />
             
-            <table class="table table-bordered detailsTab">
+            <table class="table detailsTab">
+                <!-- Caractéristiques -->
                 <tr class="text-center">
+                    <td>Lvl : @details.Charac.Lvl</td>
+                    <td>Xp : @details.Charac.Xp</td>
+                    <td>Po : @details.Charac.Po</td>
                     <td>
-                        <label asp-for="@details.Charac.Lvl">Lvl: </label>
-                        <select asp-for="@details.Charac.Lvl">
-                            <option selected="selected" value="none"></option>
-                            @for (var i = 1; i <= 100; i++)
-                            {
-                                <option value="@i">@i</option>
-                            }
-                        </select>
+                        Type : @details.Charac.TypePerso
                     </td>
-                    <td>
-                        <label asp-for="@details.Charac.Xp">Xp : </label>
-                        <select asp-for="@details.Charac.Po">
-                            <option selected="selected" value="none"></option>
-                            @for (var i = 0; i <= 99; i++)
-                            {
-                                <option value="@i">@i</option>
-                            }
-                        </select>
-                    </td>
-                    <td>
-                        <label asp-for="@details.Charac.Po">Po : </label>
-                        <select asp-for="@details.Charac.Po">
-                            <option selected="selected" value="none"></option>
-                            @for (var i = 0; i <= 99999; i++)
-            {
-                <option value="@i">@i</option>
-}
-                        </select>
-                    </td>
-                    <td>
-                        Type :
-                        <select asp-for="@details.Charac.TypePerso">
-                            @foreach (var type in EnumUtil.GetValues<CharacterTypeEnum>())
-            {
-                if (type.ToString() == details.Charac.TypePerso)
-                {
-                    <option selected="selected" value="@type.ToString()">@type.ToString()</option>
-}
-else
-{
-                <option value="@type.ToString()">@type.ToString()</option>
-}
-}
-                        </select>
-                    </td>
-                    <td class="text-center"><button class="btn btn-primary center-block" type="button" disabled>Enregistrer</button></td>
                 </tr>
             </table>
+            
+            <button class="btn btn-primary center-block" data-toggle="modal" data-target="#modifCharac" type="button">Modifier</button>
+            
+            <hr />
 
             <table class="table table-bordered detailsTab">
                 <!-- Jauges -->
+                <tr>
+                    <th class="text-center">Vie</th>
+                    <th class="text-center">Psy</th>
+                    <th class="text-center">Synchro</th>
+                    <th></th>
+                </tr>
                 <tr class="text-center">
                     <!-- Jauge de vie -->
-                    <td class="form-group">
-                        <label asp-for="@details.Jauges.Pv">Vie : </label>
-                        <select asp-for="@details.Jauges.Pv">
-                            <option selected="selected" value="none"></option>
-                            @for (var i = 0; i <= 100; i++)
-                            {
-                                <option value="@i">@i</option>
-                            }
-                        </select>
-
-                        <label asp-for="@details.Jauges.PvMax">/</label>
-                        <select asp-for="@details.Jauges.Pv">
-                            <option selected="selected" value="none"></option>
-                            @for (var i = 0; i < 100; i++)
-                            {
-                                <option value="@(i + 1)">@(i + 1)</option>
-                            }
-                        </select>
+                    <td class="text-center">
+                        @details.Jauges.Pv / @details.Jauges.PvMax
                     </td>
                     <!-- Jauge de psy -->
-                    <td class="form-group">
-                        <label asp-for="@details.Jauges.Psy">Psy : </label>
-                        <select asp-for="@details.Jauges.Psy">
-                            <option selected="selected" value="none"></option>
-                            @for (var i = 0; i <= 100; i++)
-                            {
-                                <option value="@i">@i</option>
-                            }
-                        </select>
-
-                        <label asp-for="@details.Jauges.PsyMax">/</label>
-                        <select asp-for="@details.Jauges.Psy">
-                            <option selected="selected" value="none"></option>
-                            @for (var i = 1; i <= 100; i++)
-                            {
-                                <option value="@i">@i</option>
-                            }
-                        </select>
+                    <td class="text-center">
+                        @details.Jauges.Psy / @details.Jauges.PsyMax
                     </td>
                     <!-- Jauge de synchro -->
-                    <td class="form-group">
-                        <label asp-for="@details.Jauges.Synchro">Synchro : </label>
-                        <select asp-for="@details.Jauges.Synchro">
-                            <option selected="selected" value="none"></option>
-                            @for (var i = 0; i <= 5; i++)
-                            {
-                                <option value="@i">@i</option>
-                            }
-                        </select>
-
-                        <label asp-for="@details.Jauges.SynchroMax">/</label>
-                        <select asp-for="@details.Jauges.Synchro">
-                            <option selected="selected" value="none"></option>
-                            @for (var i = 1; i <= 5; i++)
-                            {
-                                <option value="@i">@i</option>
-                            }
-                        </select>
+                    <td class="text-center">
+                        @details.Jauges.Synchro / @details.Jauges.SynchroMax
                     </td>
                     <td>
-                        <button class="btn btn-primary center-block" type="button" disabled>Enregistrer</button>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#modifJauges" type="button">Modifier</button>
                     </td>
                 </tr>
             </table>
@@ -176,39 +83,18 @@ else
                     <tr class="text-center">
                         <!-- Physique -->
                         <td class="form-group">
-                            <select asp-for="@details.Stats.Physique">
-                                <option value="none"></option>
-                                @for (var i = 0; i <= 100; i++)
-                                {
-                                    <option value="@i">@i</option>
-                                }
-                            </select>
-                            <label asp-for="@details.Stats.Physique"> %</label>
+                            @details.Stats.Physique %
                         </td>
                         <!-- Mental -->
                         <td class="form-group">
-                            <select asp-for="@details.Stats.Mental">
-                                <option value="none"></option>
-                                @for (var i = 0; i <= 100; i++)
-                                {
-                                    <option value="@i">@i</option>
-                                }
-                            </select>
-                            <label asp-for="@details.Stats.Mental"> %</label>
+                            @details.Stats.Mental %
                         </td>
                         <!-- Social -->
                         <td class="form-group">
-                            <select asp-for="@details.Stats.Social">
-                                <option value="none"></option>
-                                @for (var i = 0; i <= 100; i++)
-                                {
-                                    <option value="@i">@i</option>
-                                }
-                            </select>
-                            <label asp-for="@details.Stats.Social"> %</label>
+                            @details.Stats.Social %
                         </td>
                         <td width="135px">
-                            <button class="btn btn-primary" type="button" disabled>Enregistrer</button>
+                            <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#modifStats" type="button">Modifier</button>
                         </td>
                     </tr>
                 </table>
@@ -308,6 +194,279 @@ else
         </div>
     </div>
 
+    <div id="modifCharac" class="modal fade modifs" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title text-center">Modification des passifs</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="post">
+                        <table class="table detailsTab">
+                            <!-- Caractéristiques -->
+                            <tr class="text-center">
+                                <td>Lvl : @details.Charac.Lvl</td>
+                                <td>Xp : @details.Charac.Xp</td>
+                                <td>Po : @details.Charac.Po</td>
+                                <td>
+                                    <label asp-for="@details.Charac.TypePerso">Type : </label>
+                                    <select asp-for="@details.Charac.TypePerso">
+                                        @foreach (var type in EnumUtil.GetValues<CharacterTypeEnum>())
+                                        {
+                                            if (type.ToString() == details.Charac.TypePerso)
+                                            {
+                                                <option selected="selected" value="@details.Charac.TypePerso">@details.Charac.TypePerso</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@details.Charac.TypePerso">@details.Charac.TypePerso</option>
+                                            }
+                                        }
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                        <input asp-for="@details.Charac.Nom" type="hidden" />
+
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary btn-submit-form" data-dismiss="modal">Enregistrer</button>
+                            <button type="button" class="btn" data-dismiss="modal">Annuler</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modifJauges" class="modal fade modifs" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title text-center">Modification des passifs</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="post">
+                        <table class="table table-bordered detailsTab">
+                            <!-- Jauges -->
+                            <tr class="text-center">
+                                <!-- Jauge de vie -->
+                                <td class="form-group">
+                                    <label asp-for="@details.Jauges.Pv">Vie : </label>
+                                    <select asp-for="@details.Jauges.Pv">
+                                        <option selected="selected" value="none"></option>
+                                        @for (var i = 0; i <= 100; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+
+                                    <label asp-for="@details.Jauges.PvMax">/</label>
+                                    <select asp-for="@details.Jauges.PvMax">
+                                        <option selected="selected" value="none"></option>
+                                        @for (var i = 0; i < 100; i++)
+                                        {
+                                            <option value="@(i + 1)">@(i + 1)</option>
+                                        }
+                                    </select>
+                                </td>
+                                <!-- Jauge de psy -->
+                                <td class="form-group">
+                                    <label asp-for="@details.Jauges.Psy">Psy : </label>
+                                    <select asp-for="@details.Jauges.Psy">
+                                        <option selected="selected" value="none"></option>
+                                        @for (var i = 0; i <= 100; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+
+                                    <label asp-for="@details.Jauges.PsyMax">/</label>
+                                    <select asp-for="@details.Jauges.PsyMax">
+                                        <option selected="selected" value="none"></option>
+                                        @for (var i = 1; i <= 100; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                </td>
+                                <!-- Jauge de synchro -->
+                                <td class="form-group">
+                                    <label asp-for="@details.Jauges.Synchro">Synchro : </label>
+                                    <select asp-for="@details.Jauges.Synchro">
+                                        <option selected="selected" value="none"></option>
+                                        @for (var i = 0; i <= 5; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+
+                                    <label asp-for="@details.Jauges.SynchroMax">/</label>
+                                    <select asp-for="@details.Jauges.SynchroMax">
+                                        <option selected="selected" value="none"></option>
+                                        @for (var i = 1; i <= 5; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                        <input asp-for="@details.Charac.Nom" type="hidden" />
+
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary btn-submit-form" data-dismiss="modal">Enregistrer</button>
+                            <button type="button" class="btn" data-dismiss="modal">Annuler</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modifStats" class="modal fade modifs" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title text-center">Modification des passifs</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="post">
+                        <table class="table table-bordered detailsTab">
+                            <tr>
+                                <th class="text-center">Physique</th>
+                                <th class="text-center">Mental</th>
+                                <th class="text-center">Social</th>
+                            </tr>
+                            <tr class="text-center">
+                                <!-- Physique -->
+                                <td class="form-group">
+                                    <select asp-for="@details.Stats.Physique">
+                                        <option value="none"></option>
+                                        @for (var i = 0; i <= 100; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                    <label asp-for="@details.Stats.Physique"> %</label>
+                                </td>
+                                <!-- Mental -->
+                                <td class="form-group">
+                                    <select asp-for="@details.Stats.Mental">
+                                        <option value="none"></option>
+                                        @for (var i = 0; i <= 100; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                    <label asp-for="@details.Stats.Mental"> %</label>
+                                </td>
+                                <!-- Social -->
+                                <td class="form-group">
+                                    <select asp-for="@details.Stats.Social">
+                                        <option value="none"></option>
+                                        @for (var i = 0; i <= 100; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                    <label asp-for="@details.Stats.Social"> %</label>
+                                </td>
+                            </tr>
+                        </table>
+                        <input asp-for="@details.Charac.Nom" type="hidden" />
+
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary btn-submit-form" data-dismiss="modal">Enregistrer</button>
+                            <button type="button" class="btn" data-dismiss="modal">Annuler</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modifStats" class="modal fade modifs" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title text-center">Modification des passifs</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="post">
+                        <table class="table table-bordered detailsTab">
+                            <tr>
+                                <th class="text-center">Physique</th>
+                                <th class="text-center">Mental</th>
+                                <th class="text-center">Social</th>
+                                <th class="text-center"></th>
+                            </tr>
+                            <tr class="text-center">
+                                <!-- Physique -->
+                                <td class="form-group">
+                                    <select asp-for="@details.Stats.Physique">
+                                        <option value="none"></option>
+                                        @for (var i = 0; i <= 100; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                    <label asp-for="@details.Stats.Physique"> %</label>
+                                </td>
+                                <!-- Mental -->
+                                <td class="form-group">
+                                    <select asp-for="@details.Stats.Mental">
+                                        <option value="none"></option>
+                                        @for (var i = 0; i <= 100; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                    <label asp-for="@details.Stats.Mental"> %</label>
+                                </td>
+                                <!-- Social -->
+                                <td class="form-group">
+                                    <select asp-for="@details.Stats.Social">
+                                        <option value="none"></option>
+                                        @for (var i = 0; i <= 100; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                    <label asp-for="@details.Stats.Social"> %</label>
+                                </td>
+                                <td width="135px">
+                                    <button class="btn btn-primary" type="button" disabled>Enregistrer les modifications</button>
+                                </td>
+                            </tr>
+                        </table>
+                        <input asp-for="@details.Charac.Nom" type="hidden" />
+
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary btn-submit-form" data-dismiss="modal">Enregistrer</button>
+                            <button type="button" class="btn" data-dismiss="modal">Annuler</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <div id="modifPassifs" class="modal fade modifs" role="dialog">
         <div class="modal-dialog">
 
@@ -383,86 +542,6 @@ else
 
         </div>
     </div>
-
-    <div id="modifDons" class="modal fade modifs" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Modal Header</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Some text in the modal.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-submit-form" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div id="modifLangues" class="modal fade modifs" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Modal Header</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Some text in the modal.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div id="modifSkills" class="modal fade modifs" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Modal Header</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Some text in the modal.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div id="modifInventaire" class="modal fade modifs" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Modal Header</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Some text in the modal.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
 }
     
 <script type="text/javascript">
@@ -482,7 +561,7 @@ else
             var nomPerso = $(document).find("#nomPerso").text();
             $(".modal-backdrop").remove();
             $.ajax({
-                url: "Characters/UpdateCaracs",
+                url: "Characters/Update",
                 type: "POST",
                 data: form,
                 success: function () {
