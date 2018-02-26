@@ -23,7 +23,7 @@ else
         <div id="detailsPerso">
             <h2 id="nomPerso" class="text-center">@details.Charac.Nom</h2>
 
-            <img class="center-block" src="@imagePath" alt="" />
+            <img class="center-block" src="@imagePath" alt="Image de @details.Charac.Nom" />
             
             <br />
             
@@ -205,31 +205,54 @@ else
                 </div>
                 <div class="modal-body">
                     <form method="post">
+                        <!-- Caractéristiques -->
+                        <span class="text-center" ><label asp-for="@details.Charac.Nom">Nom : </label><input asp-for="@details.Charac.Nom" type="text" /></span>
+                        
+
                         <table class="table detailsTab">
-                            <!-- Caractéristiques -->
                             <tr class="text-center">
-                                <td>Lvl : @details.Charac.Lvl</td>
-                                <td>Xp : @details.Charac.Xp</td>
-                                <td>Po : @details.Charac.Po</td>
+                                <td>
+                                    <label asp-for="@details.Charac.Lvl">Lvl : </label>
+                                    <select asp-for="@details.Charac.Lvl">
+                                        @for (var i = 1; i <= 999; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <label asp-for="@details.Charac.Xp">Xp : </label>
+                                    <select asp-for="@details.Charac.Xp">
+                                        @for (var i = 0; i <= 99; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <label asp-for="@details.Charac.Po">Po : </label>
+                                    <select asp-for="@details.Charac.Po">
+                                        @for (var i = 0; i <= 999; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                </td>
                                 <td>
                                     <label asp-for="@details.Charac.TypePerso">Type : </label>
                                     <select asp-for="@details.Charac.TypePerso">
                                         @foreach (var type in EnumUtil.GetValues<CharacterTypeEnum>())
                                         {
-                                            if (type.ToString() == details.Charac.TypePerso)
-                                            {
-                                                <option selected="selected" value="@details.Charac.TypePerso">@details.Charac.TypePerso</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@details.Charac.TypePerso">@details.Charac.TypePerso</option>
-                                            }
+                                            <option value="@type">@type</option>
                                         }
                                     </select>
                                 </td>
                             </tr>
                         </table>
-                        <input asp-for="@details.Charac.Nom" type="hidden" />
+
+                        <input class="center-block" value="@Model.CharacterPicture" type="file" />
+                        
+                        <br />
 
                         <div class="text-center">
                             <button type="button" class="btn btn-primary btn-submit-form" data-dismiss="modal">Enregistrer</button>
