@@ -250,7 +250,7 @@ else
                             </tr>
                         </table>
 
-                        <input class="center-block" value="@Model.CharacterPicture" type="file" />
+                        <input class="center-block" id="inputPic" value="@Model.CharacterPicture" type="file" />
                         
                         <br />
 
@@ -580,13 +580,16 @@ else
         }
 
         $(".btn-submit-form").click(function () {
-            var form = $(this).parent().parent().serialize();
+            var form = $(this).parent().parent();
+            if (form.parent().parent().parent().parent().attr("id") == "modifCharac") {
+                var path = $("#inputPic").val();
+            }
             var nomPerso = $(document).find("#nomPerso").text();
             $(".modal-backdrop").remove();
             $.ajax({
                 url: "Characters/Update",
                 type: "POST",
-                data: form,
+                data: form.serialize(),
                 success: function () {
                     loadDetails(nomPerso);
                 },
