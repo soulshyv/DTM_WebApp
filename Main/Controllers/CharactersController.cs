@@ -4,6 +4,7 @@ using DTM.Core.Extensions;
 using DTM.DbManager.Contracts;
 using DTM.DbManager.Models;
 using DTM.DbManager.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using UserManager.Contracts;
@@ -127,6 +128,20 @@ namespace Main.Controllers
                     }
                 }
             }
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdatePic(IFormFile pic)
+        {
+            //if (!ModelState.IsValid)
+            //    return RedirectToAction("Index");
+
+            //if (pic == null)
+            //    return NotFound();
+
+            //return Ok();
 
             return Ok();
         }

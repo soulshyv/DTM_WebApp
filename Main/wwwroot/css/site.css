@@ -46,7 +46,7 @@
 .table-borderless > thead > tr > th {
     border: none;
 }*/
-select, option {
+select, option, input[type=text] {
     background-color: dimgrey;
 }
 

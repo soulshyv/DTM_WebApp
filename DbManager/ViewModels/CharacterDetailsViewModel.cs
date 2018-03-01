@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DTM.DbManager.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace DTM.DbManager.ViewModels
 {
@@ -17,5 +18,6 @@ namespace DTM.DbManager.ViewModels
         public List<DonPerso> Dons { get; set; }
         public List<Demon> Demons { get; set; }
         public Inventaire Inventaire { get; set; }
+        public IFormFile UploadedPic { get; set; }
     }
 }

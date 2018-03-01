@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace DTM.Core.Extensions
 {
@@ -26,6 +27,22 @@ namespace DTM.Core.Extensions
             }
 
             return false;
+        }
+
+        public static string ToKebabCase(this string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return text;
+            }
+
+            return Regex.Replace(
+                    text,
+                    "(?<!^)([A-Z][a-z]|(?<=[a-z])[A-Z])",
+                    "-$1",
+                    RegexOptions.Compiled)
+                .Trim()
+                .ToLower();
         }
     }
 }
