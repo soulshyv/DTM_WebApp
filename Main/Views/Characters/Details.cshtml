@@ -17,7 +17,7 @@ else
     var imagePath = "";
     if (Model?.CharacterPicture != null)
     {
-        imagePath = @"/images/" + Model.CharacterPicture;
+        imagePath = Model.CharacterPicture;
     }
 
     <div id="detailsPersoScrolling" class="col-lg-12 col-lg-offset-1">
@@ -209,10 +209,10 @@ else
                     <form asp-controller="Characters" asp-action="UpdatePic" method="post" enctype="multipart/form-data">
                         <!-- Image -->
                         <div>
-                            <label for="pic">Choississez une nouvelle image (png, jpg, gif)</label>
-                            <input id="pic" name="pic" class="center-block" type="file" />
+                            <label for="picUpload">Choississez une nouvelle image (png, jpg, gif)</label>
+                            <input id="picUpload" name="pic" class="center-block" type="file" />
 
-                            <input type="submit" value="Enregistrer" class="btn btn-primary"/>
+                            <input type="button" id="btn-submit-file" value="Enregistrer" class="btn btn-primary"/>
                             <button type="button" class="btn" data-dismiss="modal">Annuler</button>
                         </div>
 
@@ -641,8 +641,35 @@ else
                 success: function () {
                     loadDetails(nomPerso);
                 },
-                error: function (data) {
-                    console.log(data);
+                error: function (message) {
+                    console.log(message);
+                    alert("Une erreur est survenue pendant l'upload du fichier");
+                }
+            });
+        });
+
+        $("#btn-submit-file").click(function () {
+            console.log("coucou");
+            var fileUpload = $("#picUpload").get(0);
+            var files = fileUpload.files;
+            var data = new FormData();
+            var nomPerso = $(document).find("#nomPerso").text();
+            data.append(files[0].name, files[0]);
+            data.append("nomPerso", nomPerso);
+            console.log(data);
+            $.ajax({
+                type: "POST",
+                url: "/Characters/UpdatePic",
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function () {
+                    debugger;
+                    loadDetails(nomPerso);
+                },
+                error: function (message) {
+                    console.log(message);
+                    alert("Une erreur est survenue pendant l'upload du fichier");
                 }
             });
         });

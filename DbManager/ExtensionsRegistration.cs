@@ -13,7 +13,7 @@ namespace DTM.DbManager
             sc.TryAddScoped<IDtmRepositorySelect, DtmRepositorySelect>();
             sc.TryAddScoped<IDtmRepositoryUpdate, DtmRepositoryUpdate>();
             sc.TryAddScoped<ICharacPicSearcher>(_ =>
-                new CharacPicSearcher(@"./wwwRoot/images/"));
+                new CharacPicSearcher(@"./wwwRoot/images/CharacPictures/"));
 
             return sc;
         }

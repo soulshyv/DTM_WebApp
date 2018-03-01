@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using DTM.Core.Extensions;
 using DTM.DbManager.Contracts;
 using DTM.DbManager.Models;
 using DTM.DbManager.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using UserManager.Contracts;
 
@@ -14,18 +19,20 @@ namespace Main.Controllers
     public class CharactersController : Controller
     {
         public CharactersController(IUserManager userManager, IDtmRepositorySelect dtmRepositorySelect,
-            IDtmRepositoryUpdate dtmRepositoryUpdate, ICharacPicSearcher characPicSearcher)
+            IDtmRepositoryUpdate dtmRepositoryUpdate, ICharacPicSearcher characPicSearcher, IHostingEnvironment env)
         {
             UserManager = userManager;
             DtmRepositorySelect = dtmRepositorySelect;
             DtmRepositoryUpdate = dtmRepositoryUpdate;
             CharacPicSearcher = characPicSearcher;
+            HostingEnv = env;
         }
 
         private IUserManager UserManager { get; }
         private IDtmRepositorySelect DtmRepositorySelect { get; }
         private IDtmRepositoryUpdate DtmRepositoryUpdate { get; }
         private ICharacPicSearcher CharacPicSearcher { get; }
+        private IHostingEnvironment HostingEnv { get; }
 
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -133,15 +140,54 @@ namespace Main.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdatePic(IFormFile pic)
+        public async Task<IActionResult> UpdatePic(string nomPerso)
         {
-            //if (!ModelState.IsValid)
-            //    return RedirectToAction("Index");
+            var files = Request.Form.Files;
+            if (files == null)
+            {
+                return NotFound();
+            }
 
-            //if (pic == null)
-            //    return NotFound();
+            foreach (var file in files)
+            {
+                var directorypath = HostingEnv.WebRootPath + @"\images\CharacPictures\";
+                var filenameNoExt = "CharacterPicture_" + nomPerso;
+                var ext = ContentDispositionHeaderValue.Parse(file.ContentDisposition).Name.Trim().ToString().Split(".")[1];
+                var filename = "CharacterPicture_" + nomPerso + "." + ext.ToLower();
 
-            //return Ok();
+                var invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+                filename = invalid.Aggregate(filename, (current, c) => current.Replace(c.ToString(), ""));
+
+                var filepath = directorypath + filename;
+
+                if (!Directory.Exists(directorypath))
+                {
+                    Directory.CreateDirectory(directorypath);
+                }
+                
+                foreach (var f in Directory.GetFiles(directorypath))
+                {
+                    var fname = Path.GetFileName(f).Split(".")[0].Split(@"\")[0];
+                    if (fname == filenameNoExt)
+                    {
+                        System.IO.File.Delete(f);
+                    }
+                }
+
+                try
+                {
+                    using (var fs = System.IO.File.Create(filepath))
+                    {
+                        await file.CopyToAsync(fs);
+                        fs.Flush();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
 
             return Ok();
         }

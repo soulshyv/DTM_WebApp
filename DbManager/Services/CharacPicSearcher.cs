@@ -16,7 +16,8 @@ namespace DTM.DbManager.Services
         public string GetPicture(string nomPerso)
         {
             var files = new DirectoryInfo(Path).GetFiles();
-            return (from file in files where file.Name.Contains(nomPerso) select file.Name).FirstOrDefault();
+            var firstOrDefault = (from file in files where file.Name.Contains(nomPerso) select file.Name).FirstOrDefault();
+            return Path + firstOrDefault;
         }
     }
 }
