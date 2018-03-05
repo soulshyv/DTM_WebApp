@@ -7,7 +7,6 @@ namespace DTM.DbManager.ViewModels
     public class CharacterDetailsViewModel
     {
         public CharacterFull DetailsPerso { get; set; }
-        public string CharacterPicture { get; set; }
 
         public Character Charac { get; set; }
         public Caracs Caracs { get; set; }

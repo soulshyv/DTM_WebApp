@@ -1,4 +1,4 @@
-﻿namespace DTM.Encryption
+﻿namespace DTM.UserManager.Contracts
 {
     public interface IMd5Encryption
     {

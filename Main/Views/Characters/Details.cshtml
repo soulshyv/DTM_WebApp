@@ -14,18 +14,12 @@
 }
 else
 {
-    var imagePath = "";
-    if (Model?.CharacterPicture != null)
-    {
-        imagePath = Model.CharacterPicture;
-    }
-
     <div id="detailsPersoScrolling" class="col-lg-12 col-lg-offset-1">
         <div id="detailsPerso">
             <h2 id="nomPerso" class="text-center">@details.Charac.Nom</h2>
             <h3 id="raceperso" class="text-center">@details.Charac.Race</h3>
 
-            <img class="center-block" src="@imagePath" alt="Image de @details.Charac.Nom" />
+            <img class="center-block" id="characPic" src="" alt="Image de @details.Charac.Nom" />
 
             <button class="btn btn-primary center-block" data-toggle="modal" data-target="#modifPic" type="button">Modifier l'image</button>
 
@@ -212,7 +206,7 @@ else
                             <label for="picUpload">Choississez une nouvelle image (png, jpg, gif)</label>
                             <input id="picUpload" name="pic" class="center-block" type="file" />
 
-                            <input type="button" id="btn-submit-file" value="Enregistrer" class="btn btn-primary"/>
+                            <input type="button" id="btn-submit-file" value="Enregistrer" class="btn btn-primary" data-dismiss="modal"/>
                             <button type="button" class="btn" data-dismiss="modal">Annuler</button>
                         </div>
 
@@ -629,10 +623,27 @@ else
             while (new Date().getTime() < start + delay);
         }
 
+        function getCharacPicture(nomPerso) {
+            var data = new FormData();
+            data.append("nomPerso", nomPerso);
+            $.ajax({
+                type: "GET",
+                url: "/Characters/GetPicture",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (res) {
+                    document.getElementById("characPic").src = res + "?" + (new Date()).getTime();
+                },
+                error: function (message) {
+                    console.log(message);
+                }
+            });
+        };
+
         $(".btn-submit-form").click(function () {
             var form = $(this).parent().parent();
             var nomPerso = $(document).find("#nomPerso").text();
-            debugger;
             $(".modal-backdrop").remove();
             $.ajax({
                 url: "Characters/Update",
@@ -640,6 +651,7 @@ else
                 data: form.serialize(),
                 success: function () {
                     loadDetails(nomPerso);
+                    getCharacPicture();
                 },
                 error: function (message) {
                     console.log(message);
@@ -649,7 +661,6 @@ else
         });
 
         $("#btn-submit-file").click(function () {
-            console.log("coucou");
             var fileUpload = $("#picUpload").get(0);
             var files = fileUpload.files;
             var data = new FormData();
@@ -657,6 +668,7 @@ else
             data.append(files[0].name, files[0]);
             data.append("nomPerso", nomPerso);
             console.log(data);
+            $(".modal-backdrop").remove();
             $.ajax({
                 type: "POST",
                 url: "/Characters/UpdatePic",
@@ -665,7 +677,7 @@ else
                 data: data,
                 success: function () {
                     debugger;
-                    loadDetails(nomPerso);
+                    getCharacPicture();
                 },
                 error: function (message) {
                     console.log(message);

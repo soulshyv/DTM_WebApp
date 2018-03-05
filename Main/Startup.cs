@@ -1,6 +1,7 @@
 ﻿using DTM.Core.Contracts;
 using DTM.Core.Services;
 using DTM.DbManager;
+using DTM.UserManager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

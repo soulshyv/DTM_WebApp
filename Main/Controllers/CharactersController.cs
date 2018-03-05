@@ -7,12 +7,12 @@ using DTM.Core.Extensions;
 using DTM.DbManager.Contracts;
 using DTM.DbManager.Models;
 using DTM.DbManager.ViewModels;
+using DTM.UserManager.Contracts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
-using UserManager.Contracts;
 
 namespace Main.Controllers
 {
@@ -55,13 +55,22 @@ namespace Main.Controllers
                 return PartialView("Details");
 
             var perso = await DtmRepositorySelect.GetFullPersoByName(nomPerso);
-            var characPic = CharacPicSearcher.GetPicture(nomPerso);
 
             return PartialView("Details", new CharacterDetailsViewModel
             {
-                DetailsPerso = perso,
-                CharacterPicture = characPic
+                DetailsPerso = perso
             });
+        }
+
+        [HttpPost]
+        public string GetPicture(string nomPerso)
+        {
+            if (nomPerso == null)
+                return string.Empty;
+            
+            var characPic = CharacPicSearcher.GetPicture(nomPerso, true);
+
+            return characPic;
         }
 
         [HttpPost]
@@ -152,8 +161,9 @@ namespace Main.Controllers
             {
                 var directorypath = HostingEnv.WebRootPath + @"\images\CharacPictures\";
                 var filenameNoExt = "CharacterPicture_" + nomPerso;
-                var ext = ContentDispositionHeaderValue.Parse(file.ContentDisposition).Name.Trim().ToString().Split(".")[1];
-                var filename = "CharacterPicture_" + nomPerso + "." + ext.ToLower();
+                var strings = ContentDispositionHeaderValue.Parse(file.ContentDisposition).Name.Trim().ToString().Split(".");
+                var ext = strings.LastOrDefault()?.ToLower();
+                var filename = "CharacterPicture_" + nomPerso + "." + ext;
 
                 var invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
                 filename = invalid.Aggregate(filename, (current, c) => current.Replace(c.ToString(), ""));

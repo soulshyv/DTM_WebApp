@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using UserManager.Contracts;
+﻿using DTM.UserManager.Contracts;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Main.Controllers
 {

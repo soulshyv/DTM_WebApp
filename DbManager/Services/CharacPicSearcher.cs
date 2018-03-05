@@ -6,18 +6,26 @@ namespace DTM.DbManager.Services
 {
     public class CharacPicSearcher : ICharacPicSearcher
     {
-        public CharacPicSearcher(string path)
+        public CharacPicSearcher(string characPicPath, string characPicPathAlt)
         {
-            Path = path;
+            CharacPicPath = characPicPath;
+            CharacPicPathAlt = characPicPathAlt;
         }
 
-        private string Path { get; }
+        private string CharacPicPath { get; }
+        public string CharacPicPathAlt { get; }
 
-        public string GetPicture(string nomPerso)
+        public string GetPicture(string nomPerso, bool displayed = false)
         {
-            var files = new DirectoryInfo(Path).GetFiles();
+            var files = new DirectoryInfo(CharacPicPath).GetFiles();
             var firstOrDefault = (from file in files where file.Name.Contains(nomPerso) select file.Name).FirstOrDefault();
-            return Path + firstOrDefault;
+
+            if (displayed)
+            {
+                return CharacPicPathAlt + firstOrDefault;
+            }
+
+            return CharacPicPath + firstOrDefault;
         }
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface ICharacPicSearcher
     {
-        string GetPicture(string nomPerso);
+        string GetPicture(string nomPerso, bool displayed = false);
     }
 }

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DTM.Core.Contracts;
+using DTM.UserManager.Contracts;
 using MySql.Data.MySqlClient;
-using UserManager.Contracts;
 
-namespace DTM.DbManager.Services
+namespace DTM.UserManager.Services
 {
     public class UserRepository : IUserRepository
     {
