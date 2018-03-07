@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DTM.Core.Contracts;
 using DTM.DbManager.Contracts;
@@ -18,25 +19,34 @@ namespace DTM.DbManager.Services.Repository
 
         /**************** UPDATE ****************/
 
-        public async Task UpdatePerso(Character charac)
+        public async Task UpdatePerso(Character charac, string nomPerso)
         {
             const string sql = @"UPDATE perso
                                  SET
-                                 Nom = @nomPerso
+                                 Nom = @nomPerso,
                                  Xp = @xp,
                                  Lvl = @lvl,
                                  Po = @po,
                                  Race = @race,
                                  Type_Perso = @type
-                                 WHERE Nom = @nomPerso";
+                                 WHERE Nom = @oldNom";
             var cmd = new MySqlCommand(sql, Conn);
+            cmd.Parameters.AddWithValue("@nomPerso", charac.Nom);
             cmd.Parameters.AddWithValue("@xp", charac.Xp);
             cmd.Parameters.AddWithValue("@lvl", charac.Lvl);
             cmd.Parameters.AddWithValue("@po", charac.Po);
             cmd.Parameters.AddWithValue("@race", charac.Race);
             cmd.Parameters.AddWithValue("@type", charac.TypePerso);
-            cmd.Parameters.AddWithValue("@nomPerso", charac.Nom);
-            await cmd.ExecuteNonQueryAsync();
+            cmd.Parameters.AddWithValue("@oldNom", nomPerso);
+            try
+            {
+                await cmd.ExecuteNonQueryAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task UpdateCaracsPerso(Caracs caracs, string nomPerso)

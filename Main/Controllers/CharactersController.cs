@@ -55,10 +55,13 @@ namespace Main.Controllers
                 return PartialView("Details");
 
             var perso = await DtmRepositorySelect.GetFullPersoByName(nomPerso);
+            var pic = GetPicture(nomPerso) + "?" + new DateTime().TimeOfDay.Ticks; 
 
             return PartialView("Details", new CharacterDetailsViewModel
             {
-                DetailsPerso = perso
+                DetailsPerso = perso,
+                CharacterPicture = pic,
+                NomPerso = perso.Charac.Nom
             });
         }
 
@@ -74,15 +77,14 @@ namespace Main.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(CharacterDetailsViewModel details)
+        public async Task<IActionResult> Update(CharacterDetailsViewModel details, string nomPerso)
         {
             if (!ModelState.IsValid)
                 return RedirectToAction("Index");
 
             if (details == null)
                 return NotFound();
-
-            var nomPerso = details.Charac.Nom;
+            
             if (string.IsNullOrWhiteSpace(nomPerso))
                 return NotFound();
 
@@ -94,7 +96,7 @@ namespace Main.Controllers
             {
                 if (!details.Charac.IsAnyNullOrEmpty())
                 {
-                    await DtmRepositoryUpdate.UpdatePerso(details.Charac);
+                    await DtmRepositoryUpdate.UpdatePerso(details.Charac, nomPerso);
                 }
                 else
                 {
@@ -151,19 +153,14 @@ namespace Main.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdatePic(string nomPerso)
         {
-            var files = Request.Form.Files;
-            if (files == null)
-            {
-                return NotFound();
-            }
-
-            foreach (var file in files)
+            foreach (var file in Request.Form.Files)
             {
                 var directorypath = HostingEnv.WebRootPath + @"\images\CharacPictures\";
-                var filenameNoExt = "CharacterPicture_" + nomPerso;
-                var strings = ContentDispositionHeaderValue.Parse(file.ContentDisposition).Name.Trim().ToString().Split(".");
+                //var filenameNoExt = "CharacterPicture_" + nomPerso;
+                var strings = ContentDispositionHeaderValue.Parse(file.ContentDisposition).Name.Trim().ToString()
+                    .Split(".");
                 var ext = strings.LastOrDefault()?.ToLower();
-                var filename = "CharacterPicture_" + nomPerso + "." + ext;
+                var filename = "CharacterPicture_" + nomPerso + "_" + DateTime.Now.ToUnixTimeStamp() + "." + ext;
 
                 var invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
                 filename = invalid.Aggregate(filename, (current, c) => current.Replace(c.ToString(), ""));
@@ -171,17 +168,13 @@ namespace Main.Controllers
                 var filepath = directorypath + filename;
 
                 if (!Directory.Exists(directorypath))
-                {
                     Directory.CreateDirectory(directorypath);
-                }
-                
+
                 foreach (var f in Directory.GetFiles(directorypath))
                 {
                     var fname = Path.GetFileName(f).Split(".")[0].Split(@"\")[0];
-                    if (fname == filenameNoExt)
-                    {
+                    if (fname.Contains(nomPerso))
                         System.IO.File.Delete(f);
-                    }
                 }
 
                 try
@@ -197,9 +190,11 @@ namespace Main.Controllers
                     Console.WriteLine(e);
                     throw;
                 }
+
+                return Ok();
             }
 
-            return Ok();
+            return NotFound();
         }
     }
 }

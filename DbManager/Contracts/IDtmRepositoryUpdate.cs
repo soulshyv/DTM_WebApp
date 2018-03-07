@@ -19,7 +19,7 @@ namespace DTM.DbManager.Contracts
         Task UpdatePassifs(IEnumerable<Passif> passifs);
         Task UpdatePassifsDemon(IEnumerable<Passif> passifs, string nomDemon);
         Task UpdatePassifsPerso(IEnumerable<Passif> passifs, string nomPerso);
-        Task UpdatePerso(Character charac);
+        Task UpdatePerso(Character charac, string nomPerso);
         Task UpdateSkills(IEnumerable<Skill> skills);
         Task UpdateSkillsPerso(IEnumerable<Skill> skills, string nomPerso);
         Task UpdateStatsPerso(Stats stats, string nomPerso);

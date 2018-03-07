@@ -19,7 +19,7 @@ else
             <h2 id="nomPerso" class="text-center">@details.Charac.Nom</h2>
             <h3 id="raceperso" class="text-center">@details.Charac.Race</h3>
 
-            <img class="center-block" id="characPic" src="" alt="Image de @details.Charac.Nom" />
+            <img class="center-block" id="characPic" src="@Model.CharacterPicture" alt="Image de @details.Charac.Nom" />
 
             <button class="btn btn-primary center-block" data-toggle="modal" data-target="#modifPic" type="button">Modifier l'image</button>
 
@@ -209,7 +209,6 @@ else
                             <input type="button" id="btn-submit-file" value="Enregistrer" class="btn btn-primary" data-dismiss="modal"/>
                             <button type="button" class="btn" data-dismiss="modal">Annuler</button>
                         </div>
-
                     </form>
                 </div>
             </div>
@@ -295,6 +294,7 @@ else
                                 </td>
                             </tr>
                         </table>
+                        <input asp-for="@Model.NomPerso" type="hidden" />
 
                         <br />
 
@@ -385,7 +385,7 @@ else
                                 </td>
                             </tr>
                         </table>
-                        <input asp-for="@details.Charac.Nom" type="hidden" />
+                        <input asp-for="@Model.NomPerso" type="hidden" />
 
                         <div class="text-center">
                             <button type="button" class="btn btn-primary btn-submit-form" data-dismiss="modal">Enregistrer</button>
@@ -451,7 +451,7 @@ else
                                 </td>
                             </tr>
                         </table>
-                        <input asp-for="@details.Charac.Nom" type="hidden" />
+                        <input asp-for="@Model.NomPerso" type="hidden" />
 
                         <div class="text-center">
                             <button type="button" class="btn btn-primary btn-submit-form" data-dismiss="modal">Enregistrer</button>
@@ -521,7 +521,7 @@ else
                                 </td>
                             </tr>
                         </table>
-                        <input asp-for="@details.Charac.Nom" type="hidden" />
+                        <input asp-for="@Model.NomPerso" type="hidden" />
 
                         <div class="text-center">
                             <button type="button" class="btn btn-primary btn-submit-form" data-dismiss="modal">Enregistrer</button>
@@ -597,7 +597,7 @@ else
                                 </td>
                             </tr>
                         </table>
-                        <input asp-for="@details.Charac.Nom" type="hidden" />
+                        <input asp-for="@Model.NomPerso" type="hidden" />
 
                         <div class="text-center">
                             <button type="button" class="btn btn-primary btn-submit-form" data-dismiss="modal">Enregistrer</button>
@@ -623,24 +623,6 @@ else
             while (new Date().getTime() < start + delay);
         }
 
-        function getCharacPicture(nomPerso) {
-            var data = new FormData();
-            data.append("nomPerso", nomPerso);
-            $.ajax({
-                type: "GET",
-                url: "/Characters/GetPicture",
-                processData: false,
-                contentType: false,
-                data: data,
-                success: function (res) {
-                    document.getElementById("characPic").src = res + "?" + (new Date()).getTime();
-                },
-                error: function (message) {
-                    console.log(message);
-                }
-            });
-        };
-
         $(".btn-submit-form").click(function () {
             var form = $(this).parent().parent();
             var nomPerso = $(document).find("#nomPerso").text();
@@ -651,11 +633,10 @@ else
                 data: form.serialize(),
                 success: function () {
                     loadDetails(nomPerso);
-                    getCharacPicture();
                 },
                 error: function (message) {
                     console.log(message);
-                    alert("Une erreur est survenue pendant l'upload du fichier");
+                    alert("Une erreur est survenue à l'enregistrement des données");
                 }
             });
         });
@@ -675,9 +656,11 @@ else
                 contentType: false,
                 processData: false,
                 data: data,
-                success: function () {
-                    debugger;
-                    getCharacPicture();
+                success: function (res) {
+                    //console.log(res);
+                    //$("#characPic").attr("src", res);
+                    loadDetails(nomPerso);
+
                 },
                 error: function (message) {
                     console.log(message);

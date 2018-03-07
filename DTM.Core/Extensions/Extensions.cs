@@ -44,5 +44,14 @@ namespace DTM.Core.Extensions
                 .Trim()
                 .ToLower();
         }
+
+        public static int ToUnixTimeStamp(this DateTime dateTime)
+        {
+            var baseDate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Local);//from 1970/1/1 00:00:00 to now
+
+            var result = dateTime.Subtract(baseDate);
+
+            return Convert.ToInt32(result.TotalSeconds);
+        }
     }
 }
