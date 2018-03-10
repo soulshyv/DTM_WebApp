@@ -171,7 +171,7 @@ else
                         <tr>
                             <td>@item.Nom</td>
                             <td>@item.Description</td>
-                            <td>@item.TypeItem.ToLower()</td>
+                            <td>@((ItemTypeEnum)item.TypeItem)</td>
                             <td>@item.Quantite</td>
                             @if (item.Prix == null)
                             {
