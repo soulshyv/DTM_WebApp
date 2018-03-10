@@ -16,7 +16,7 @@ else
 {
     <div id="detailsPersoScrolling" class="col-lg-12 col-lg-offset-1">
         <div id="detailsPerso">
-            <h2 id="nomPerso" class="text-center"@details.Charac.Nom</h2>
+            <h2 id="nomPerso" class="text-center">@details.Charac.Nom</h2>
             <h3 id="raceperso" class="text-center">@details.Charac.Race</h3>
 
             <img class="center-block" id="characPic" src="@Model.CharacterPicture" alt="Image de @details.Charac.Nom" />
@@ -288,7 +288,14 @@ else
                                     <select asp-for="@details.Charac.TypePerso">
                                         @foreach (var type in EnumUtil.GetValues<CharacterTypeEnum>())
                                         {
-                                            <option value="@type">@type</option>
+                                            if (type == (CharacterTypeEnum) details.Charac.TypePerso)
+                                            {
+                                                <option value="@type" selected="selected">@type</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@type">@type</option>
+                                            }
                                         }
                                     </select>
                                 </td>

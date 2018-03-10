@@ -113,7 +113,7 @@ namespace DTM.DbManager.Services.Repository
                 {
                     Nom = nomPerso,
                     Race = reader["Race"].ToString(),
-                    TypePerso = reader["Type_Perso"] != DBNull.Value ? Convert.ToInt16(reader["Type_Perso"]) : 0
+                    TypePerso = reader["Type de perso"] != DBNull.Value ? Convert.ToInt16(reader["Type de perso"]) : 0
 
                 };
                 if (reader["Experience"] == DBNull.Value)

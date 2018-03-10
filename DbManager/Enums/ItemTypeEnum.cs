@@ -2,9 +2,13 @@
 {
     public enum ItemTypeEnum
     {
-        Na = 0,
+        Inconnu = 0,
         Commun = 1,
         Rare = 2,
-        Legendaire = 3
+        Legendaire = 3,
+        Quete = 4,
+        Special = 5,
+        UsageUnique = 6,
+        Divers = 7
     }
 }
