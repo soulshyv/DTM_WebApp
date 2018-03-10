@@ -53,7 +53,7 @@ namespace DTM.DbManager.Services.Repository
                         Lvl = reader["Lvl"] != DBNull.Value ? Convert.ToInt16(reader["Lvl"]) : 0,
                         Po = reader["Po"] != DBNull.Value ? Convert.ToInt16(reader["Po"]) : 0,
                         Race = reader["Race"].ToString(),
-                        TypePerso = reader["Type_Perso"].ToString()
+                        TypePerso = reader["Type_Perso"] != DBNull.Value ? Convert.ToInt16(reader["Type_Perso"]) : 0
 
                     });
                 }
@@ -68,7 +68,7 @@ namespace DTM.DbManager.Services.Repository
             Caracs caracs;
             Jauges jauges;
             Stats stats;
-            Inventaire Inventaire;
+            Inventaire inventaire;
             var elements = new List<Element>();
             var skills = new List<Skill>();
             var dons = new List<DonPerso>();
@@ -113,7 +113,7 @@ namespace DTM.DbManager.Services.Repository
                 {
                     Nom = nomPerso,
                     Race = reader["Race"].ToString(),
-                    TypePerso = reader["Type de perso"].ToString()
+                    TypePerso = reader["Type_Perso"] != DBNull.Value ? Convert.ToInt16(reader["Type_Perso"]) : 0
 
                 };
                 if (reader["Experience"] == DBNull.Value)
@@ -195,13 +195,13 @@ namespace DTM.DbManager.Services.Repository
                     stats.Social = Convert.ToInt16(reader["Social"]);
             }
 
-            Inventaire = await GetInventairePerso(nomPerso);
+            inventaire = await GetInventairePerso(nomPerso);
             elements = await GetElementPerso(nomPerso);
             skills = await GetSkillsPerso(nomPerso);
             dons = await GetDonsPerso(nomPerso);
             demons = await GetDemonPerso(nomPerso);
 
-            return new CharacterFull(charac, caracs, jauges, stats, elements, skills, dons, demons, Inventaire);
+            return new CharacterFull(charac, caracs, jauges, stats, elements, skills, dons, demons, inventaire);
         }
 
         public Task<Caracs> GetCaracsPerso(string nomPerso)
@@ -493,7 +493,7 @@ namespace DTM.DbManager.Services.Repository
                     {
                         Nom = reader["Item"].ToString(),
                         Description = reader["Description"].ToString(),
-                        TypeItem = reader["Type d'item"].ToString(),
+                        TypeItem = reader["Type d'item"] != DBNull.Value ? Convert.ToInt16(reader["Type d'item"]) : 0,
                         Commentaire = reader["Commentaire"].ToString()
                     };
 
@@ -545,7 +545,7 @@ namespace DTM.DbManager.Services.Repository
                 {
                     Nom = reader["Item"].ToString(),
                     Description = reader["Description"].ToString(),
-                    TypeItem = reader["Type d'item"].ToString(),
+                    TypeItem = reader["Type d'item"] != DBNull.Value ? Convert.ToInt16(reader["Type d'item"]) : 0,
                     Commentaire = reader["Commentaire"].ToString(),
                 };
 
@@ -594,7 +594,7 @@ namespace DTM.DbManager.Services.Repository
                 {
                     Nom = reader["Nom"].ToString(),
                     Race = reader["Race"].ToString(),
-                    TypePerso = reader["Type_Perso"].ToString()
+                    TypePerso = reader["Type_Perso"] != DBNull.Value ? Convert.ToInt16(reader["Type_Perso"]) : 0
 
                 };
 

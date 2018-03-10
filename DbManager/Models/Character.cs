@@ -7,6 +7,6 @@
         public int? Lvl { get; set; }
         public int? Po { get; set; }
         public string Race { get; set; }
-        public string TypePerso{ get; set; }
+        public int TypePerso{ get; set; }
     }
 }

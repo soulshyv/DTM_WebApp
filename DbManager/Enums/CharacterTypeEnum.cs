@@ -2,8 +2,8 @@
 {
     public enum CharacterTypeEnum
     {
-        NA = 0,
-        PJ = 1,
-        PNJ = 2
+        Na = 0,
+        Pj = 1,
+        Pnj = 2
     }
 }
