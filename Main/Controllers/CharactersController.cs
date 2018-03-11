@@ -196,5 +196,14 @@ namespace Main.Controllers
 
             return NotFound();
         }
+
+        [HttpPost]
+        public async void PostDonsPerso(List<DonPerso> dons, string nomPerso)
+        {
+            await Update(new CharacterDetailsViewModel
+            {
+                Dons = dons
+            }, nomPerso);
+        }
     }
 }
