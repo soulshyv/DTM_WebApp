@@ -24,8 +24,4 @@
     <ProjectReference Include="..\UserManager\DTM.UserManager.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>

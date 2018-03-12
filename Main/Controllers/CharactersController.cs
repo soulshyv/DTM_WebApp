@@ -198,7 +198,7 @@ namespace Main.Controllers
         }
 
         [HttpPost]
-        public async void PostDonsPerso(List<DonPerso> dons, string nomPerso)
+        public async void PostDonsPerso(List<DTM.DbManager.Models.DonPerso> dons, string nomPerso)
         {
             await Update(new CharacterDetailsViewModel
             {
