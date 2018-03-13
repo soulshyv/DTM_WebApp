@@ -3,46 +3,47 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
+using DemonTaleManager.Web.Views.Characters;
 using DTM.Core.Extensions;
+using DTM.Core.Repositories;
 using DTM.DbManager.Contracts;
-using DTM.DbManager.Models;
+using DTM.DbManager.Services.Repository;
 using DTM.DbManager.ViewModels;
 using DTM.UserManager.Contracts;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
-using Newtonsoft.Json;
 
-namespace Main.Controllers
+namespace DemonTaleManager.Web.Controllers
 {
-    public class CharactersController : Controller
+    public class CharactersController : DtmControllerBase
     {
-        public CharactersController(IUserManager userManager, IDtmRepositorySelect dtmRepositorySelect,
-            IDtmRepositoryUpdate dtmRepositoryUpdate, ICharacPicSearcher characPicSearcher, IHostingEnvironment env)
+        public CharactersController(ILifetimeScope scope) : base(scope)
         {
-            UserManager = userManager;
-            DtmRepositorySelect = dtmRepositorySelect;
-            DtmRepositoryUpdate = dtmRepositoryUpdate;
-            CharacPicSearcher = characPicSearcher;
-            HostingEnv = env;
         }
 
-        private IUserManager UserManager { get; }
-        private IDtmRepositorySelect DtmRepositorySelect { get; }
-        private IDtmRepositoryUpdate DtmRepositoryUpdate { get; }
-        private ICharacPicSearcher CharacPicSearcher { get; }
-        private IHostingEnvironment HostingEnv { get; }
+        private IUserManager _userManager;
+        protected IUserManager UserManager => _userManager ?? (_userManager = Scope.Resolve<IUserManager>());
+
+        private ICharacPicSearcher _characPicSearcher;
+        protected ICharacPicSearcher CharacPicSearcher => _characPicSearcher ??(_characPicSearcher = Scope.Resolve<ICharacPicSearcher>());
+
+        private PersoRepository _persoRepository;
+        protected PersoRepository PersoRepository => _persoRepository ?? (_persoRepository = Scope.Resolve<PersoRepository>());
+
+        private IHostingEnvironment _hostingEnv;
+        protected IHostingEnvironment HostingEnv => _hostingEnv ?? (_hostingEnv = Scope.Resolve<IHostingEnvironment>());
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var allPersos = await DtmRepositorySelect.GetAllPerso();
+            var allPersos = await PersoRepository.GetAll();
 
             if (allPersos != null)
                 return View(new CharactersViewModel
                 {
-                    Characters = allPersos
+                    Persos = allPersos
                 });
 
             return View();
@@ -54,14 +55,14 @@ namespace Main.Controllers
             if (nomPerso == null)
                 return PartialView("Details");
 
-            var perso = await DtmRepositorySelect.GetFullPersoByName(nomPerso);
+            var perso = await PersoRepository.GetFullPersoByName(nomPerso);
             var pic = GetPicture(nomPerso) + "?" + new DateTime().TimeOfDay.Ticks; 
 
             return PartialView("Details", new CharacterDetailsViewModel
             {
                 DetailsPerso = perso,
                 CharacterPicture = pic,
-                NomPerso = perso.Charac.Nom
+                NomPerso = perso.Nom
             });
         }
 

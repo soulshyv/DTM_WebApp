@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Main
+namespace DTM.Core.Models
 {
-    public partial class PassifPerso
+    public partial class User
     {
         public int Id { get; set; }
-        public int PassifId { get; set; }
+        public string UserName { get; set; }
+        public string Pwd { get; set; }
         public int PersoId { get; set; }
 
-        public Passif Passif { get; set; }
         public Perso Perso { get; set; }
     }
 }

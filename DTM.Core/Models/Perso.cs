@@ -17,7 +17,7 @@ namespace DTM.Core.Models
             PassifPerso = new HashSet<PassifPerso>();
             SkillPerso = new HashSet<SkillPerso>();
             Stat = new HashSet<Stat>();
-            Users = new HashSet<Users>();
+            User = new HashSet<User>();
         }
 
         public int Id { get; set; }
@@ -38,6 +38,6 @@ namespace DTM.Core.Models
         public ICollection<PassifPerso> PassifPerso { get; set; }
         public ICollection<SkillPerso> SkillPerso { get; set; }
         public ICollection<Stat> Stat { get; set; }
-        public ICollection<Users> Users { get; set; }
+        public ICollection<User> User { get; set; }
     }
 }

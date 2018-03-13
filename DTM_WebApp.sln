@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Main", "Main\Main.csproj", "{9DC1263A-E3D4-41D3-8A13-8351F1AEFDF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemonTaleManager.Web", "Main\DemonTaleManager.Web.csproj", "{9DC1263A-E3D4-41D3-8A13-8351F1AEFDF3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTM.UserManager", "UserManager\DTM.UserManager.csproj", "{83800E1B-7E45-4803-AA58-79D808B8C8E0}"
 EndProject

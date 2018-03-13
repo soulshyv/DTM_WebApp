@@ -1,4 +1,7 @@
-﻿using DTM.Core.Contracts;
+﻿using System.Data;
+using DTM.Core.Contracts;
+using DTM.Core.Models;
+using DTM.Core.Repositories;
 using DTM.Core.Services;
 using DTM.DbManager;
 using DTM.UserManager;
@@ -6,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MySql.Data.MySqlClient;
 
 namespace Main
 {
@@ -22,6 +26,14 @@ namespace Main
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddScoped<IDbConnection>(_ =>
+                new MySqlConnection(Configuration.GetConnectionString("DefaultConnection"))
+            );
+
+            services.AddDbContext<DtmDbContext>();
+
+            services.AddRepositories();
 
             var defaultConnection = Configuration.GetConnectionString("DefaultConnection");
             services.AddSingleton<IDtmDbConnection>(_ =>

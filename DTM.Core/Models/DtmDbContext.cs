@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Main
+namespace DTM.Core.Models
 {
-    public partial class jdrContext : DbContext
+    public partial class DtmDbContext : DbContext
     {
         public virtual DbSet<Carac> Carac { get; set; }
         public virtual DbSet<Demon> Demon { get; set; }
@@ -25,7 +25,7 @@ namespace Main
         public virtual DbSet<Skill> Skill { get; set; }
         public virtual DbSet<SkillPerso> SkillPerso { get; set; }
         public virtual DbSet<Stat> Stat { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<User> User { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -517,9 +517,9 @@ namespace Main
                     .HasConstraintName("fk_stat_perso");
             });
 
-            modelBuilder.Entity<Users>(entity =>
+            modelBuilder.Entity<User>(entity =>
             {
-                entity.ToTable("users");
+                entity.ToTable("user");
 
                 entity.HasIndex(e => e.PersoId)
                     .HasName("fk_users_perso");
@@ -539,7 +539,7 @@ namespace Main
                     .HasMaxLength(50);
 
                 entity.HasOne(d => d.Perso)
-                    .WithMany(p => p.Users)
+                    .WithMany(p => p.User)
                     .HasForeignKey(d => d.PersoId)
                     .HasConstraintName("fk_users_perso");
             });

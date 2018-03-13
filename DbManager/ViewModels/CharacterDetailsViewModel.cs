@@ -1,12 +1,18 @@
 ﻿using System.Collections.Generic;
+using DTM.Core.Models;
 using DTM.DbManager.Models;
 using Microsoft.AspNetCore.Http;
+using Demon = DTM.DbManager.Models.Demon;
+using DonPerso = DTM.DbManager.Models.DonPerso;
+using Element = DTM.DbManager.Models.Element;
+using Inventaire = DTM.DbManager.Models.Inventaire;
+using Skill = DTM.DbManager.Models.Skill;
 
 namespace DTM.DbManager.ViewModels
 {
     public class CharacterDetailsViewModel
     {
-        public CharacterFull DetailsPerso { get; set; }
+        public Perso DetailsPerso { get; set; }
         public string CharacterPicture { get; set; }
         public Character Charac { get; set; }
         public Caracs Caracs { get; set; }

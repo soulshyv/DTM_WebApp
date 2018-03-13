@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    
+    <!-- FixMe : Alternative en attendant un fix de ce problème -->
     <RuntimeFrameworkVersion>2.0.3</RuntimeFrameworkVersion>
   </PropertyGroup>
 

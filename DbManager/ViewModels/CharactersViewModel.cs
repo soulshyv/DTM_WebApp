@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using DTM.Core.Models;
 using DTM.DbManager.Models;
 
 namespace DTM.DbManager.ViewModels
 {
     public class CharactersViewModel
     {
-        public List<Character> Characters { get; set; }
+        public IEnumerable<Perso> Persos { get; set; }
     }
 }
