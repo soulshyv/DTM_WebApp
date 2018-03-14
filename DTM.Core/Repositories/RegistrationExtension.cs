@@ -7,7 +7,7 @@ namespace DTM.Core.Repositories
     {
         public static IServiceCollection AddRepositories(this IServiceCollection sc)
         {
-            sc.TryAddScoped<CaracsRepository>();
+            sc.TryAddScoped<CaracRepository>();
             sc.TryAddScoped<DemonPersoRepository>();
             sc.TryAddScoped<DemonRepository>();
             sc.TryAddScoped<DonPersoRepository>();
@@ -26,6 +26,8 @@ namespace DTM.Core.Repositories
             sc.TryAddScoped<SkillRepository>();
             sc.TryAddScoped<StatRepository>();
             sc.TryAddScoped<UserRepository>();
+
+            sc.TryAddScoped<DtmRepositories>();
 
             return sc;
         }

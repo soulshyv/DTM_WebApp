@@ -29,8 +29,8 @@ namespace DemonTaleManager.Web.Controllers
         private ICharacPicSearcher _characPicSearcher;
         protected ICharacPicSearcher CharacPicSearcher => _characPicSearcher ??(_characPicSearcher = Scope.Resolve<ICharacPicSearcher>());
 
-        private PersoRepository _persoRepository;
-        protected PersoRepository PersoRepository => _persoRepository ?? (_persoRepository = Scope.Resolve<PersoRepository>());
+        private DtmRepositories _dtmRepositories;
+        protected DtmRepositories DtmRepositories => _dtmRepositories ?? (_dtmRepositories = Scope.Resolve<DtmRepositories>());
 
         private IHostingEnvironment _hostingEnv;
         protected IHostingEnvironment HostingEnv => _hostingEnv ?? (_hostingEnv = Scope.Resolve<IHostingEnvironment>());
@@ -38,7 +38,7 @@ namespace DemonTaleManager.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var allPersos = await PersoRepository.GetAll();
+            var allPersos = await DtmRepositories.PersoRepository.GetAll();
 
             if (allPersos != null)
                 return View(new CharactersViewModel
@@ -55,7 +55,7 @@ namespace DemonTaleManager.Web.Controllers
             if (nomPerso == null)
                 return PartialView("Details");
 
-            var perso = await PersoRepository.GetFullPersoByName(nomPerso);
+            var perso = await DtmRepositories.PersoRepository.GetFullPersoByName(nomPerso);
             var pic = GetPicture(nomPerso) + "?" + new DateTime().TimeOfDay.Ticks; 
 
             return PartialView("Details", new CharacterDetailsViewModel
@@ -91,19 +91,19 @@ namespace DemonTaleManager.Web.Controllers
 
             if (!details.Caracs.IsAnyNullOrEmpty())
             {
-                await DtmRepositoryUpdate.UpdateCaracsPerso(details.Caracs, nomPerso);
+                await DtmRepositories.CaracRepository.Update(details.Caracs);
             }
             else
             {
-                if (!details.Charac.IsAnyNullOrEmpty())
+                if (!details.Perso.IsAnyNullOrEmpty())
                 {
-                    await DtmRepositoryUpdate.UpdatePerso(details.Charac, nomPerso);
+                    await DtmRepositories.PersoRepository.Update(details.Perso);
                 }
                 else
                 {
                     if (!details.Demons.IsAnyNullOrEmpty())
                     {
-                        await DtmRepositoryUpdate.UpdateDemonsPerso(details.Demons, nomPerso);
+                        await DtmRepositories.DemonRepository.Update(details.Demons);
                     }
                     else
                     {

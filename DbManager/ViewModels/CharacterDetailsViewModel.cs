@@ -14,10 +14,10 @@ namespace DTM.DbManager.ViewModels
     {
         public Perso DetailsPerso { get; set; }
         public string CharacterPicture { get; set; }
-        public Character Charac { get; set; }
-        public Caracs Caracs { get; set; }
-        public Jauges Jauges { get; set; }
-        public Stats Stats { get; set; }
+        public Perso Perso{ get; set; }
+        public Carac Caracs { get; set; }
+        public Jauge Jauges { get; set; }
+        public Stat Stats { get; set; }
         public List<Element> Elements { get; set; }
         public List<Skill> Skills { get; set; }
         public List<DonPerso> Dons { get; set; }

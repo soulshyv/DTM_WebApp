@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DTM.Core.Repositories
 {
-    public class CaracsRepository : RepositoryBase<DtmDbContext, Carac, int>
+    public class CaracRepository : RepositoryBase<DtmDbContext, Carac, int>
     {
-        public CaracsRepository(DtmDbContext co, Func<DtmDbContext, DbSet<Carac>> tableDbSet, Expression<Func<Carac, int>> tableKeySelector) : base(co, tableDbSet, tableKeySelector)
+        public CaracRepository(DtmDbContext co, Func<DtmDbContext, DbSet<Carac>> tableDbSet, Expression<Func<Carac, int>> tableKeySelector) : base(co, tableDbSet, tableKeySelector)
         {
         }
 
