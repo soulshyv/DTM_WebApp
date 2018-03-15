@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 
-namespace DTM.DbManager.Models
+namespace DTM.Core.Models
 {
     public class CharacterFull
     {
-        public CharacterFull(Character charac,
-            Caracs caracs,
-            Jauges jauges,
-            Stats stats,
+        public CharacterFull(Perso charac,
+            Carac caracs,
+            Jauge jauges,
+            Stat stats,
             List<Element> elements,
             List<Skill> skills,
             List<DonPerso> dons,
@@ -27,10 +27,10 @@ namespace DTM.DbManager.Models
 
         public CharacterFull(){}
 
-        public Character Charac;
-        public Caracs Caracs;
-        public Jauges Jauges;
-        public Stats Stats;
+        public Perso Charac;
+        public Carac Caracs;
+        public Jauge Jauges;
+        public Stat Stats;
         public List<Element> Elements;
         public List<Skill> Skills;
         public List<DonPerso> Dons;

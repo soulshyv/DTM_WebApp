@@ -5,12 +5,12 @@ $(document).ready(function () {
         while (new Date().getTime() < start + delay);
     }
 
-    function loadDetails(nomPerso) {
-        $("#details").load("Characters/GetDetails?nomPerso=" + nomPerso);
+    function loadDetails(idPerso) {
+        $("#details").load("Characters/GetDetails?idPerso=" + idPerso);
     }
 
     $(".details").click(function () {
-        var nomPerso = $(this).parent().attr("id");
-        loadDetails(nomPerso);
+        var idPerso = $(this).parent().attr("id");
+        loadDetails(idPerso);
     });
 });

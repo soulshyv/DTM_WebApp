@@ -1,14 +1,23 @@
-﻿@using DTM.Core.Extensions
+﻿@*@using DTM.Core.Extensions
 @using DTM.Core.Utils
+@using DTM.Core.ViewModels
 @using DTM.DbManager.Enums
-@model DTM.DbManager.ViewModels.CharacterDetailsViewModel
+@model DTM.Core.ViewModels.CharacterDetailsViewModel
 @{
-    var details = Model.DetailsPerso;
+    var perso = Model.Perso;
+    var caracs = Model.Caracs;
+    var jauges = Model.Jauges;
+    var stats = Model.Stats;
+    var elements = Model.Elements;
+    var skills = Model.Skills;
+    var dons = Model.DonsPerso.OrderBy(ob => ob.Taux).ToList();
+    var demons = Model.DemonsPerso;
+    var inventaire = Model.Inventaire;
 }
 
 <h1 class="text-center col-lg-12 col-lg-offset-1">Fiche de personnage</h1>
 
-@if (details == null)
+@if (Model == null)
 {
     <h3 class="text-center col-lg-12 col-lg-offset-1">Sélectionnez un personnage dans le tableau pour voir sa fiche complète</h3>
 }
@@ -16,10 +25,10 @@ else
 {
     <div id="detailsPersoScrolling" class="col-lg-12 col-lg-offset-1">
         <div id="detailsPerso">
-            <h2 id="nomPerso" class="text-center">@details.Charac.Nom</h2>
-            <h3 id="raceperso" class="text-center">@details.Charac.Race</h3>
+            <h2 id="nomPerso" class="text-center">@perso.Nom</h2>
+            <h3 id="raceperso" class="text-center">@perso.Nom</h3>
 
-            <img class="center-block" id="characPic" src="@Model.CharacterPicture" alt="Image de @details.Charac.Nom" />
+            <img class="center-block" id="characPic" src="@Model.CharacterPicture" alt="Image de @perso.Nom" />
 
             <button class="btn btn-primary center-block" data-toggle="modal" data-target="#modifPic" type="button">Modifier l'image</button>
 
@@ -28,45 +37,48 @@ else
             <table class="table detailsTab">
                 <!-- Caractéristiques -->
                 <tr class="text-center">
-                    <td>Lvl : @details.Charac.Lvl</td>
-                    <td>Xp : @details.Charac.Xp</td>
-                    <td>Po : @details.Charac.Po</td>
-                    <td>Type : @((CharacterTypeEnum)details.Charac.TypePerso)</td>
+                    <td>Lvl : @perso.Lvl</td>
+                    <td>Xp : @perso.Xp</td>
+                    <td>Po : @perso.Po</td>
+                    <td>Type : @((CharacterTypeEnum)perso.TypePerso)</td>
                 </tr>
             </table>
 
             <button class="btn btn-primary center-block" data-toggle="modal" data-target="#modifCharac" type="button">Modifier les caractéristiques</button>
 
             <hr />
+            
+             @if (jauges != null)
+             {
+                 <table class="table table-bordered detailsTab">
+                     <!-- Jauges -->
+                     <tr>
+                         <th class="text-center">Vie</th>
+                         <th class="text-center">Psy</th>
+                         <th class="text-center">Synchro</th>
+                         <th></th>
+                     </tr>
+                     <tr class="text-center">
+                         <!-- Jauge de vie -->
+                         <td class="text-center">
+                             @jauges.Vie / @jauges.VieMax
+                         </td>
+                         <!-- Jauge de psy -->
+                         <td class="text-center">
+                             @jauges.Psy / @jauges.PsyMax
+                         </td>
+                         <!-- Jauge de synchro -->
+                         <td class="text-center">
+                             @jauges.Sync / @jauges.SyncMax
+                         </td>
+                         <td>
+                             <button class="btn btn-primary" data-toggle="modal" data-target="#modifJauges" type="button">Modifier</button>
+                         </td>
+                     </tr>
+                 </table>
+             }
 
-            <table class="table table-bordered detailsTab">
-                <!-- Jauges -->
-                <tr>
-                    <th class="text-center">Vie</th>
-                    <th class="text-center">Psy</th>
-                    <th class="text-center">Synchro</th>
-                    <th></th>
-                </tr>
-                <tr class="text-center">
-                    <!-- Jauge de vie -->
-                    <td class="text-center">
-                        @details.Jauges.Pv / @details.Jauges.PvMax
-                    </td>
-                    <!-- Jauge de psy -->
-                    <td class="text-center">
-                        @details.Jauges.Psy / @details.Jauges.PsyMax
-                    </td>
-                    <!-- Jauge de synchro -->
-                    <td class="text-center">
-                        @details.Jauges.Synchro / @details.Jauges.SynchroMax
-                    </td>
-                    <td>
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#modifJauges" type="button">Modifier</button>
-                    </td>
-                </tr>
-            </table>
-
-            @if (details.Stats != null)
+            @if (stats != null)
             {
                 <table class="table table-bordered detailsTab">
                     <!-- Stats -->
@@ -79,15 +91,15 @@ else
                     <tr class="text-center">
                         <!-- Physique -->
                         <td class="form-group">
-                            @details.Stats.Physique %
+                            @stats.Phy %
                         </td>
                         <!-- Mental -->
                         <td class="form-group">
-                            @details.Stats.Mental %
+                            @stats.Mental %
                         </td>
                         <!-- Social -->
                         <td class="form-group">
-                            @details.Stats.Social %
+                            @stats.Social %
                         </td>
                         <td width="135px">
                             <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#modifStats" type="button">Modifier</button>
@@ -105,21 +117,18 @@ else
                 </tr>
                 <tr>
                     <td>
-                        @if (details.Caracs != null)
+                        @if (caracs != null)
                         {
-                            <span>Attaque : @details.Caracs.Attaque<br /></span>
-                            <span>Défense : @details.Caracs.Defense<br /></span>
-                            <span>Rapidité : @details.Caracs.Rapidite<br /></span>
+                            <span>Attaque : @caracs.Atk<br /></span>
+                            <span>Défense : @caracs.Def<br /></span>
+                            <span>Rapidité : @caracs.Rap<br /></span>
                         }
                     </td>
                     <td width="300px">
-                        @if (details.Dons != null)
+                        @foreach (var d in dons)
                         {
-                            foreach (var don in details.Dons.OrderBy(ob => ob.Taux).ToList())
-                            {
-                                var display = don.Description != string.Empty ? ":" + don.Description : string.Empty;
-                                <span>[@don.Taux%] @don.Libelle @display<br /></span>
-                            }
+                            var display = d.Don.Description != string.Empty ? ":" + d.Don.Description : string.Empty;
+                            <span>[@d.Taux%] @d.Don.Libelle @display<br /></span>
                         }
                     </td>
                     <td></td>
@@ -127,7 +136,7 @@ else
                 </tr>
             </table>
 
-            @if (details.Skills != null)
+            @if (skills != null)
             {
                 <table class="table table-bordered detailsTab">
                     <tr>
@@ -139,19 +148,19 @@ else
                         <th>Taux</th>
                         <th>Dégats</th>
                     </tr>
-                    @foreach (var skill in details.Skills)
+                    @foreach (var sk in skills)
                     {
                         <tr>
-                            <td>@skill.Libelle</td>
-                            <td>@skill.Description</td>
-                            <td>@skill.Taux</td>
-                            <td>@skill.Degats</td>
+                            <td>@sk.Skill.Libelle</td>
+                            <td>@sk.Skill.Description</td>
+                            <td>@sk.Skill.Taux</td>
+                            <td>@sk.Skill.Degats</td>
                         </tr>
                     }
                 </table>
             }
 
-            @if (details.Inventaire != null)
+            @if (perso.Inventaire != null)
             {
                 <table class="table table-bordered detailsTab">
                     <tr>
@@ -167,7 +176,7 @@ else
                     </tr>
 
 
-                    @foreach (var item in details.Inventaire.Items.OrderBy(ob => ob.Nom).ToList())
+                    @foreach (var item in inventaire.Item)
                     {
                         <tr>
                             <td>@item.Nom</td>
@@ -230,9 +239,9 @@ else
                     <form method="post" enctype="multipart/form-data">
                         <!-- Caractéristiques -->
                         <div class="text-center">
-                            <label asp-for="@details.Charac.Nom"></label> <input asp-for="@details.Charac.Nom" type="text" />
-                            <label asp-for="@details.Charac.Race"></label>
-                            <select asp-for="@details.Charac.Race">
+                            <label asp-for="@perso.Charac.Nom"></label> <input asp-for="@perso.Charac.Nom" type="text" />
+                            <label asp-for="@perso.Charac.Race"></label>
+                            <select asp-for="@perso.Charac.Race">
                                 @foreach (var r in EnumUtil.GetValues<CharacterRaceEnum>())
                                 {
                                     var race = r.ToString();
@@ -241,7 +250,7 @@ else
                                         race = r.ToString().ToKebabCase();
                                     }
 
-                                    if (race == details.Charac.Race.ToString())
+                                    if (race == perso.Charac.Race.ToString())
                                     {
                                         <option selected="selected" value="@race">@race</option>
                                     }
@@ -258,8 +267,8 @@ else
                         <table class="table">
                             <tr class="text-center">
                                 <td>
-                                    <label asp-for="@details.Charac.Lvl"></label>
-                                    <select asp-for="@details.Charac.Lvl">
+                                    <label asp-for="@perso.Charac.Lvl"></label>
+                                    <select asp-for="@perso.Charac.Lvl">
                                         @for (var i = 1; i <= 999; i++)
                                         {
                                             <option value="@i">@i</option>
@@ -267,8 +276,8 @@ else
                                     </select>
                                 </td>
                                 <td>
-                                    <label asp-for="@details.Charac.Xp"></label>
-                                    <select asp-for="@details.Charac.Xp">
+                                    <label asp-for="@perso.Charac.Xp"></label>
+                                    <select asp-for="@perso.Charac.Xp">
                                         @for (var i = 0; i <= 99; i++)
                                         {
                                             <option value="@i">@i</option>
@@ -276,8 +285,8 @@ else
                                     </select>
                                 </td>
                                 <td>
-                                    <label asp-for="@details.Charac.Po"></label>
-                                    <select asp-for="@details.Charac.Po">
+                                    <label asp-for="@perso.Charac.Po"></label>
+                                    <select asp-for="@perso.Charac.Po">
                                         @for (var i = 0; i <= 999; i++)
                                         {
                                             <option value="@i">@i</option>
@@ -285,11 +294,11 @@ else
                                     </select>
                                 </td>
                                 <td>
-                                    <label asp-for="@details.Charac.TypePerso">Type</label>
-                                    <select asp-for="@details.Charac.TypePerso">
+                                    <label asp-for="@perso.Charac.TypePerso">Type</label>
+                                    <select asp-for="@perso.Charac.TypePerso">
                                         @foreach (var type in EnumUtil.GetValues<CharacterTypeEnum>())
                                         {
-                                            if (type == (CharacterTypeEnum) details.Charac.TypePerso)
+                                            if (type == (CharacterTypeEnum) perso.Charac.TypePerso)
                                             {
                                                 <option value="@type" selected="selected">@type</option>
                                             }
@@ -333,8 +342,8 @@ else
                             <tr class="text-center">
                                 <!-- Jauge de vie -->
                                 <td class="form-group">
-                                    <label asp-for="@details.Jauges.Pv">Vie : </label>
-                                    <select asp-for="@details.Jauges.Pv">
+                                    <label asp-for="@perso.Jauges.Pv">Vie : </label>
+                                    <select asp-for="@perso.Jauges.Pv">
                                         <option selected="selected" value="none"></option>
                                         @for (var i = 0; i <= 100; i++)
                                         {
@@ -342,8 +351,8 @@ else
                                         }
                                     </select>
 
-                                    <label asp-for="@details.Jauges.PvMax">/</label>
-                                    <select asp-for="@details.Jauges.PvMax">
+                                    <label asp-for="@perso.Jauges.PvMax">/</label>
+                                    <select asp-for="@perso.Jauges.PvMax">
                                         <option selected="selected" value="none"></option>
                                         @for (var i = 0; i < 100; i++)
                                         {
@@ -353,8 +362,8 @@ else
                                 </td>
                                 <!-- Jauge de psy -->
                                 <td class="form-group">
-                                    <label asp-for="@details.Jauges.Psy">Psy : </label>
-                                    <select asp-for="@details.Jauges.Psy">
+                                    <label asp-for="@perso.Jauges.Psy">Psy : </label>
+                                    <select asp-for="@perso.Jauges.Psy">
                                         <option selected="selected" value="none"></option>
                                         @for (var i = 0; i <= 100; i++)
                                         {
@@ -362,8 +371,8 @@ else
                                         }
                                     </select>
 
-                                    <label asp-for="@details.Jauges.PsyMax">/</label>
-                                    <select asp-for="@details.Jauges.PsyMax">
+                                    <label asp-for="@perso.Jauges.PsyMax">/</label>
+                                    <select asp-for="@perso.Jauges.PsyMax">
                                         <option selected="selected" value="none"></option>
                                         @for (var i = 1; i <= 100; i++)
                                         {
@@ -373,8 +382,8 @@ else
                                 </td>
                                 <!-- Jauge de synchro -->
                                 <td class="form-group">
-                                    <label asp-for="@details.Jauges.Synchro">Synchro : </label>
-                                    <select asp-for="@details.Jauges.Synchro">
+                                    <label asp-for="@perso.Jauges.Synchro">Synchro : </label>
+                                    <select asp-for="@perso.Jauges.Synchro">
                                         <option selected="selected" value="none"></option>
                                         @for (var i = 0; i <= 5; i++)
                                         {
@@ -382,8 +391,8 @@ else
                                         }
                                     </select>
 
-                                    <label asp-for="@details.Jauges.SynchroMax">/</label>
-                                    <select asp-for="@details.Jauges.SynchroMax">
+                                    <label asp-for="@perso.Jauges.SynchroMax">/</label>
+                                    <select asp-for="@perso.Jauges.SynchroMax">
                                         <option selected="selected" value="none"></option>
                                         @for (var i = 1; i <= 5; i++)
                                         {
@@ -426,36 +435,36 @@ else
                             <tr class="text-center">
                                 <!-- Physique -->
                                 <td class="form-group">
-                                    <select asp-for="@details.Stats.Physique">
+                                    <select asp-for="@perso.Stats.Physique">
                                         <option value="none"></option>
                                         @for (var i = 0; i <= 100; i++)
                                         {
                                             <option value="@i">@i</option>
                                         }
                                     </select>
-                                    <label asp-for="@details.Stats.Physique"> %</label>
+                                    <label asp-for="@perso.Stats.Physique"> %</label>
                                 </td>
                                 <!-- Mental -->
                                 <td class="form-group">
-                                    <select asp-for="@details.Stats.Mental">
+                                    <select asp-for="@perso.Stats.Mental">
                                         <option value="none"></option>
                                         @for (var i = 0; i <= 100; i++)
                                         {
                                             <option value="@i">@i</option>
                                         }
                                     </select>
-                                    <label asp-for="@details.Stats.Mental"> %</label>
+                                    <label asp-for="@perso.Stats.Mental"> %</label>
                                 </td>
                                 <!-- Social -->
                                 <td class="form-group">
-                                    <select asp-for="@details.Stats.Social">
+                                    <select asp-for="@perso.Stats.Social">
                                         <option value="none"></option>
                                         @for (var i = 0; i <= 100; i++)
                                         {
                                             <option value="@i">@i</option>
                                         }
                                     </select>
-                                    <label asp-for="@details.Stats.Social"> %</label>
+                                    <label asp-for="@perso.Stats.Social"> %</label>
                                 </td>
                             </tr>
                         </table>
@@ -486,11 +495,11 @@ else
                         <table class="table table-bordered">
                             <tr>
                                 <td>
-                                    <label asp-for="@details.Caracs.Attaque">Attaque</label>
-                                    <select asp-for="@details.Caracs.Attaque">
+                                    <label asp-for="@perso.Caracs.Attaque">Attaque</label>
+                                    <select asp-for="@perso.Caracs.Attaque">
                                         @for (var i = 0; i <= 150; i++)
                                         {
-                                            if (i == details.Caracs.Attaque)
+                                            if (i == perso.Caracs.Attaque)
                                             {
                                                 <option selected="selected" value="@i">@i</option>
                                             }
@@ -502,11 +511,11 @@ else
                                     </select>
                                 </td>
                                 <td>
-                                    <label asp-for="@details.Caracs.Defense">Défense</label>
-                                    <select asp-for="@details.Caracs.Defense">
+                                    <label asp-for="@perso.Caracs.Defense">Défense</label>
+                                    <select asp-for="@perso.Caracs.Defense">
                                         @for (var i = 0; i <= 50; i++)
                                         {
-                                            if (i == details.Caracs.Defense)
+                                            if (i == perso.Caracs.Defense)
                                             {
                                                 <option selected="selected" value="@i">@i</option>
                                             }
@@ -518,11 +527,11 @@ else
                                     </select>
                                 </td>
                                 <td>
-                                    <label asp-for="@details.Caracs.Rapidite">Rapidité</label>
-                                    <select asp-for="@details.Caracs.Rapidite">
+                                    <label asp-for="@perso.Caracs.Rapidite">Rapidité</label>
+                                    <select asp-for="@perso.Caracs.Rapidite">
                                         @for (var i = 0; i <= 50; i++)
                                         {
-                                            if (i == details.Caracs.Rapidite)
+                                            if (i == perso.Caracs.Rapidite)
                                             {
                                                 <option selected="selected" value="@i">@i</option>
                                             }
@@ -565,22 +574,22 @@ else
                                 <th class="text-center">Description</th>
                                 <th class="text-center">Taux</th>
                             </tr>
-                        @{ var dons = details.Dons.OrderBy(ob => ob.Taux).ToList(); }
-                        @for (var i = 0; i < dons.Count; i++)
+                        @{ var donsOrdered = dons.OrderBy(ob => ob.Taux).ToList(); }
+                        @for (var i = 0; i < donsOrdered.Count; i++)
                         {
                             <tr class="text-center">
                                 <!-- Libelle -->
                                 <td class="form-group">
-                                    <input asp-for="@dons[i].Libelle" type="text" />
+                                    <input asp-for="@donsOrdered[i].Libelle" type="text" />
                                 </td>
                                 <!-- Description -->
                                 <td class="form-group">
-                                    <textarea style="resize:none;" asp-for="@dons[i].Description" type="text">@dons[i].Description</textarea>
+                                    <textarea style="resize:none;" asp-for="@donsOrdered[i].Description" type="text">@donsOrdered[i].Description</textarea>
                                 </td>
                                 <!-- Taux -->
                                 <td class="form-group">
-                                    <select asp-for="@dons[i].Taux">
-                                @switch (dons[i].Taux)
+                                    <select asp-for="@donsOrdered[i].Taux">
+                                @switch (donsOrdered[i].Taux)
                                 {
                                     case 10:
                                         <option value="10" selected="selected">10</option>
@@ -695,4 +704,4 @@ else
             });
         });
     });
-</script>
+</script>*@

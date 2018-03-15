@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using Autofac;
 using DTM.Core.Contracts;
 using DTM.Core.Models;
 using DTM.Core.Repositories;
@@ -11,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MySql.Data.MySqlClient;
 
-namespace Main
+namespace DemonTaleManager.Web
 {
     public class Startup
     {
@@ -25,6 +26,8 @@ namespace Main
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<ILifetimeScope>();
+
             services.AddMvc();
 
             services.AddScoped<IDbConnection>(_ =>

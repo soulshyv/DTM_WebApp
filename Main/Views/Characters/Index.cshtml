@@ -1,5 +1,5 @@
-﻿@using DTM.DbManager.ViewModels
-@model DTM.DbManager.ViewModels.CharactersViewModel
+﻿@using DTM.Core.ViewModels
+@model CharactersViewModel
 @{
     ViewData["Title"] = "Gestion des personnages";
 }
@@ -16,9 +16,9 @@
             <th>Race</th>
             <th>Type</th>
         </tr>
-        @foreach (var charac in Model.Characters)
+        @foreach (var charac in Model.Persos)
         {
-            <tr id="@charac.Nom">
+            <tr id="@charac.Id">
                 <td class="details">@charac.Nom</td>
                 <td class="details">@charac.Xp</td>
                 <td class="details">@charac.Lvl</td>
