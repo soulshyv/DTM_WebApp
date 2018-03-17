@@ -1,15 +1,15 @@
-﻿using DTM.UserManager.Contracts;
+﻿using Autofac;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Main.Controllers
 {
     public class UsersController : Controller
     {
-        public IUserManager UserManager { get; }
+        public ILifetimeScope Scope { get; }
 
-        public UsersController(IUserManager userManager)
+        public UsersController(ILifetimeScope scope)
         {
-            UserManager = userManager;
+            Scope = scope;
         }
 
         public IActionResult Register()

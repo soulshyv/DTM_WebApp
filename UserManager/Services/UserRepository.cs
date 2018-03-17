@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Data;
 using System.Threading.Tasks;
-using DTM.Core.Contracts;
+using Autofac;
 using DTM.UserManager.Contracts;
 using MySql.Data.MySqlClient;
 
@@ -8,12 +9,12 @@ namespace DTM.UserManager.Services
 {
     public class UserRepository : IUserRepository
     {
-        public UserRepository(IDtmDbConnection dbConnection)
+        public UserRepository(ILifetimeScope scope)
         {
-            Conn = dbConnection.DbConnection;
+            Scope = scope;
         }
 
-        private MySqlConnection Conn { get; }
+        public ILifetimeScope Scope { get; }
 
         public async Task<string> GetUser(string username)
         {

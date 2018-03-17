@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Main
+namespace DemonTaleManager.Web
 {
     public class Program
     {
@@ -12,7 +12,7 @@ namespace Main
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
+                .UseStartup<DtmWebStartup>()
                 .Build();
     }
 }
