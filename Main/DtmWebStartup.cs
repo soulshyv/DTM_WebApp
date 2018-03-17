@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -25,10 +26,11 @@ namespace DemonTaleManager.Web
         {
             base.PopulateServices(bld, services);
 
-            services.AddDbContext<DtmDbContext>(/*(provider, builder) =>
-            {
-                builder.
-            }*/);
+            services.AddRouting(OnConfigureRouting);
+            services.AddMvc(OnConfigureMvc);
+
+            services.AddEntityFrameworkMySql().AddDbContext<DtmDbContext>(options =>
+            options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<CaracRepository>();
             services.AddScoped<DemonPersoRepository>();
@@ -50,9 +52,6 @@ namespace DemonTaleManager.Web
             services.AddScoped<SkillRepository>();
             services.AddScoped<StatRepository>();
             services.AddScoped<UserRepository>();
-
-            services.AddRouting(OnConfigureRouting);
-            services.AddMvc(OnConfigureMvc);
 
             services.AddCore();
         }

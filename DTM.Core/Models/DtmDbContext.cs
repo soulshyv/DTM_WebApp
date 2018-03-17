@@ -27,6 +27,14 @@ namespace DTM.Core.Models
         public virtual DbSet<Stat> Stat { get; set; }
         public virtual DbSet<User> User { get; set; }
 
+        public DtmDbContext(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseMySql("Server=localhost;Port=3306;Database=jdr;Uid=mj;Pwd=mj");
+            }
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
