@@ -1,17 +1,15 @@
-﻿using System;
+﻿using DTM.Core.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using DTM.Core.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace DTM.Core.Repositories
 {
     public class PassifRepository : RepositoryBase<DtmDbContext, Passif, int>
     {
-        public PassifRepository(DtmDbContext co, Func<DtmDbContext, DbSet<Passif>> tableDbSet, Expression<Func<Passif, int>> tableKeySelector) : base(co, tableDbSet, tableKeySelector)
+        public PassifRepository(DtmDbContext co) : base(co, _ => _.Passif, _ => _.Id)
         {
         }
 

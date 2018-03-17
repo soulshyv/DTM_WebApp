@@ -11,7 +11,7 @@ namespace DTM.Core.Repositories
 {
     public class DemonPersoRepository : RepositoryBase<DtmDbContext, DemonPerso, int>
     {
-        public DemonPersoRepository(DtmDbContext co, Func<DtmDbContext, DbSet<DemonPerso>> tableDbSet, Expression<Func<DemonPerso, int>> tableKeySelector) : base(co, tableDbSet, tableKeySelector)
+        public DemonPersoRepository(DtmDbContext co) : base(co, _ => _.DemonPerso, _ => _.Id)
         {
         }
 

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using DTM.Core.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
-using DTM.Core.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace DTM.Core.Repositories
 {
     public class StatRepository : RepositoryBase<DtmDbContext, Stat, int>
     {
-        public StatRepository(DtmDbContext co, Func<DtmDbContext, DbSet<Stat>> tableDbSet, Expression<Func<Stat, int>> tableKeySelector) : base(co, tableDbSet, tableKeySelector)
+        public StatRepository(DtmDbContext co) : base(co, _ => _.Stat, _ => _.Id)
         {
         }
 

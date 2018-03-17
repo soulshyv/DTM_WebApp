@@ -11,7 +11,7 @@ namespace DTM.Core.Repositories
 {
     public class DonRepository : RepositoryBase<DtmDbContext, Don, int>
     {
-        public DonRepository(DtmDbContext co, Func<DtmDbContext, DbSet<Don>> tableDbSet, Expression<Func<Don, int>> tableKeySelector) : base(co, tableDbSet, tableKeySelector)
+        public DonRepository(DtmDbContext co) : base(co, _ => _.Don, _ => _.Id)
         {
         }
 

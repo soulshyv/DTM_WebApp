@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using DTM.Core.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
-using DTM.Core.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace DTM.Core.Repositories
 {
     public class JaugeRepository : RepositoryBase<DtmDbContext, Jauge, int>
     {
-        public JaugeRepository(DtmDbContext co, Func<DtmDbContext, DbSet<Jauge>> tableDbSet, Expression<Func<Jauge, int>> tableKeySelector) : base(co, tableDbSet, tableKeySelector)
+        public JaugeRepository(DtmDbContext co) : base(co, _ => _.Jauge, _ => _.Id)
         {
         }
 

@@ -10,14 +10,16 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using DTM.Core.Models;
 
 namespace DemonTaleManager.Web.Controllers
 {
     public class CharactersController : Controller/* : DtmControllerBase*/
     {
-        public CharactersController(ILifetimeScope scope)/* : base(scope)*/
+        public CharactersController(ILifetimeScope scope, CaracRepository carac)/* : base(scope)*/
         {
             Scope = scope;
+            CaracRepository = carac;
         }
 
         private ICharacPicSearcher _characPicSearcher;
@@ -31,8 +33,10 @@ namespace DemonTaleManager.Web.Controllers
 
         public ILifetimeScope Scope { get; }
 
-        private CaracRepository _caracRepository;
-        public CaracRepository CaracRepository => _caracRepository ?? (_caracRepository = Scope.Resolve<CaracRepository>());
+        //private CaracRepository _caracRepository;
+        //public CaracRepository CaracRepository => _caracRepository ?? (_caracRepository = Scope.Resolve<CaracRepository>());
+
+        private CaracRepository CaracRepository { get; }
 
         private DemonRepository _demonRepository;
         public DemonRepository DemonRepository => _demonRepository ?? (_demonRepository = Scope.Resolve<DemonRepository>());
@@ -106,13 +110,20 @@ namespace DemonTaleManager.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetDetails(string nomPerso)
+        public async Task<IActionResult> GetDetails(int idPerso)
         {
-            if (nomPerso == null)
-                return PartialView("Details");
-
-            var perso = await DtmRepositories.PersoRepository.GetFullPersoByName(nomPerso);
-            var pic = GetPicture(nomPerso) + "?" + new DateTime().TimeOfDay.Ticks;
+            Perso perso;
+            try
+            {
+                //var perso = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
+                perso = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            var pic = GetPicture(perso.Nom) + "?" + new DateTime().TimeOfDay.Ticks;
 
             return PartialView("Details", new CharacterDetailsViewModel
             {

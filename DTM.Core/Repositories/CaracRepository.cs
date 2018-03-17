@@ -11,7 +11,7 @@ namespace DTM.Core.Repositories
 {
     public class CaracRepository : RepositoryBase<DtmDbContext, Carac, int>
     {
-        public CaracRepository(DtmDbContext co, Func<DtmDbContext, DbSet<Carac>> tableDbSet, Expression<Func<Carac, int>> tableKeySelector) : base(co, tableDbSet, tableKeySelector)
+        public CaracRepository(DtmDbContext co) : base(co, _ => _.Carac, _ => _.Id)
         {
         }
 

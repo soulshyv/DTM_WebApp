@@ -23,12 +23,12 @@
 }
 else
 {
-    <div id="detailsPersoScrolling" class="col-lg-12 col-lg-offset-1">
-        <div id="detailsPerso">
-            <h2 id="nomPerso" class="text-center">@perso.Nom</h2>
-            <h3 id="raceperso" class="text-center">@perso.Nom</h3>
+    <div idPerso="detailsPersoScrolling" class="col-lg-12 col-lg-offset-1">
+        <div idPerso="detailsPerso">
+            <h2 idPerso="nomPerso" class="text-center">@perso.Nom</h2>
+            <h3 idPerso="raceperso" class="text-center">@perso.Nom</h3>
 
-            <img class="center-block" id="characPic" src="@Model.CharacterPicture" alt="Image de @perso.Nom" />
+            <img class="center-block" idPerso="characPic" src="@Model.CharacterPicture" alt="Image de @perso.Nom" />
 
             <button class="btn btn-primary center-block" data-toggle="modal" data-target="#modifPic" type="button">Modifier l'image</button>
 
@@ -200,7 +200,7 @@ else
         </div>
     </div>
 
-    <div id="modifPic" class="modal fade modifs" role="dialog">
+    <div idPerso="modifPic" class="modal fade modifs" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -214,9 +214,9 @@ else
                         <!-- Image -->
                         <div>
                             <label for="picUpload">Choississez une nouvelle image (png, jpg, gif)</label>
-                            <input id="picUpload" name="pic" class="center-block" type="file" />
+                            <input idPerso="picUpload" name="pic" class="center-block" type="file" />
 
-                            <input type="button" id="btn-submit-file" value="Enregistrer" class="btn btn-primary" data-dismiss="modal"/>
+                            <input type="button" idPerso="btn-submit-file" value="Enregistrer" class="btn btn-primary" data-dismiss="modal"/>
                             <button type="button" class="btn" data-dismiss="modal">Annuler</button>
                         </div>
                     </form>
@@ -226,7 +226,7 @@ else
         </div>
     </div>
 
-    <div id="modifCharac" class="modal fade modifs" role="dialog">
+    <div idPerso="modifCharac" class="modal fade modifs" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -326,7 +326,7 @@ else
         </div>
     </div>
 
-    <div id="modifJauges" class="modal fade modifs" role="dialog">
+    <div idPerso="modifJauges" class="modal fade modifs" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -415,7 +415,7 @@ else
         </div>
     </div>
 
-    <div id="modifStats" class="modal fade modifs" role="dialog">
+    <div idPerso="modifStats" class="modal fade modifs" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -481,7 +481,7 @@ else
         </div>
     </div>
 
-    <div id="modifPassifs" class="modal fade modifs" role="dialog">
+    <div idPerso="modifPassifs" class="modal fade modifs" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -557,7 +557,7 @@ else
         </div>
     </div>
 
-    <div id="modifDons" class="modal fade modifs" role="dialog">
+    <div idPerso="modifDons" class="modal fade modifs" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->

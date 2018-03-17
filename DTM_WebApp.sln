@@ -6,6 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemonTaleManager.Web", "Main\DemonTaleManager.Web.csproj", "{9DC1263A-E3D4-41D3-8A13-8351F1AEFDF3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTM.Core", "DTM.Core\DTM.Core.csproj", "{498A49D1-04F7-415E-88E9-97D2DA5A4FB4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5F03D7F6-EEE9-463B-BA72-3A0C0EB82780} = {5F03D7F6-EEE9-463B-BA72-3A0C0EB82780}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgManager.Core", "RpgManager.Core\RpgManager.Core.csproj", "{5F03D7F6-EEE9-463B-BA72-3A0C0EB82780}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +26,10 @@ Global
 		{498A49D1-04F7-415E-88E9-97D2DA5A4FB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{498A49D1-04F7-415E-88E9-97D2DA5A4FB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{498A49D1-04F7-415E-88E9-97D2DA5A4FB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F03D7F6-EEE9-463B-BA72-3A0C0EB82780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F03D7F6-EEE9-463B-BA72-3A0C0EB82780}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F03D7F6-EEE9-463B-BA72-3A0C0EB82780}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F03D7F6-EEE9-463B-BA72-3A0C0EB82780}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

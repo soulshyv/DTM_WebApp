@@ -12,27 +12,27 @@ namespace DTM.Core
     {
         public static IServiceCollection AddCore(this IServiceCollection sc)
         {
-            //sc.TryAddScoped<CaracRepository>();
-            //sc.TryAddScoped<DemonPersoRepository>();
-            //sc.TryAddScoped<DemonRepository>();
-            //sc.TryAddScoped<DonPersoRepository>();
-            //sc.TryAddScoped<DonRepository>();
-            //sc.TryAddScoped<ElementPersoRepository>();
-            //sc.TryAddScoped<ElementRepository>();
-            //sc.TryAddScoped<InventaireRepository>();
-            //sc.TryAddScoped<ItemRepository>();
-            //sc.TryAddScoped<JaugeRepository>();
-            //sc.TryAddScoped<MetierRepository>();
-            //sc.TryAddScoped<MetierPersoRepository>();
-            //sc.TryAddScoped<PersoRepository>();
-            //sc.TryAddScoped<PassifDemonRepository>();
-            //sc.TryAddScoped<PassifPersoRepository>();
-            //sc.TryAddScoped<PassifRepository>();
-            //sc.TryAddScoped<SkillPersoRepository>();
-            //sc.TryAddScoped<SkillRepository>();
-            //sc.TryAddScoped<StatRepository>();
-            //sc.TryAddScoped<UserRepository>();
-            
+            sc.TryAddScoped<CaracRepository>();
+            sc.TryAddScoped<DemonPersoRepository>();
+            sc.TryAddScoped<DemonRepository>();
+            sc.TryAddScoped<DonPersoRepository>();
+            sc.TryAddScoped<DonRepository>();
+            sc.TryAddScoped<ElementPersoRepository>();
+            sc.TryAddScoped<ElementRepository>();
+            sc.TryAddScoped<InventaireRepository>();
+            sc.TryAddScoped<ItemRepository>();
+            sc.TryAddScoped<JaugeRepository>();
+            sc.TryAddScoped<MetierRepository>();
+            sc.TryAddScoped<MetierPersoRepository>();
+            sc.TryAddScoped<PersoRepository>();
+            sc.TryAddScoped<PassifDemonRepository>();
+            sc.TryAddScoped<PassifPersoRepository>();
+            sc.TryAddScoped<PassifRepository>();
+            sc.TryAddScoped<SkillPersoRepository>();
+            sc.TryAddScoped<SkillRepository>();
+            sc.TryAddScoped<StatRepository>();
+            sc.TryAddScoped<UserRepository>();
+
             sc.TryAddScoped<DtmRepositories>();
 
             sc.TryAddScoped<ICharacPicSearcher>(_ =>

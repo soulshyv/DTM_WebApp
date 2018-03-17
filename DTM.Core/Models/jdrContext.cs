@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DTM.Core.Models
 {
-    public partial class DtmDbContext : DbContext
+    public partial class jdrContext : DbContext
     {
         public virtual DbSet<Carac> Carac { get; set; }
         public virtual DbSet<Demon> Demon { get; set; }
@@ -29,31 +27,14 @@ namespace DTM.Core.Models
         public virtual DbSet<Stat> Stat { get; set; }
         public virtual DbSet<User> User { get; set; }
 
-        public PrestoDbContext() :
-            base()
-        {
-            OnCreated();
-        }
-
-        public PrestoDbContext(DbContextOptions<PrestoDbContext> options) :
-            base(options)
-        {
-            OnCreated();
-        }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.Options.Extensions.OfType<RelationalOptionsExtension>().Any(ext => !string.IsNullOrEmpty(ext.ConnectionString) || ext.Connection != null))
-
+            if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseMySql("Server=localhost;Port=3306;Database=jdr;Uid=mj;Pwd=mj");
             }
-
-            CustomizeConfiguration(ref optionsBuilder);
-            base.OnConfiguring(optionsBuilder);
         }
-
-        partial void CustomizeConfiguration(ref DbContextOptionsBuilder optionsBuilder);
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -561,7 +542,5 @@ namespace DTM.Core.Models
                     .HasConstraintName("fk_users_perso");
             });
         }
-
-        partial void OnCreated();
     }
 }

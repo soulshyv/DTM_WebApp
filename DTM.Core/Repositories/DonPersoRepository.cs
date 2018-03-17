@@ -1,17 +1,15 @@
-﻿using System;
+﻿using DTM.Core.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using DTM.Core.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace DTM.Core.Repositories
 {
     public class DonPersoRepository : RepositoryBase<DtmDbContext, DonPerso, int>
     {
-        public DonPersoRepository(DtmDbContext co, Func<DtmDbContext, DbSet<DonPerso>> tableDbSet, Expression<Func<DonPerso, int>> tableKeySelector) : base(co, tableDbSet, tableKeySelector)
+        public DonPersoRepository(DtmDbContext co) : base(co, _ => _.DonPerso, _ => _.Id)
         {
         }
 
