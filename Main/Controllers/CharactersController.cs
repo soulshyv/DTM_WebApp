@@ -135,7 +135,9 @@ namespace DemonTaleManager.Web.Controllers
                 Skills = perso.SkillPerso.ToList(),
                 DonsPerso = perso.DonPerso.ToList(),
                 DemonsPerso = perso.DemonPerso.ToList(),
-                Inventaire = perso.Inventaire.FirstOrDefault(),
+                Inventaire = perso.Inventaire.ToList(),
+                Metiers = perso.MetierPerso.ToList(),
+                Passifs = perso.PassifPerso.ToList(),
                 CharacterPicture = pic
             });
         }
@@ -159,6 +161,8 @@ namespace DemonTaleManager.Web.Controllers
 
             if (details == null)
                 return NotFound();
+
+            await PersoRepository.Update(details.Perso);
 
             if (!details.Caracs.IsAnyNullOrEmpty())
             {
@@ -201,7 +205,10 @@ namespace DemonTaleManager.Web.Controllers
                             {
                                 if (!details.Inventaire.IsAnyNullOrEmpty())
                                 {
-                                    await DtmRepositories.InventaireRepository.Update(details.Inventaire);
+                                    foreach (var inventaire in details.Inventaire)
+                                    {
+                                        await DtmRepositories.InventaireRepository.Update(inventaire);
+                                    }
                                 }
                                 else
                                 {

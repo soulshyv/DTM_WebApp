@@ -15,7 +15,9 @@ namespace DTM.Core.ViewModels
         public List<SkillPerso> Skills { get; set; }
         public List<DonPerso> DonsPerso { get; set; }
         public List<DemonPerso> DemonsPerso { get; set; }
-        public Inventaire Inventaire { get; set; }
+        public List<Inventaire> Inventaire { get; set; }
+        public List<MetierPerso> Metiers { get; set; }
+        public List<PassifPerso> Passifs { get; set; }
         public IFormFile UploadedPic { get; set; }
     }
 }

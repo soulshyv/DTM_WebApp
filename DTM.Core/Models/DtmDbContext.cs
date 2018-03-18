@@ -29,13 +29,13 @@ namespace DTM.Core.Models
         public virtual DbSet<Stat> Stat { get; set; }
         public virtual DbSet<User> User { get; set; }
 
-        public PrestoDbContext() :
+        public DtmDbContext() :
             base()
         {
             OnCreated();
         }
 
-        public PrestoDbContext(DbContextOptions<PrestoDbContext> options) :
+        public DtmDbContext(DbContextOptions<DtmDbContext> options) :
             base(options)
         {
             OnCreated();
