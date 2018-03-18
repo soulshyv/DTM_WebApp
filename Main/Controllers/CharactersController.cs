@@ -156,6 +156,7 @@ namespace DemonTaleManager.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(CharacterDetailsViewModel details)
         {
+            // TODO stocker le perso dans un champ liste et envoyer ce champ à la méthode d'update perso en plaçant l'objet à update
             if (!ModelState.IsValid)
                 return RedirectToAction("Index");
 
