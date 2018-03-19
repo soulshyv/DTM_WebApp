@@ -23,25 +23,27 @@ namespace DemonTaleManager.Web.Controllers
         }
 
         private ICharacPicSearcher _characPicSearcher;
-        protected ICharacPicSearcher CharacPicSearcher => _characPicSearcher ?? (_characPicSearcher = Scope.Resolve<ICharacPicSearcher>());
+
+        protected ICharacPicSearcher CharacPicSearcher =>
+            _characPicSearcher ?? (_characPicSearcher = Scope.Resolve<ICharacPicSearcher>());
 
         private DtmRepositories _dtmRepositories;
-        protected DtmRepositories DtmRepositories => _dtmRepositories ?? (_dtmRepositories = Scope.Resolve<DtmRepositories>());
+
+        protected DtmRepositories DtmRepositories =>
+            _dtmRepositories ?? (_dtmRepositories = Scope.Resolve<DtmRepositories>());
 
         private IHostingEnvironment _hostingEnv;
         protected IHostingEnvironment HostingEnv => _hostingEnv ?? (_hostingEnv = Scope.Resolve<IHostingEnvironment>());
 
-        private IEnumerable<Perso> Persos { get; set; }
-            
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            Persos = await DtmRepositories.PersoRepository.GetAll();
+            var persos = await DtmRepositories.PersoRepository.GetAll();
 
-            if (Persos != null)
+            if (persos != null)
                 return View(new CharactersViewModel
                 {
-                    Persos = Persos
+                    Persos = persos
                 });
 
             return View();
@@ -50,7 +52,18 @@ namespace DemonTaleManager.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetDetails(int idPerso)
         {
-            var perso = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
+            Perso perso;
+            try
+            {
+                perso = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            
             var pic = GetPicture(perso.Nom) + "?" + new DateTime().TimeOfDay.Ticks;
 
             return PartialView("Details", new CharacterDetailsViewModel
@@ -85,102 +98,125 @@ namespace DemonTaleManager.Web.Controllers
         public async Task<IActionResult> Update(CharacterDetailsViewModel details)
         {
             // TODO stocker le perso dans un champ liste et envoyer ce champ à la méthode d'update perso en plaçant l'objet à update
-            if (!ModelState.IsValid)
-                return RedirectToAction("Index");
+            //if (!ModelState.IsValid)
+            //    return RedirectToAction("Index");
 
             if (details == null)
                 return NotFound();
 
             var idPerso = details.Perso.Id;
-            var persoToUpdate = Persos?.Where(_ => _.Id == idPerso).FirstOrDefault();
-            if (persoToUpdate == null)
-            {
-                return NotFound();
-            }
+            Perso persoToUpdate = null;
 
-            if (!details.Caracs.IsAnyNullOrEmpty())
+            if (details.Caracs != null)
             {
-                //await DtmRepositories.CaracRepository.Update(details.Caracs);
-                details.Caracs.Perso = persoToUpdate;
-                details.Caracs.PersoId = idPerso;
-                persoToUpdate.Carac = new[] {details.Caracs};
+                await DtmRepositories.CaracRepository.Update(details.Caracs);
             }
             else
             {
-                if (!details.Perso.IsAnyNullOrEmpty())
+                if (details.Stats != null)
                 {
-                    //await DtmRepositories.PersoRepository.Update(details.Perso);
-                    persoToUpdate.Lvl = details.Perso.Lvl;
-                    persoToUpdate.Nom = details.Perso.Nom;
-                    persoToUpdate.Po = details.Perso.Po;
-                    persoToUpdate.Race = details.Perso.Race;
-                    persoToUpdate.TypePerso = details.Perso.TypePerso;
-                    persoToUpdate.Xp = details.Perso.Xp;
+                    await DtmRepositories.StatRepository.Update(details.Stats);
                 }
                 else
                 {
-                    if (!details.DemonsPerso.IsAnyNullOrEmpty())
+                    if (details.Jauges != null)
                     {
-                        //foreach (var dp in details.DemonsPerso)
-                        //{
-                        //    await DtmRepositories.DemonPersoRepository.Update(dp);
-                        //}
-                        persoToUpdate.DemonPerso = details.DemonsPerso;
+                        await DtmRepositories.JaugeRepository.Update(details.Jauges);
                     }
                     else
                     {
-                        if (!details.DonsPerso.IsAnyNullOrEmpty())
+                        if (details.DonsPerso != null)
                         {
-                            //foreach (var dp in details.DonsPerso)
-                            //{
-                            //    await DtmRepositories.DonPersoRepository.Update(dp);
-                            //}
-                            persoToUpdate.DonPerso = details.DonsPerso;
+                            foreach (var dp in details.DonsPerso)
+                            {
+                                await DtmRepositories.DonPersoRepository.Update(dp);
+                            }
                         }
                         else
                         {
-                            if (!details.Elements.IsAnyNullOrEmpty())
+                            if (details.Elements != null)
                             {
-                                //foreach (var e in details.Elements)
-                                //{
-                                //    await DtmRepositories.ElementPersoRepository.Update(e);
-                                //}
+                                persoToUpdate = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
+                                if (persoToUpdate == null)
+                                {
+                                    return NotFound();
+                                } 
+
+                                foreach (var e in details.Elements)
+                                {
+                                    e.Perso = persoToUpdate;
+                                }
+
                                 persoToUpdate.ElementPerso = details.Elements;
                             }
                             else
                             {
-                                if (!details.Inventaire.IsAnyNullOrEmpty())
+                                if (details.Inventaire != null)
                                 {
-                                    //foreach (var inventaire in details.Inventaire)
-                                    //{
-                                    //    await DtmRepositories.InventaireRepository.Update(inventaire);
-                                    //}
+                                    persoToUpdate = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
+                                    if (persoToUpdate == null)
+                                    {
+                                        return NotFound();
+                                    }
+
+                                    foreach (var inv in details.Inventaire)
+                                    {
+                                        inv.Perso = persoToUpdate;
+                                    }
+
                                     persoToUpdate.Inventaire = details.Inventaire;
                                 }
                                 else
                                 {
-                                    if (!details.Jauges.IsAnyNullOrEmpty())
+                                    if (details.DemonsPerso != null)
                                     {
-                                        //await DtmRepositories.JaugeRepository.Update(details.Jauges);
-                                        persoToUpdate.Jauge = new[] {details.Jauges};
+                                        persoToUpdate = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
+                                        if (persoToUpdate == null)
+                                        {
+                                            return NotFound();
+                                        }
+
+                                        foreach (var dp in details.DemonsPerso)
+                                        {
+                                            dp.Perso = persoToUpdate;
+                                        }
+
+                                        persoToUpdate.DemonPerso = details.DemonsPerso;
                                     }
                                     else
                                     {
-                                        if (!details.Skills.IsAnyNullOrEmpty())
+                                        if (details.Skills != null)
                                         {
-                                            //foreach (var sp in details.Skills)
-                                            //{
-                                            //    await DtmRepositories.SkillPersoRepository.Update(sp);
-                                            //}
+                                            persoToUpdate = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
+                                            if (persoToUpdate == null)
+                                            {
+                                                return NotFound();
+                                            }
+
+                                            foreach (var sk in details.Skills)
+                                            {
+                                                sk.Perso = persoToUpdate;
+                                            }
+
                                             persoToUpdate.SkillPerso = details.Skills;
                                         }
                                         else
                                         {
-                                            if (!details.Stats.IsAnyNullOrEmpty())
+                                            if (details.Perso.Lvl == 0 ||
+                                                !string.IsNullOrWhiteSpace(details.Perso.Nom) ||
+                                                !string.IsNullOrWhiteSpace(details.Perso.Race))
                                             {
-                                                //await DtmRepositories.StatRepository.Update(details.Stats);
-                                                persoToUpdate.Stat = new[] {details.Stats};
+                                                return NotFound();
                                             }
+                                            persoToUpdate = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
+                                            persoToUpdate.Lvl = details.Perso.Lvl;
+                                            persoToUpdate.Nom = details.Perso.Nom;
+                                            persoToUpdate.Po = details.Perso.Po;
+                                            persoToUpdate.Race = details.Perso.Race;
+                                            persoToUpdate.TypePerso = details.Perso.TypePerso;
+                                            persoToUpdate.Xp = details.Perso.Xp;
+
+                                            await PersoRepository.Update(persoToUpdate);
                                         }
                                     }
                                 }
@@ -189,8 +225,6 @@ namespace DemonTaleManager.Web.Controllers
                     }
                 }
             }
-
-            await PersoRepository.Update(persoToUpdate);
 
             return Ok();
         }

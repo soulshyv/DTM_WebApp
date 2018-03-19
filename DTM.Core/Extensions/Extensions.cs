@@ -45,6 +45,22 @@ namespace DTM.Core.Extensions
                 .ToLower();
         }
 
+        public static string ToSpacedCase(this string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return text;
+            }
+
+            return Regex.Replace(
+                    text,
+                    "(?<!^)([A-Z][a-z]|(?<=[a-z])[A-Z])",
+                    " $1",
+                    RegexOptions.Compiled)
+                .Trim()
+                .ToLower();
+        }
+
         public static int ToUnixTimeStamp(this DateTime dateTime)
         {
             var baseDate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Local);//from 1970/1/1 00:00:00 to now

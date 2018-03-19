@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Main": {
+    "DemonTaleManager.Web": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

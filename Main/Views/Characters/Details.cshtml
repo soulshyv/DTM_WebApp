@@ -1,4 +1,5 @@
-﻿@using DTM.Core.Extensions
+﻿@using DTM.Core.Enums
+@using DTM.Core.Extensions
 @using DTM.Core.Utils
 @using DTM.Core.Models
 @using DTM.DbManager.Enums
@@ -29,9 +30,11 @@ else
         <div id="detailsPerso">
             <span id="idPerso" hidden>@perso.Id</span>
             <h2 id="nomPerso" class="text-center">@perso.Nom</h2>
-            <h3 id="raceperso" class="text-center">@perso.Race</h3>
+            <h3 id="raceperso" class="text-center">@(perso.Race)</h3>
 
             <img class="center-block" idPerso="characPic" src="@characPic" alt="Image de @perso.Nom"/>
+            
+            <br />
 
             <button class="btn btn-primary center-block" data-toggle="modal" data-target="#modifPic" type="button">Modifier l'image</button>
 
@@ -43,14 +46,19 @@ else
                     <td>Lvl : @perso.Lvl</td>
                     <td>Xp : @perso.Xp</td>
                     <td>Po : @perso.Po</td>
-                    <td>Type : @if (perso.TypePerso != null)
-                               {
-                                   @((CharacterTypeEnum) perso.TypePerso)
-                               }</td>
+                    <td>
+                        Type :
+                        @if (perso.TypePerso != null)
+                        {
+                            @(((CharacterTypeEnum) perso.TypePerso).ToString().ToUpper())
+                        }
+                    </td>
+                    <td>
+                        <button class="btn btn-primary center-block" data-toggle="modal" data-target="#modifCharac" type="button">Modifier</button>
+                    </td>
                 </tr>
             </table>
 
-            <button class="btn btn-primary center-block" data-toggle="modal" data-target="#modifCharac" type="button">Modifier les caractéristiques</button>
 
             <hr/>
 
@@ -206,7 +214,7 @@ else
                         <tr>
                             <td>@inv.Item.Nom</td>
                             <td>@inv.Item.Description</td>
-                            <td>@((ItemTypeEnum) inv.Item.TypeItem)</td>
+                            <td>@(((ItemTypeEnum) inv.Item.TypeItem).ToString().ToSpacedCase())</td>
                             <td>@inv.Quantite</td>
                             @if (inv.Item.Prix == null)
                             {
@@ -324,13 +332,13 @@ else
                                     <select asp-for="@perso.TypePerso">
                                         @foreach (var type in EnumUtil.GetValues<CharacterTypeEnum>())
                                         {
-                                            if (type == (CharacterTypeEnum) perso.TypePerso)
+                                            if (type == (CharacterTypeEnum)perso.TypePerso)
                                             {
-                                                <option value="@type" selected="selected">@type</option>
+                                                <option value="@((int)type)" selected="selected">@type.ToString().ToUpper()</option>
                                             }
                                             else
                                             {
-                                                <option value="@type">@type</option>
+                                                <option value="@((int)type)">@type.ToString().ToUpper()</option>
                                             }
                                         }
                                     </select>
@@ -429,6 +437,8 @@ else
                             </tr>
                         </table>
                         <input asp-for="@jauges.Id" type="hidden" />
+                        <input asp-for="@jauges.PersoId" type="hidden" />
+                        <input asp-for="@perso.Id" type="hidden" />
 
                         <div class="text-center">
                             <button type="button" class="btn btn-primary btn-submit-form" data-dismiss="modal">Enregistrer</button>
@@ -495,6 +505,8 @@ else
                             </tr>
                         </table>
                         <input asp-for="@stats.Id" type="hidden" />
+                        <input asp-for="@stats.PersoId" type="hidden" />
+                        <input asp-for="@perso.Id" type="hidden" />
 
                         <div class="text-center">
                             <button type="button" class="btn btn-primary btn-submit-form" data-dismiss="modal">Enregistrer</button>
@@ -571,6 +583,8 @@ else
                             </tr>
                         </table>
                         <input asp-for="@caracs.Id" type="hidden" />
+                        <input asp-for="@caracs.PersoId" type="hidden" />
+                        <input asp-for="@perso.Id" type="hidden" />
 
                         <div class="text-center">
                             <button type="button" class="btn btn-primary btn-submit-form" data-dismiss="modal">Enregistrer</button>
@@ -635,6 +649,9 @@ else
                                         break;
                                 }
                                     </select>
+                                
+                                    <input asp-for="@dons[i].DonId" type="hidden"/>
+                                    <input asp-for="@dons[i].PersoId" type="hidden"/>
                                 </td>
                             </tr>
                         }

@@ -1,4 +1,4 @@
-﻿namespace DTM.DbManager.Enums
+﻿namespace DTM.Core.Enums
 {
     public enum CharacterTypeEnum
     {
