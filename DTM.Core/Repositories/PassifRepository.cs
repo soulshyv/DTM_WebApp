@@ -23,5 +23,10 @@ namespace DTM.Core.Repositories
         {
             return await Connection.Passif.Where(_ => _.Libelle == libelle).ToArrayAsync(ctk);
         }
+
+        public async Task<IEnumerable<Passif>> GetAll(CancellationToken ctk = default(CancellationToken))
+        {
+            return await Connection.Passif.ToArrayAsync(ctk);
+        }
     }
 }

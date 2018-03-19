@@ -23,5 +23,10 @@ namespace DTM.Core.Repositories
         {
             return await Connection.Metier.Where(_ => _.Libelle == libelle).ToArrayAsync(ctk);
         }
+
+        public async Task<IEnumerable<Metier>> GetAll(CancellationToken ctk = default(CancellationToken))
+        {
+            return await Connection.Metier.ToArrayAsync(ctk);
+        }
     }
 }

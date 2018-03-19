@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using DTM.Core.Models;
+﻿using DTM.Core.Models;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
 namespace DTM.Core.ViewModels
 {
@@ -11,13 +11,16 @@ namespace DTM.Core.ViewModels
         public Carac Caracs { get; set; }
         public Jauge Jauges { get; set; }
         public Stat Stats { get; set; }
-        public List<ElementPerso> Elements { get; set; }
-        public List<SkillPerso> Skills { get; set; }
+        public List<ElementPerso> ElementsPerso { get; set; }
+        public List<SkillPerso> SkillsPerso { get; set; }
         public List<DonPerso> DonsPerso { get; set; }
         public List<DemonPerso> DemonsPerso { get; set; }
         public List<Inventaire> Inventaire { get; set; }
-        public List<MetierPerso> Metiers { get; set; }
-        public List<PassifPerso> Passifs { get; set; }
+        public List<MetierPerso> MetiersPerso { get; set; }
+        public List<PassifPerso> PassifsPerso { get; set; }
         public IFormFile UploadedPic { get; set; }
+        public IEnumerable<Don> Dons { get; set; }
+        public IEnumerable<Element> Elements { get; set; }
+        public IEnumerable<Item> Items { get; set; }
     }
 }

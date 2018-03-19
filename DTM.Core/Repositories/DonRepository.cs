@@ -25,5 +25,10 @@ namespace DTM.Core.Repositories
         {
             return await Connection.Don.Where(_ => _.Libelle == libelle).ToArrayAsync(ctk);
         }
+
+        public async Task<IEnumerable<Don>> GetAll(CancellationToken ctk = default(CancellationToken))
+        {
+            return await Connection.Don.ToArrayAsync(ctk);
+        }
     }
 }

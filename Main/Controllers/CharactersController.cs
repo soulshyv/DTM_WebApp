@@ -1,5 +1,7 @@
 ﻿using Autofac;
+using DemonTaleManager.Web.Views.Characters;
 using DTM.Core.Extensions;
+using DTM.Core.Models;
 using DTM.Core.Repositories;
 using DTM.Core.ViewModels;
 using DTM.DbManager.Contracts;
@@ -7,12 +9,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using DemonTaleManager.Web.Views.Characters;
-using DTM.Core.Models;
 
 namespace DemonTaleManager.Web.Controllers
 {
@@ -23,14 +22,10 @@ namespace DemonTaleManager.Web.Controllers
         }
 
         private ICharacPicSearcher _characPicSearcher;
-
-        protected ICharacPicSearcher CharacPicSearcher =>
-            _characPicSearcher ?? (_characPicSearcher = Scope.Resolve<ICharacPicSearcher>());
+        protected ICharacPicSearcher CharacPicSearcher => _characPicSearcher ?? (_characPicSearcher = Scope.Resolve<ICharacPicSearcher>());
 
         private DtmRepositories _dtmRepositories;
-
-        protected DtmRepositories DtmRepositories =>
-            _dtmRepositories ?? (_dtmRepositories = Scope.Resolve<DtmRepositories>());
+        protected DtmRepositories DtmRepositories => _dtmRepositories ?? (_dtmRepositories = Scope.Resolve<DtmRepositories>());
 
         private IHostingEnvironment _hostingEnv;
         protected IHostingEnvironment HostingEnv => _hostingEnv ?? (_hostingEnv = Scope.Resolve<IHostingEnvironment>());
@@ -65,6 +60,9 @@ namespace DemonTaleManager.Web.Controllers
 
             
             var pic = GetPicture(perso.Nom) + "?" + new DateTime().TimeOfDay.Ticks;
+            var dons = await DtmRepositories.DonRepository.GetAll();
+            var elements = await DtmRepositories.ElementRepository.GetAll();
+            var items = await DtmRepositories.ItemRepository.GetAll();
 
             return PartialView("Details", new CharacterDetailsViewModel
             {
@@ -72,14 +70,17 @@ namespace DemonTaleManager.Web.Controllers
                 Caracs = perso.Carac.FirstOrDefault(),
                 Jauges = perso.Jauge.FirstOrDefault(),
                 Stats = perso.Stat.FirstOrDefault(),
-                Elements = perso.ElementPerso.ToList(),
-                Skills = perso.SkillPerso.ToList(),
+                ElementsPerso = perso.ElementPerso.ToList(),
+                SkillsPerso = perso.SkillPerso.ToList(),
                 DonsPerso = perso.DonPerso.ToList(),
                 DemonsPerso = perso.DemonPerso.ToList(),
                 Inventaire = perso.Inventaire.ToList(),
-                Metiers = perso.MetierPerso.ToList(),
-                Passifs = perso.PassifPerso.ToList(),
-                CharacterPicture = pic
+                MetiersPerso = perso.MetierPerso.ToList(),
+                PassifsPerso = perso.PassifPerso.ToList(),
+                CharacterPicture = pic,
+                Dons = dons,
+                Elements = elements,
+                Items = items
             });
         }
 
@@ -97,10 +98,6 @@ namespace DemonTaleManager.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(CharacterDetailsViewModel details)
         {
-            // TODO stocker le perso dans un champ liste et envoyer ce champ à la méthode d'update perso en plaçant l'objet à update
-            //if (!ModelState.IsValid)
-            //    return RedirectToAction("Index");
-
             if (details == null)
                 return NotFound();
 
@@ -134,7 +131,7 @@ namespace DemonTaleManager.Web.Controllers
                         }
                         else
                         {
-                            if (details.Elements != null)
+                            if (details.ElementsPerso != null)
                             {
                                 persoToUpdate = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
                                 if (persoToUpdate == null)
@@ -142,12 +139,12 @@ namespace DemonTaleManager.Web.Controllers
                                     return NotFound();
                                 } 
 
-                                foreach (var e in details.Elements)
+                                foreach (var e in details.ElementsPerso)
                                 {
                                     e.Perso = persoToUpdate;
                                 }
 
-                                persoToUpdate.ElementPerso = details.Elements;
+                                persoToUpdate.ElementPerso = details.ElementsPerso;
                             }
                             else
                             {
@@ -185,7 +182,7 @@ namespace DemonTaleManager.Web.Controllers
                                     }
                                     else
                                     {
-                                        if (details.Skills != null)
+                                        if (details.SkillsPerso != null)
                                         {
                                             persoToUpdate = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
                                             if (persoToUpdate == null)
@@ -193,12 +190,12 @@ namespace DemonTaleManager.Web.Controllers
                                                 return NotFound();
                                             }
 
-                                            foreach (var sk in details.Skills)
+                                            foreach (var sk in details.SkillsPerso)
                                             {
                                                 sk.Perso = persoToUpdate;
                                             }
 
-                                            persoToUpdate.SkillPerso = details.Skills;
+                                            persoToUpdate.SkillPerso = details.SkillsPerso;
                                         }
                                         else
                                         {

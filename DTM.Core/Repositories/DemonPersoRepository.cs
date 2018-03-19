@@ -31,5 +31,10 @@ namespace DTM.Core.Repositories
         {
             return await Connection.DemonPerso.Where(_ => _.DemonId == id).ToArrayAsync(ctk);
         }
+
+        public async Task<IEnumerable<Demon>> GetAll(CancellationToken ctk = default(CancellationToken))
+        {
+            return await Connection.Demon.ToArrayAsync(ctk);
+        }
     }
 }

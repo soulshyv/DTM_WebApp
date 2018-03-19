@@ -17,13 +17,13 @@ else
      var caracs = Model.Perso?.Carac?.FirstOrDefault();
      var jauges = Model.Perso.Jauge?.FirstOrDefault();
      var stats = Model.Perso.Stat?.FirstOrDefault();
-     var elements = Model.Perso.ElementPerso?.ToList();
-     var skills = Model.Perso.SkillPerso?.ToList();
-     var dons = Model.Perso.DonPerso?.OrderBy(ob => ob.Taux).ToList();
-     var demons = Model.Perso.DemonPerso?.ToList();
+     var elementsPerso = Model.Perso.ElementPerso?.ToList();
+     var skillsPerso = Model.Perso.SkillPerso?.ToList();
+     var donsperso = Model.Perso.DonPerso?.OrderBy(ob => ob.Taux).ToList();
+     var demonsPerso = Model.Perso.DemonPerso?.ToList();
      var inventaire = Model.Perso.Inventaire?.ToList();
-     var metiers = Model.Perso.MetierPerso?.ToList();
-     var passifs = Model.Perso.PassifPerso?.ToList();
+     var metiersPerso = Model.Perso.MetierPerso?.ToList();
+     var passifsPerso = Model.Perso.PassifPerso?.ToList();
      var characPic = Model.CharacterPicture ?? string.Empty;
 
     <div id="detailsPersoScrolling" class="col-lg-12 col-lg-offset-1">
@@ -140,16 +140,16 @@ else
                         }
                     </td>
                     <td width="300px">
-                        @foreach (var d in dons)
+                        @foreach (var d in donsperso)
                         {
                             var description = d.Don.Description != string.Empty ? ":" + d.Don.Description : string.Empty;
                             <span>[@d.Taux%] @d.Don.Libelle @description<br/></span>
                         }
                     </td>
                     <td>
-                        @if (elements != null)
+                        @if (elementsPerso != null)
                         {
-                            foreach (var e in elements)
+                            foreach (var e in elementsPerso)
                             {
                                 var description = e.Element.Description != string.Empty ? ":" + e.Element.Description : string.Empty;
                                 <span>@e.Element.Libelle @description</span>
@@ -157,9 +157,9 @@ else
                         }
                     </td>
                     <td>
-                        @if (demons != null)
+                        @if (demonsPerso != null)
                         {
-                            foreach (var d in demons)
+                            foreach (var d in demonsPerso)
                             {
                                 <span>@d.Demon.Nom</span>
                             }
@@ -169,7 +169,7 @@ else
                 </tr>
             </table>
 
-            @if (skills != null)
+            @if (skillsPerso != null)
             {
                 <table class="table table-bordered detailsTab">
                     <tr>
@@ -181,7 +181,7 @@ else
                         <th>Taux</th>
                         <th>Dégats</th>
                     </tr>
-                    @foreach (var sk in skills)
+                    @foreach (var sk in skillsPerso)
                     {
                         <tr>
                             <td>@sk.Skill.Libelle</td>
@@ -284,7 +284,7 @@ else
                                         race = r.ToString().ToKebabCase();
                                     }
 
-                                    if (race == perso.Race.ToString())
+                                    if (race == perso.Race)
                                     {
                                         <option selected="selected" value="@race">@race</option>
                                     }
@@ -614,21 +614,21 @@ else
                                 <th class="text-center">Description</th>
                                 <th class="text-center">Taux</th>
                             </tr>
-                        @for (var i = 0; i < dons.Count; i++)
+                        @for (var i = 0; i < donsperso.Count; i++)
                         {
                             <tr class="text-center">
                                 <!-- Libelle -->
                                 <td class="form-group">
-                                    <input asp-for="@dons[i].Don.Libelle" type="text" />
+                                    <input asp-for="@donsperso[i].Don.Libelle" type="text" />
                                 </td>
                                 <!-- Description -->
                                 <td class="form-group">
-                                    <textarea style="resize:none;" asp-for="@dons[i].Don.Description" type="text">@dons[i].Don.Description</textarea>
+                                    <textarea style="resize:none;" asp-for="@donsperso[i].Don.Description" type="text">@donsperso[i].Don.Description</textarea>
                                 </td>
                                 <!-- Taux -->
                                 <td class="form-group">
-                                    <select asp-for="@dons[i].Taux">
-                                @switch (dons[i].Taux)
+                                    <select asp-for="@donsperso[i].Taux">
+                                @switch (donsperso[i].Taux)
                                 {
                                     case 10:
                                         <option value="10" selected="selected">10</option>
@@ -650,8 +650,8 @@ else
                                 }
                                     </select>
                                 
-                                    <input asp-for="@dons[i].DonId" type="hidden"/>
-                                    <input asp-for="@dons[i].PersoId" type="hidden"/>
+                                    <input asp-for="@donsperso[i].DonId" type="hidden"/>
+                                    <input asp-for="@donsperso[i].PersoId" type="hidden"/>
                                 </td>
                             </tr>
                         }
