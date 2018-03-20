@@ -13,18 +13,22 @@
 }
 else
 {
-     var perso = Model.Perso;
-     var caracs = Model.Perso?.Carac?.FirstOrDefault();
-     var jauges = Model.Perso.Jauge?.FirstOrDefault();
-     var stats = Model.Perso.Stat?.FirstOrDefault();
-     var elementsPerso = Model.Perso.ElementPerso?.ToList();
-     var skillsPerso = Model.Perso.SkillPerso?.ToList();
-     var donsperso = Model.Perso.DonPerso?.OrderBy(ob => ob.Taux).ToList();
-     var demonsPerso = Model.Perso.DemonPerso?.ToList();
-     var inventaire = Model.Perso.Inventaire?.ToList();
-     var metiersPerso = Model.Perso.MetierPerso?.ToList();
-     var passifsPerso = Model.Perso.PassifPerso?.ToList();
-     var characPic = Model.CharacterPicture ?? string.Empty;
+    var perso = Model.Perso;
+    var caracs = Model.Perso?.Carac?.FirstOrDefault();
+    var jauges = Model.Perso.Jauge?.FirstOrDefault();
+    var stats = Model.Perso.Stat?.FirstOrDefault();
+    var elementsPerso = Model.Perso.ElementPerso?.ToList();
+    var skillsPerso = Model.Perso.SkillPerso?.ToList();
+    var donsperso = Model.Perso.DonPerso?.OrderBy(ob => ob.Taux).ToList();
+    var demonsPerso = Model.Perso.DemonPerso?.ToList();
+    var inventaire = Model.Perso.Inventaire?.ToList();
+    var metiersPerso = Model.Perso.MetierPerso?.ToList();
+    var passifsPerso = Model.Perso.PassifPerso?.ToList();
+    var characPic = Model.CharacterPicture ?? string.Empty;
+
+    var dons = Model.Dons;
+    var elements = Model.Elements;
+    var items = Model.Items;
 
     <div id="detailsPersoScrolling" class="col-lg-12 col-lg-offset-1">
         <div id="detailsPerso">
@@ -142,7 +146,7 @@ else
                     <td width="300px">
                         @foreach (var d in donsperso)
                         {
-                            var description = d.Don.Description != string.Empty ? ":" + d.Don.Description : string.Empty;
+                            var description = d.Don.Description != string.Empty ? ": " + d.Don.Description : string.Empty;
                             <span>[@d.Taux%] @d.Don.Libelle @description<br/></span>
                         }
                     </td>
@@ -151,7 +155,7 @@ else
                         {
                             foreach (var e in elementsPerso)
                             {
-                                var description = e.Element.Description != string.Empty ? ":" + e.Element.Description : string.Empty;
+                                var description = e.Element.Description != string.Empty ? ": " + e.Element.Description : string.Empty;
                                 <span>@e.Element.Libelle @description</span>
                             }
                         }
@@ -597,7 +601,7 @@ else
         </div>
     </div>
 
-    <div id="modifDons" class="modal fade modifs" role="dialog">
+    <div id="modifDons" class="modal fade modifs col-lg-12" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -610,48 +614,62 @@ else
                     <form method="post">
                         <table class="table table-bordered detailsTab">
                             <tr>
-                                <th class="text-center">Libelle</th>
-                                <th class="text-center">Description</th>
+                                <th class="text-center">Don</th>
                                 <th class="text-center">Taux</th>
                             </tr>
                         @for (var i = 0; i < donsperso.Count; i++)
                         {
+                            var donIdClass = "don_" + donsperso[i].DonId;
                             <tr class="text-center">
                                 <!-- Libelle -->
                                 <td class="form-group">
-                                    <input asp-for="@donsperso[i].Don.Libelle" type="text" />
-                                </td>
-                                <!-- Description -->
-                                <td class="form-group">
-                                    <textarea style="resize:none;" asp-for="@donsperso[i].Don.Description" type="text">@donsperso[i].Don.Description</textarea>
+                                    <select asp-for="@donsperso[i].Don.Libelle" class="donLibelleInput" id="@donIdClass">
+                                        @foreach (var d in dons)
+                                        {
+                                            if (d.Libelle == donsperso[i].Don.Libelle)
+                                            {
+                                                <option selected="selected" value="@d.Libelle">@d.Libelle</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@d.Libelle">@d.Libelle</option>
+                                            }
+                                        }
+                                    </select>
+                                    <br />
+                                    <br />
+                                    <!-- Description -->
+                                    <textarea style="resize:none;width:100%;" asp-for="@donsperso[i].Don.Description" type="text" class="donDescInput" @*disabled*@>@donsperso[i].Don.Description</textarea>
                                 </td>
                                 <!-- Taux -->
                                 <td class="form-group">
-                                    <select asp-for="@donsperso[i].Taux">
-                                @switch (donsperso[i].Taux)
-                                {
-                                    case 10:
-                                        <option value="10" selected="selected">10</option>
-                                        <option value="15">15</option>
-                                        <option value="20">20</option>
-                                        break;
+                                    <select asp-for="@donsperso[i].Taux" class="donTauxInput">
+                                    @switch (donsperso[i].Taux)
+                                    {
+                                        case 10:
+                                            <option value="10" selected="selected">10</option>
+                                            <option value="15">15</option>
+                                            <option value="20">20</option>
+                                            break;
 
-                                    case 15:
-                                        <option value="10">10</option>
-                                        <option value="15" selected="selected">15</option>
-                                        <option value="20">20</option>
-                                        break;
+                                        case 15:
+                                            <option value="10">10</option>
+                                            <option value="15" selected="selected">15</option>
+                                            <option value="20">20</option>
+                                            break;
 
-                                    case 20:
-                                        <option value="10">10</option>
-                                        <option value="15">15</option>
-                                        <option value="20" selected="selected">20</option>
-                                        break;
-                                }
+                                        case 20:
+                                            <option value="10">10</option>
+                                            <option value="15">15</option>
+                                            <option value="20" selected="selected">20</option>
+                                            break;
+                                    }
                                     </select>
                                 
                                     <input asp-for="@donsperso[i].DonId" type="hidden"/>
                                     <input asp-for="@donsperso[i].PersoId" type="hidden"/>
+                                    <input asp-for="@donsperso[i].Id" type="hidden"/>
+                                    <input asp-for="@donsperso[i].Don.Id" type="hidden"/>
                                 </td>
                             </tr>
                         }
@@ -691,8 +709,8 @@ else
                 type: "POST",
                 data: form.serialize(),
                 success: function () {
-                loadDetails(idPerso);
-            },
+                    loadDetails(idPerso);
+                },
                 error: function (message) {
                     console.log(message);
                     alert("Une erreur est survenue à l'enregistrement des données");
@@ -700,23 +718,23 @@ else
             });
         });
 
-        $(".btn-submit-dons").click(function () {
-            var form = $(this).parent().parent();
-            var idPerso = $(document).find("#idPerso").text();
-            $(".modal-backdrop").remove();
-            $.ajax({
-                url: "Characters/PostDonsPerso",
-                type: "POST",
-                data: form.serialize(),
-                success: function () {
-                loadDetails(idPerso);
-            },
-                error: function (message) {
-                    console.log(message);
-                    alert("Une erreur est survenue à l'enregistrement des données");
-                }
-            });
-        });
+        //$(".btn-submit-dons").click(function () {
+        //    var form = $(this).parent().parent();
+        //    var idPerso = $(document).find("#idPerso").text();
+        //    $(".modal-backdrop").remove();
+        //    $.ajax({
+        //        url: "Characters/PostDonsPerso",
+        //        type: "POST",
+        //        data: form.serialize(),
+        //        success: function () {
+        //            loadDetails(idPerso);
+        //        },
+        //        error: function (message) {
+        //            console.log(message);
+        //            alert("Une erreur est survenue à l'enregistrement des données");
+        //        }
+        //    });
+        //});
 
         $("#btn-submit-file").click(function () {
             var fileUpload = $("#picUpload").get(0);
@@ -726,7 +744,6 @@ else
             var idPerso = $(document).find("#idPerso").text();
             data.append(files[0].name, files[0]);
             data.append("nomPerso", nomPerso);
-            console.log(data);
             $(".modal-backdrop").remove();
             $.ajax({
                 type: "POST",
@@ -736,11 +753,66 @@ else
                 data: data,
                 success: function () {
                     loadDetails(idPerso);
-
                 },
                 error: function (message) {
                     console.log(message);
                     alert("Une erreur est survenue pendant l'upload du fichier");
+                }
+            });
+        });
+
+        $(".donLibelleInput").change(function () {
+            var libelle = $(this).val();
+            var donDescInput = $(this).parent().find(".donDescInput");
+            var data = new FormData();
+            data.append("libelle", libelle);
+            $.ajax({
+                type: "POST",
+                url: "/Characters/GetDonById",
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function (res) {
+                    donDescInput.val(res);
+                },
+                error: function (message) {
+                    console.log(message);
+                    alert("Une erreur est survenue pendant la recherche des données");
+                }
+            });
+        });
+
+        $(".donTauxInput").change(function() {
+            var input10 = 0;
+            var input15 = 0;
+            var input20 = 0;
+            debugger;
+            $(".donTauxInput").each(function () {
+                if ($(this.val() === 10)) {
+                    input10 += 1;
+                } else {
+                    if ($(this).val() === 15) {
+                        input15 += 1;
+                    } else {
+                        input20 += 1;
+                    }
+                }
+            });
+
+            var warningClass = "alert alert-warning";
+
+            $(".donTauxInput").each(function () {
+                debugger;
+                if ($(this.val() === 10) && input10 !== 1) {
+                    $(this).addClass(warningClass);
+                } else {
+                    if ($(this).val() === 15 && input15 !== 2) {
+                        $(this).addClass(warningClass);
+                    } else {
+                        if (input20 !== 1) {
+                            $(this).addClass(warningClass);
+                        }
+                    }
                 }
             });
         });

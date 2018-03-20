@@ -272,13 +272,17 @@ namespace DemonTaleManager.Web.Controllers
             return NotFound();
         }
 
-        //[HttpPost]
-        //public async void PostDonsPerso(List<DTM.DbManager.Models.DonPerso> dons, string nomPerso)
-        //{
-        //    await Update(new CharacterDetailsViewModel
-        //    {
-        //        DonsPerso = dons
-        //    }, nomPerso);
-        //}
+        [HttpPost]
+        public async Task<string> GetDonById(string libelle)
+        {
+            if (string.IsNullOrWhiteSpace(libelle))
+            {
+                return string.Empty;
+            }
+
+            var don = await DtmRepositories.DonRepository.GetByLibelle(libelle);
+
+            return don == null ? string.Empty : don.Description;
+        }
     }
 }
