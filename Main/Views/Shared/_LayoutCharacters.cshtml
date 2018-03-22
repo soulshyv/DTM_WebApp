@@ -1,4 +1,5 @@
-﻿@using DTM.Core.ViewModels
+﻿@using DTM.Core.Enums
+@using DTM.Core.ViewModels
 @model DTM.Core.ViewModels.CharactersViewModel
 <!DOCTYPE html>
 <html>
@@ -56,15 +57,20 @@
                     <th>Race</th>
                     <th>Type</th>
                 </tr>
-                @foreach (var charac in Model.Characters)
+                @foreach (var perso in Model.Persos)
                 {
-                    <tr id="@charac.Nom">
-                        <td class="details">@charac.Nom</td>
-                        <td class="details">@charac.Xp</td>
-                        <td class="details">@charac.Lvl</td>
-                        <td class="details">@charac.Po</td>
-                        <td class="details">@charac.Race</td>
-                        <td class="details">@charac.TypePerso</td>
+                    <tr id="@perso.Nom">
+                        <td class="details">@perso.Nom</td>
+                        <td class="details">@perso.Xp</td>
+                        <td class="details">@perso.Lvl</td>
+                        <td class="details">@perso.Po</td>
+                        <td class="details">@perso.Race</td>
+                        <td class="details">
+                            @if (perso.TypePerso != null)
+                            {
+                                @(((CharacterTypeEnum) perso.TypePerso).ToString().ToUpper())
+                            }
+                        </td>
                     </tr>
                 }
             </table>

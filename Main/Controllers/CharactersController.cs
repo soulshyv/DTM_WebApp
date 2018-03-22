@@ -124,6 +124,31 @@ namespace DemonTaleManager.Web.Controllers
                     {
                         if (details.DonsPerso != null)
                         {
+                            var taux10 = 0;
+                            var taux15 = 0;
+                            var taux20 = 0;
+
+                            foreach (var dp in details.DonsPerso)
+                            {
+                                switch (dp.Taux)
+                                {
+                                    case 10:
+                                        taux10 += 1;
+                                        break;
+                                    case 15:
+                                        taux15 += 1;
+                                        break;
+                                    case 20:
+                                        taux20 += 1;
+                                        break;
+                                }
+                            }
+
+                            if (taux10 != 1 || taux15 != 2 || taux20 == 1)
+                            {
+                                return Forbid();
+                            }
+
                             foreach (var dp in details.DonsPerso)
                             {
                                 await DtmRepositories.DonPersoRepository.Update(dp);
@@ -133,18 +158,10 @@ namespace DemonTaleManager.Web.Controllers
                         {
                             if (details.ElementsPerso != null)
                             {
-                                persoToUpdate = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
-                                if (persoToUpdate == null)
-                                {
-                                    return NotFound();
-                                } 
-
                                 foreach (var e in details.ElementsPerso)
                                 {
-                                    e.Perso = persoToUpdate;
+                                    await DtmRepositories.ElementPersoRepository.Update(e);
                                 }
-
-                                persoToUpdate.ElementPerso = details.ElementsPerso;
                             }
                             else
                             {
@@ -283,6 +300,19 @@ namespace DemonTaleManager.Web.Controllers
             var don = await DtmRepositories.DonRepository.GetByLibelle(libelle);
 
             return don == null ? string.Empty : don.Description;
+        }
+
+        [HttpPost]
+        public async Task<string> GetElementById(string libelle)
+        {
+            if (string.IsNullOrWhiteSpace(libelle))
+            {
+                return string.Empty;
+            }
+
+            var element = await DtmRepositories.ElementRepository.GetByLibelle(libelle);
+
+            return element == null ? string.Empty : element.Description;
         }
     }
 }

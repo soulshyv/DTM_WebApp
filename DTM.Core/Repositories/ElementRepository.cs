@@ -18,10 +18,10 @@ namespace DTM.Core.Repositories
             return await Connection.Element.SingleOrDefaultAsync(_ => _.Id == id, ctk);
         }
 
-        public async Task<IEnumerable<Element>> GetByLibelle(string libelle,
+        public async Task<Element> GetByLibelle(string libelle,
             CancellationToken ctk = default(CancellationToken))
         {
-            return await Connection.Element.Where(_ => _.Libelle == libelle).ToArrayAsync(ctk);
+            return await Connection.Element.SingleOrDefaultAsync(_ => _.Libelle == libelle, ctk);
         }
 
         public async Task<IEnumerable<Element>> GetAll(CancellationToken ctk = default(CancellationToken))
