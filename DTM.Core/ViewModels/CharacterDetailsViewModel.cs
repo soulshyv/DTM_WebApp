@@ -20,6 +20,7 @@ namespace DTM.Core.ViewModels
         public List<PassifPerso> PassifsPerso { get; set; }
         public IFormFile UploadedPic { get; set; }
         public IEnumerable<Don> Dons { get; set; }
+        public IEnumerable<Demon> Demons { get; set; }
         public IEnumerable<Element> Elements { get; set; }
         public IEnumerable<Item> Items { get; set; }
     }

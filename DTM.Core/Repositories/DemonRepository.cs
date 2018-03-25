@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,6 +23,11 @@ namespace DTM.Core.Repositories
             CancellationToken ctk = default(CancellationToken))
         {
             return await Connection.Demon.SingleOrDefaultAsync(_ => _.Nom == nom, ctk);
+        }
+
+        public async Task<IEnumerable<Demon>> GetAll(CancellationToken ctk = default(CancellationToken))
+        {
+            return await Connection.Demon.ToArrayAsync(ctk);
         }
     }
 }

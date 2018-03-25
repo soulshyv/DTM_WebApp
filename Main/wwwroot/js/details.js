@@ -8,7 +8,7 @@
         $("#details").empty();
         $("#details").load("Characters/GetDetails?idPerso=" + idPerso);
 
-        if (anchor != null && anchor !== "") {
+        if (anchor !== null && anchor !== "") {
             var jump = $("button[data-target=" + anchor + "]");
             window.scrollTo(0, $("#" + jump));
         }
@@ -70,7 +70,7 @@
         data.append("libelle", libelle);
         $.ajax({
             type: "POST",
-            url: "/Characters/GetDonById",
+            url: "/Characters/GetDonByLibelle",
             contentType: false,
             processData: false,
             data: data,
@@ -92,12 +92,34 @@
         data.append("libelle", libelle);
         $.ajax({
             type: "POST",
-            url: "/Characters/GetElementById",
+            url: "/Characters/GetElementByLibelle",
             contentType: false,
             processData: false,
             data: data,
             success: function (res) {
                 donDesc.text(res);
+            },
+            error: function (message) {
+                console.log(message);
+                alert("Une erreur est survenue pendant la recherche des données");
+            }
+        });
+    });
+
+    /* Récupère et affiche les détails du démon sélectionné */
+    $(".demonNomInput").change(function () {
+        var nom = $(this).val();
+        var demonPassif = $(this).parent().parent().find(".demonPassifDetails");
+        var data = new FormData();
+        data.append("nom", nom);
+        $.ajax({
+            type: "POST",
+            url: "/Characters/GetPassifDemonByNomDemon",
+            contentType: false,
+            processData: false,
+            data: data,
+            success: function (res) {
+                demonPassif.text(res);
             },
             error: function (message) {
                 console.log(message);
@@ -164,7 +186,7 @@
             this.classList.remove(alertClass);
             this.classList.remove(dangerClass);
 
-            if ((this.value === "10" && input10 !== 1) || (this.value === "15" && input15 !== 2) || (this.value === "20" && input20 !== 1)) {
+            if (this.value === "10" && input10 !== 1 || this.value === "15" && input15 !== 2 || this.value === "20" && input20 !== 1) {
                 this.classList.add(alertClass);
                 this.classList.add(dangerClass);
                 btn.prop("disabled", true);

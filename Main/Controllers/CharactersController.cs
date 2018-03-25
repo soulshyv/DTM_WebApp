@@ -61,6 +61,7 @@ namespace DemonTaleManager.Web.Controllers
             
             var pic = GetPicture(perso.Nom) + "?" + new DateTime().TimeOfDay.Ticks;
             var dons = await DtmRepositories.DonRepository.GetAll();
+            var demons = await DtmRepositories.DemonRepository.GetAll();
             var elements = await DtmRepositories.ElementRepository.GetAll();
             var items = await DtmRepositories.ItemRepository.GetAll();
 
@@ -79,6 +80,7 @@ namespace DemonTaleManager.Web.Controllers
                 PassifsPerso = perso.PassifPerso.ToList(),
                 CharacterPicture = pic,
                 Dons = dons,
+                Demons = demons,
                 Elements = elements,
                 Items = items
             });
@@ -100,9 +102,8 @@ namespace DemonTaleManager.Web.Controllers
         {
             if (details == null)
                 return NotFound();
-
+             
             var idPerso = details.Perso.Id;
-            Perso persoToUpdate = null;
 
             if (details.Caracs != null)
             {
@@ -167,52 +168,28 @@ namespace DemonTaleManager.Web.Controllers
                             {
                                 if (details.Inventaire != null)
                                 {
-                                    persoToUpdate = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
-                                    if (persoToUpdate == null)
-                                    {
-                                        return NotFound();
-                                    }
-
                                     foreach (var inv in details.Inventaire)
                                     {
-                                        inv.Perso = persoToUpdate;
+                                        await DtmRepositories.InventaireRepository.Update(inv);
                                     }
-
-                                    persoToUpdate.Inventaire = details.Inventaire;
                                 }
                                 else
                                 {
                                     if (details.DemonsPerso != null)
                                     {
-                                        persoToUpdate = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
-                                        if (persoToUpdate == null)
-                                        {
-                                            return NotFound();
-                                        }
-
                                         foreach (var dp in details.DemonsPerso)
                                         {
-                                            dp.Perso = persoToUpdate;
+                                            await DtmRepositories.DemonPersoRepository.Update(dp);
                                         }
-
-                                        persoToUpdate.DemonPerso = details.DemonsPerso;
                                     }
                                     else
                                     {
                                         if (details.SkillsPerso != null)
                                         {
-                                            persoToUpdate = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
-                                            if (persoToUpdate == null)
-                                            {
-                                                return NotFound();
-                                            }
-
                                             foreach (var sk in details.SkillsPerso)
                                             {
-                                                sk.Perso = persoToUpdate;
+                                                await DtmRepositories.SkillPersoRepository.Update(sk);
                                             }
-
-                                            persoToUpdate.SkillPerso = details.SkillsPerso;
                                         }
                                         else
                                         {
@@ -222,7 +199,7 @@ namespace DemonTaleManager.Web.Controllers
                                             {
                                                 return NotFound();
                                             }
-                                            persoToUpdate = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
+                                            var persoToUpdate = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
                                             persoToUpdate.Lvl = details.Perso.Lvl;
                                             persoToUpdate.Nom = details.Perso.Nom;
                                             persoToUpdate.Po = details.Perso.Po;
@@ -290,7 +267,7 @@ namespace DemonTaleManager.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<string> GetDonById(string libelle)
+        public async Task<string> GetDonByLibelle(string libelle)
         {
             if (string.IsNullOrWhiteSpace(libelle))
             {
@@ -303,7 +280,37 @@ namespace DemonTaleManager.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<string> GetElementById(string libelle)
+        public async Task<string> GetPassifDemonByNomDemon(string nom)
+        {
+            if (string.IsNullOrWhiteSpace(nom))
+            {
+                return string.Empty;
+            }
+
+            var demon = await DtmRepositories.DemonRepository.GetByNom(nom);
+
+            var passifsDemon = demon.PassifDemon.ToArray();
+            var libelle = string.Empty;
+            var desc = string.Empty;
+            var passifDetails = string.Empty;
+
+            for(var i = 0; i < passifsDemon.Length; i++)
+            {
+                libelle += passifsDemon[i].Passif.Libelle ?? string.Empty;
+                desc += string.IsNullOrWhiteSpace(passifsDemon[i].Passif.Description) ? $" : {passifsDemon[i].Passif.Description}" : string.Empty;
+                passifDetails = libelle + desc;
+
+                if (i != passifsDemon.Length - 1)
+                {
+                    passifDetails += "\r";
+                }
+            }
+
+            return passifDetails;
+        }
+
+        [HttpPost]
+        public async Task<string> GetElementByLibelle(string libelle)
         {
             if (string.IsNullOrWhiteSpace(libelle))
             {
@@ -313,6 +320,19 @@ namespace DemonTaleManager.Web.Controllers
             var element = await DtmRepositories.ElementRepository.GetByLibelle(libelle);
 
             return element == null ? string.Empty : element.Description;
+        }
+
+        [HttpPost]
+        public async Task<string> GetItemByLibelle(string libelle)
+        {
+            if (string.IsNullOrWhiteSpace(libelle))
+            {
+                return string.Empty;
+            }
+
+            var item = await DtmRepositories.ItemRepository.GetByLibelle(libelle);
+
+            return item == null ? string.Empty : item.Description;
         }
     }
 }
