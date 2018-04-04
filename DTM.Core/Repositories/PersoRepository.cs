@@ -46,7 +46,7 @@ namespace DTM.Core.Repositories
         public async Task<Perso> GetFullPersoById(int id,
             CancellationToken ctk = default(CancellationToken))
         {
-            return await Connection.Perso
+            var res = await Connection.Perso
                 .Where(_ => _.Id == id)
                 .Include(_ => _.Carac)
                 .Include(_ => _.Jauge)
@@ -57,6 +57,8 @@ namespace DTM.Core.Repositories
                 .Include(_ => _.PassifPerso).ThenInclude(_ => _.Passif)
                 .Include(_ => _.SkillPerso).ThenInclude(_ => _.Skill)
                 .FirstOrDefaultAsync(ctk);
+
+            return res;
         }
 
         public async Task<Perso> GetFullPersoByName(string nom,
