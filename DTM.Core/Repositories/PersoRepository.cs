@@ -51,6 +51,8 @@ namespace DTM.Core.Repositories
                 .Include(_ => _.Carac)
                 .Include(_ => _.Jauge)
                 .Include(_ => _.Stat)
+                .Include(_ => _.ElementPerso)
+                .Include(_ => _.DonPerso)
                 .Include(_ => _.DemonPerso).ThenInclude(_ => _.Demon).ThenInclude(_ => _.PassifDemon)
                 .Include(_ => _.Inventaire).ThenInclude(_ => _.Item)
                 .Include(_ => _.MetierPerso).ThenInclude(_ => _.Metier)

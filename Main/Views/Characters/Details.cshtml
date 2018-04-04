@@ -132,7 +132,7 @@ else
                     <th>Passifs<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#modifPassifs" type="button">Modifier</button></th>
                     <th>Dons<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#modifDons" type="button">Modifier</button></th>
                     <th>Element<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#modifElements" type="button">Modifier</button></th>
-                    <th>Demons<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#modifDemons" type="button" disabled>Modifier</button></th>
+                    <th>Demons<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#modifDemons" type="button">Modifier</button></th>
                     <th>Langues<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#modifLangues" type="button" disabled>Modifier</button></th>
                 </tr>
                 <tr>
@@ -147,7 +147,7 @@ else
                     <td width="300px">
                         @foreach (var d in donsPerso)
                         {
-                            var description = string.IsNullOrWhiteSpace(d.Don.Description) ? $": {d.Don.Description}" : string.Empty;
+                            var description = !string.IsNullOrWhiteSpace(d.Don.Description) ? $": {d.Don.Description}" : string.Empty;
                             <span>[@d.Taux%] @d.Don.Libelle @description<br /></span>
                         }
                     </td>
@@ -156,7 +156,7 @@ else
                         {
                             foreach (var e in elementsPerso)
                             {
-                                var description = string.IsNullOrWhiteSpace(e.Element.Description) ? $": {e.Element.Description}" : string.Empty;
+                                var description = !string.IsNullOrWhiteSpace(e.Element.Description) ? $": {e.Element.Description}" : string.Empty;
                                 <span>@e.Element.Libelle @description</span>
                             }
                         }
