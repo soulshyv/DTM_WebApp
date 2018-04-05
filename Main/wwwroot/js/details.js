@@ -65,7 +65,7 @@
     /* Récupère et affiche la description du don sélectionné */
     $(".donLibelleInput").change(function () {
         var libelle = $(this).val();
-        var donDesc = $(this).parent().find(".donDesc");
+        var donDesc = $(this).parent().find(".donDescInput");
         var data = new FormData();
         data.append("libelle", libelle);
         $.ajax({
@@ -87,7 +87,7 @@
     /* Récupère et affiche la description du l'élément sélectionné */
     $(".elementLibelleInput").change(function () {
         var libelle = $(this).val();
-        var donDesc = $(this).parent().parent().find(".elementDesc");
+        var donDesc = $(this).parent().parent().find(".elementDescInput");
         var data = new FormData();
         data.append("libelle", libelle);
         $.ajax({
@@ -98,6 +98,8 @@
             data: data,
             success: function (res) {
                 donDesc.text(res);
+                console.log(res);
+                console.log(donDesc);
             },
             error: function (message) {
                 console.log(message);
