@@ -13,6 +13,7 @@
 }
 else
 {
+    /* Informations du perso actuel */
     var perso = Model.Perso;
     var caracs = Model.Perso?.Carac?.FirstOrDefault();
     var jauges = Model.Perso.Jauge?.FirstOrDefault();
@@ -26,10 +27,23 @@ else
     var passifsPerso = Model.Perso.PassifPerso?.ToList();
     var characPic = Model.CharacterPicture ?? string.Empty;
 
+    /* Collections complètes */
     var dons = Model.Dons;
     var demons = Model.Demons;
     var elements = Model.Elements;
     var items = Model.Items;
+    
+    /* Tableau des dégats */
+    var degats = new List<string>();
+    var k = 0;
+    for (var j = 1; j <= 5; j++)
+    {
+        degats.Add(j + "d" + 2);
+        degats.Add(j + "d" + 3);
+        degats.Add(j + "d" + 5);
+        degats.Add(j + "d" + 10);
+    }
+
 
     <div id="detailsPersoScrolling" class="col-lg-12 col-lg-offset-1">
         <div id="detailsPerso">
@@ -900,34 +914,60 @@ else
                             <tr>
                                 <th class="text-center">Don</th>
                                 <th class="text-center">Description</th>
-                            </tr>
-                            @for (var i = 0; i < elementsPerso.Count; i++)
+                                <th class="text-center">Taux</th>
+                                <th class="text-center">Dégats</th>
+                            </tr>   
+                            @for (var i = 0; i < skillsPerso.Count; i++)
                             {
+                                var skill = skillsPerso[i].Skill;
+
                                 <tr class="text-center">
                                     <!-- Libelle -->
                                     <td class="form-group">
-                                        <select asp-for="@elementsPerso[i].Element.Libelle" class="libelleInput elementLibelleInput">
-                                            @foreach (var e in elements)
-                                            {
-                                                if (e.Libelle == elementsPerso[i].Element.Libelle)
-                                                {
-                                                    <option selected="selected" value="@e.Libelle">@e.Libelle</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@e.Libelle">@e.Libelle</option>
-                                                }
-                                            }
-                                        </select>
+                                        <input asp-for="@skill.Libelle" type="text" />
                                     </td>
                                     <td class="form-group">
                                         <!-- Description -->
-                                        <textarea style="resize:none;width:100%;" asp-for="@elementsPerso[i].Element.Description" type="text" class="elementDescInput" disabled>@elementsPerso[i].Element.Description</textarea>
+                                        <textarea style="resize:none;width:100%;" asp-for="@skill.Description" type="text" class="skillDescInput" disabled>@skill.Description</textarea>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            <select asp-for="@skill.Taux">
+                                                @for (var j = 5; j <= 100; j += 5)
+                                                {
+                                                    if (j == skill.Taux)
+                                                    {
+                                                        <option selected="selected" value="@j">@j</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@j">@j</option>
+                                                    }
+                                                }
+                                            </select>
+                                            %
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <select asp-for="@skill.Degats">
+                                            <option value=""></option>
+                                            @foreach(var d in degats)
+                                            {
+                                                if (d == skill.Degats)
+                                                {
+                                                    <option selected="selected" value="@d">@d</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@d">@d</option>
+                                                }
+                                            }
+                                        </select>
 
-                                        <input asp-for="@elementsPerso[i].ElementId" type="hidden" />
-                                        <input asp-for="@elementsPerso[i].PersoId" type="hidden" />
-                                        <input asp-for="@elementsPerso[i].Id" type="hidden" />
-                                        <input asp-for="@elementsPerso[i].Element.Id" type="hidden" />
+                                        <input asp-for="@skillsPerso[i].SkillId" type="hidden"/>
+                                        <input asp-for="@skillsPerso[i].PersoId" type="hidden"/>
+                                        <input asp-for="@skillsPerso[i].Id" type="hidden"/>
+                                        <input asp-for="@skillsPerso[i].Skill.Id" type="hidden"/>
                                     </td>
                                 </tr>
                             }
