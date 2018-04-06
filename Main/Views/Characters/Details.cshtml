@@ -31,6 +31,7 @@ else
     var dons = Model.Dons;
     var demons = Model.Demons;
     var elements = Model.Elements;
+    var skills = Model.Skills;
     var items = Model.Items;
     
     /* Tableau des dégats */
@@ -653,7 +654,8 @@ else
                                         <br />
                                         <br />
                                         <!-- Description -->
-                                        <textarea style="resize:none;width:100%;" asp-for="@donsPerso[i].Don.Description" type="text" class="donDescInput" disabled>@donsPerso[i].Don.Description</textarea>
+                                        <textarea style="resize:none;width:100%;" asp-for="@donsPerso[i].Don.Description" type="text" class="donDesc" disabled>@donsPerso[i].Don.Description</textarea>
+                                        <input asp-for="@donsPerso[i].Don.Description" type="hidden" class="donDescInput" />
                                     </td>
                                     <!-- Taux -->
                                     <td class="form-group">
@@ -738,7 +740,8 @@ else
                                     </td>
                                     <td class="form-group">
                                         <!-- Description -->
-                                        <textarea style="resize:none;width:100%;" asp-for="@elementsPerso[i].Element.Description" type="text" class="elementDescInput" disabled>@elementsPerso[i].Element.Description</textarea>
+                                        <textarea style="resize:none;width:100%;" asp-for="@elementsPerso[i].Element.Description" type="text" class="elementDesc" disabled>@elementsPerso[i].Element.Description</textarea>
+                                        <input asp-for="@elementsPerso[i].Element.Description" type="hidden" class="elementDescInput" />
 
                                         <input asp-for="@elementsPerso[i].ElementId" type="hidden" />
                                         <input asp-for="@elementsPerso[i].PersoId" type="hidden" />
@@ -913,29 +916,40 @@ else
                         <table class="table table-bordered detailsTab">
                             <tr>
                                 <th class="text-center">Don</th>
-                                <th class="text-center">Description</th>
                                 <th class="text-center">Taux</th>
                                 <th class="text-center">Dégats</th>
                             </tr>   
                             @for (var i = 0; i < skillsPerso.Count; i++)
                             {
-                                var skill = skillsPerso[i].Skill;
-
                                 <tr class="text-center">
                                     <!-- Libelle -->
                                     <td class="form-group">
-                                        <input asp-for="@skill.Libelle" type="text" />
-                                    </td>
-                                    <td class="form-group">
+                                        <select asp-for="@skillsPerso[i].Skill.Libelle" class="libelleInput skillLibelleInput">
+                                            @foreach (var sk in skills)
+                                            {
+                                                if (sk.Libelle == skillsPerso[i].Skill.Libelle)
+                                                {
+                                                    <option selected="selected" value="@sk.Libelle">@sk.Libelle</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="sk.Libelle">@sk.Libelle</option>
+                                                }
+                                            }
+                                        </select>
+                                        <br />
+                                        <br />
                                         <!-- Description -->
-                                        <textarea style="resize:none;width:100%;" asp-for="@skill.Description" type="text" class="skillDescInput" disabled>@skill.Description</textarea>
+                                        <textarea style="resize:none;width:100%;" asp-for="@skillsPerso[i].Skill.Description" type="text" class="skillDesc" disabled>@skillsPerso[i].Skill.Description</textarea>
+                                        <input asp-for="@skillsPerso[i].Skill.Description" type="hidden" class="skillDescInput" />
                                     </td>
                                     <td>
-                                        <span>
-                                            <select asp-for="@skill.Taux">
+                                        @*<span>
+                                            <select asp-for="@skillsPerso[i].Skill.Taux">
+                                                <option value=""></option>
                                                 @for (var j = 5; j <= 100; j += 5)
                                                 {
-                                                    if (j == skill.Taux)
+                                                    if (j == skillsPerso[i].Skill.Taux)
                                                     {
                                                         <option selected="selected" value="@j">@j</option>
                                                     }
@@ -946,14 +960,15 @@ else
                                                 }
                                             </select>
                                             %
-                                        </span>
+                                        </span>*@
+                                        <span><input class="skillTaux" asp-for="@skillsPerso[i].Skill.Taux" type="text" disabled /> %</span>
                                     </td>
                                     <td>
-                                        <select asp-for="@skill.Degats">
+                                        @*<select asp-for="@skillsPerso[i].Skill.Degats">
                                             <option value=""></option>
                                             @foreach(var d in degats)
                                             {
-                                                if (d == skill.Degats)
+                                                if (d == skillsPerso[i].Skill.Degats)
                                                 {
                                                     <option selected="selected" value="@d">@d</option>
                                                 }
@@ -962,7 +977,8 @@ else
                                                     <option value="@d">@d</option>
                                                 }
                                             }
-                                        </select>
+                                        </select>*@
+                                        <input asp-for="@skillsPerso[i].Skill.Degats" class="skillTaux" type="text" disabled/>
 
                                         <input asp-for="@skillsPerso[i].SkillId" type="hidden"/>
                                         <input asp-for="@skillsPerso[i].PersoId" type="hidden"/>

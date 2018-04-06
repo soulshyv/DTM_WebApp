@@ -63,6 +63,7 @@ namespace DemonTaleManager.Web.Controllers
             var dons = await DtmRepositories.DonRepository.GetAll();
             var demons = await DtmRepositories.DemonRepository.GetAll();
             var elements = await DtmRepositories.ElementRepository.GetAll();
+            var skills = await DtmRepositories.SkillRepository.GetAll();
             var items = await DtmRepositories.ItemRepository.GetAll();
 
             return PartialView("Details", new CharacterDetailsViewModel
@@ -82,6 +83,7 @@ namespace DemonTaleManager.Web.Controllers
                 Dons = dons,
                 Demons = demons,
                 Elements = elements,
+                Skills = skills,
                 Items = items
             });
         }
@@ -320,6 +322,19 @@ namespace DemonTaleManager.Web.Controllers
             var element = await DtmRepositories.ElementRepository.GetByLibelle(libelle);
 
             return element == null ? string.Empty : element.Description;
+        }
+
+        [HttpPost]
+        public async Task<string> GetSkillByLibelle(string libelle)
+        {
+            if (string.IsNullOrWhiteSpace(libelle))
+            {
+                return string.Empty;
+            }
+
+            var skill = await DtmRepositories.SkillRepository.GetByLibelle(libelle);
+
+            return skill == null ? string.Empty : skill.Description;
         }
 
         [HttpPost]

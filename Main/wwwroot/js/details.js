@@ -66,6 +66,7 @@
     $(".donLibelleInput").change(function () {
         var libelle = $(this).val();
         var donDesc = $(this).parent().find(".donDescInput");
+        var inputDesc = $(this).parent().parent().find(".elementDescInput");
         var data = new FormData();
         data.append("libelle", libelle);
         $.ajax({
@@ -76,6 +77,7 @@
             data: data,
             success: function (res) {
                 donDesc.text(res);
+                inputDesc.val(res);
             },
             error: function (message) {
                 console.log(message);
@@ -84,10 +86,11 @@
         });
     });
 
-    /* Récupère et affiche la description du l'élément sélectionné */
+    /* Récupère et affiche la description de l'élément sélectionné */
     $(".elementLibelleInput").change(function () {
         var libelle = $(this).val();
-        var donDesc = $(this).parent().parent().find(".elementDescInput");
+        var elementDesc = $(this).parent().parent().find(".elementDesc");
+        var inputDesc = $(this).parent().parent().find(".elementDescInput");
         var data = new FormData();
         data.append("libelle", libelle);
         $.ajax({
@@ -97,9 +100,8 @@
             processData: false,
             data: data,
             success: function (res) {
-                donDesc.text(res);
-                console.log(res);
-                console.log(donDesc);
+                elementDesc.text(res);
+                inputDesc.val(res);
             },
             error: function (message) {
                 console.log(message);
@@ -122,6 +124,30 @@
             data: data,
             success: function (res) {
                 demonPassif.text(res);
+            },
+            error: function (message) {
+                console.log(message);
+                alert("Une erreur est survenue pendant la recherche des données");
+            }
+        });
+    });
+
+    /* Récupère et affiche la description du skill sélectionné */
+    $(".elementLibelleInput").change(function () {
+        var libelle = $(this).val();
+        var elementDesc = $(this).parent().parent().find(".elementDesc");
+        var inputDesc = $(this).parent().parent().find(".elementDescInput");
+        var data = new FormData();
+        data.append("libelle", libelle);
+        $.ajax({
+            type: "POST",
+            url: "/Characters/GetSkillByLibelle",
+            contentType: false,
+            processData: false,
+            data: data,
+            success: function (res) {
+                elementDesc.text(res);
+                inputDesc.val(res);
             },
             error: function (message) {
                 console.log(message);

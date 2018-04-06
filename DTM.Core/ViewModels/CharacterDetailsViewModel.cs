@@ -1,4 +1,5 @@
-﻿using DTM.Core.Models;
+﻿using System.Collections;
+using DTM.Core.Models;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
@@ -22,6 +23,7 @@ namespace DTM.Core.ViewModels
         public IEnumerable<Don> Dons { get; set; }
         public IEnumerable<Demon> Demons { get; set; }
         public IEnumerable<Element> Elements { get; set; }
+        public IEnumerable<Skill> Skills { get; set; }
         public IEnumerable<Item> Items { get; set; }
     }
 }
