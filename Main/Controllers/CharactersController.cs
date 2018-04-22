@@ -105,120 +105,120 @@ namespace DemonTaleManager.Web.Controllers
             if (details == null)
                 return NotFound();
              
-            var idPerso = details.Perso.Charac.Id;
+            //var idPerso = details.Perso.Charac.Id;
 
-            if (details.Caracs != null)
-            {
-                //await DtmRepositories.CaracRepository.Update(details.Caracs);
-            }
-            else
-            {
-                if (details.Stats != null)
-                {
-                    //await DtmRepositories.StatRepository.Update(details.Stats);
-                }
-                else
-                {
-                    if (details.Jauges != null)
-                    {
-                        //await DtmRepositories.JaugeRepository.Update(details.Jauges);
-                    }
-                    else
-                    {
-                        if (details.DonsPerso != null)
-                        {
-                            var taux10 = 0;
-                            var taux15 = 0;
-                            var taux20 = 0;
+            //if (details.Caracs != null)
+            //{
+            //    //await DtmRepositories.CaracRepository.Update(details.Caracs);
+            //}
+            //else
+            //{
+            //    if (details.Stats != null)
+            //    {
+            //        //await DtmRepositories.StatRepository.Update(details.Stats);
+            //    }
+            //    else
+            //    {
+            //        if (details.Jauges != null)
+            //        {
+            //            //await DtmRepositories.JaugeRepository.Update(details.Jauges);
+            //        }
+            //        else
+            //        {
+            //            if (details.DonsPerso != null)
+            //            {
+            //                var taux10 = 0;
+            //                var taux15 = 0;
+            //                var taux20 = 0;
 
-                            foreach (var dp in details.DonsPerso)
-                            {
-                                switch (dp.Taux)
-                                {
-                                    case 10:
-                                        taux10 += 1;
-                                        break;
-                                    case 15:
-                                        taux15 += 1;
-                                        break;
-                                    case 20:
-                                        taux20 += 1;
-                                        break;
-                                }
-                            }
+            //                foreach (var dp in details.DonsPerso)
+            //                {
+            //                    switch (dp.Taux)
+            //                    {
+            //                        case 10:
+            //                            taux10 += 1;
+            //                            break;
+            //                        case 15:
+            //                            taux15 += 1;
+            //                            break;
+            //                        case 20:
+            //                            taux20 += 1;
+            //                            break;
+            //                    }
+            //                }
 
-                            if (taux10 != 1 || taux15 != 2 || taux20 == 1)
-                            {
-                                return Forbid();
-                            }
+            //                if (taux10 != 1 || taux15 != 2 || taux20 == 1)
+            //                {
+            //                    return Forbid();
+            //                }
 
-                            foreach (var dp in details.DonsPerso)
-                            {
-                                await DtmRepositories.DonPersoRepository.Update(dp);
-                            }
-                        }
-                        else
-                        {
-                            if (details.ElementsPerso != null)
-                            {
-                                foreach (var e in details.ElementsPerso)
-                                {
-                                    await DtmRepositories.ElementPersoRepository.Update(e);
-                                }
-                            }
-                            else
-                            {
-                                if (details.Inventaire != null)
-                                {
-                                    foreach (var inv in details.Inventaire)
-                                    {
-                                        await DtmRepositories.InventaireRepository.Update(inv);
-                                    }
-                                }
-                                else
-                                {
-                                    if (details.DemonsPerso != null)
-                                    {
-                                        foreach (var dp in details.DemonsPerso)
-                                        {
-                                            await DtmRepositories.DemonPersoRepository.Update(dp);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (details.SkillsPerso != null)
-                                        {
-                                            foreach (var sk in details.SkillsPerso)
-                                            {
-                                                await DtmRepositories.SkillPersoRepository.Update(sk);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (details.Perso.Charac.Lvl == 0 ||
-                                                !string.IsNullOrWhiteSpace(details.Perso.Charac.Nom) ||
-                                                !string.IsNullOrWhiteSpace(details.Perso.Charac.Race))
-                                            {
-                                                return NotFound();
-                                            }
-                                            var persoToUpdate = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
-                                            persoToUpdate.Charac.Lvl = details.Perso.Charac.Lvl;
-                                            persoToUpdate.Charac.Nom = details.Perso.Charac.Nom;
-                                            persoToUpdate.Charac.Po = details.Perso.Charac.Po;
-                                            persoToUpdate.Charac.Race = details.Perso.Charac.Race;
-                                            persoToUpdate.Charac.TypePerso = details.Perso.Charac.TypePerso;
-                                            persoToUpdate.Charac.Xp = details.Perso.Charac.Xp;
+            //                foreach (var dp in details.DonsPerso)
+            //                {
+            //                    await DtmRepositories.DonPersoRepository.Update(dp);
+            //                }
+            //            }
+            //            else
+            //            {
+            //                if (details.ElementsPerso != null)
+            //                {
+            //                    foreach (var e in details.ElementsPerso)
+            //                    {
+            //                        await DtmRepositories.ElementPersoRepository.Update(e);
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    if (details.Inventaire != null)
+            //                    {
+            //                        foreach (var inv in details.Inventaire)
+            //                        {
+            //                            await DtmRepositories.InventaireRepository.Update(inv);
+            //                        }
+            //                    }
+            //                    else
+            //                    {
+            //                        if (details.DemonsPerso != null)
+            //                        {
+            //                            foreach (var dp in details.DemonsPerso)
+            //                            {
+            //                                await DtmRepositories.DemonPersoRepository.Update(dp);
+            //                            }
+            //                        }
+            //                        else
+            //                        {
+            //                            if (details.SkillsPerso != null)
+            //                            {
+            //                                foreach (var sk in details.SkillsPerso)
+            //                                {
+            //                                    await DtmRepositories.SkillPersoRepository.Update(sk);
+            //                                }
+            //                            }
+            //                            else
+            //                            {
+            //                                if (details.Perso.Charac.Lvl == 0 ||
+            //                                    !string.IsNullOrWhiteSpace(details.Perso.Charac.Nom) ||
+            //                                    !string.IsNullOrWhiteSpace(details.Perso.Charac.Race))
+            //                                {
+            //                                    return NotFound();
+            //                                }
+            //                                var persoToUpdate = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
+            //                                persoToUpdate.Charac.Lvl = details.Perso.Charac.Lvl;
+            //                                persoToUpdate.Charac.Nom = details.Perso.Charac.Nom;
+            //                                persoToUpdate.Charac.Po = details.Perso.Charac.Po;
+            //                                persoToUpdate.Charac.Race = details.Perso.Charac.Race;
+            //                                persoToUpdate.Charac.TypePerso = details.Perso.Charac.TypePerso;
+            //                                persoToUpdate.Charac.Xp = details.Perso.Charac.Xp;
 
-                                            //TODO
-                                            //await PersoRepository.Update(persoToUpdate);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            //                                //TODO
+            //                                //await PersoRepository.Update(persoToUpdate);
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
 
             return Ok();
         }

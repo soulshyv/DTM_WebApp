@@ -27,7 +27,7 @@ namespace DemonTaleManager.Web
             services.AddMvc(OnConfigureMvc);
 
             var defaultConnection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddEntityFrameworkMySql().AddDbContext<DtmDbContext>(options =>
+            services.AddEntityFrameworkMySql().AddDbContext<JdrContext>(options =>
             {
                 options.UseMySql(defaultConnection);
             });

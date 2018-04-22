@@ -10,9 +10,9 @@ using Newtonsoft.Json;
 
 namespace DTM.Core.Repositories
 {
-    public class PersoRepository : RepositoryBase<DtmDbContext, Perso, int>
+    public class PersoRepository : RepositoryBase<JdrContext, Perso, int>
     {
-        public PersoRepository(DtmDbContext co) : base(co, _ => _.Perso, _ => _.Id)
+        public PersoRepository(JdrContext co) : base(co, _ => _.Perso, _ => _.Id)
         {   
         }
 

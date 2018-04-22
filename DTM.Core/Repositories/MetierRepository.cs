@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace DTM.Core.Repositories
 {
-    public class MetierRepository : RepositoryBase<DtmDbContext, Metier, int>
+    public class MetierRepository : RepositoryBase<JdrContext, Metier, int>
     {
-        public MetierRepository(DtmDbContext co) : base(co, _ => _.Metier, _ => _.Id)
+        public MetierRepository(JdrContext co) : base(co, _ => _.Metier, _ => _.Id)
         {
         }
 

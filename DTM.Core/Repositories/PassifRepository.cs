@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace DTM.Core.Repositories
 {
-    public class PassifRepository : RepositoryBase<DtmDbContext, Passif, int>
+    public class PassifRepository : RepositoryBase<JdrContext, Passif, int>
     {
-        public PassifRepository(DtmDbContext co) : base(co, _ => _.Passif, _ => _.Id)
+        public PassifRepository(JdrContext co) : base(co, _ => _.Passif, _ => _.Id)
         {
         }
 

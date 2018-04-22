@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DTM.Core.Repositories
 {
-    public class DemonRepository : RepositoryBase<DtmDbContext, Demon, int>
+    public class DemonRepository : RepositoryBase<JdrContext, Demon, int>
     {
-        public DemonRepository(DtmDbContext co) : base(co, _ => _.Demon, _ => _.Id)
+        public DemonRepository(JdrContext co) : base(co, _ => _.Demon, _ => _.Id)
         {
         }
 
