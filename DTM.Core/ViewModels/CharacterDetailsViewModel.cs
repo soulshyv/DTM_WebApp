@@ -8,7 +8,7 @@ namespace DTM.Core.ViewModels
     public class CharacterDetailsViewModel
     {
         public string CharacterPicture { get; set; }
-        public Perso Perso{ get; set; }
+        public PersoDto Perso{ get; set; }
         public Carac Caracs { get; set; }
         public Jauge Jauges { get; set; }
         public Stat Stats { get; set; }
@@ -25,5 +25,6 @@ namespace DTM.Core.ViewModels
         public IEnumerable<Element> Elements { get; set; }
         public IEnumerable<Skill> Skills { get; set; }
         public IEnumerable<Item> Items { get; set; }
+
     }
 }

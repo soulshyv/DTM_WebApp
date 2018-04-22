@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace DTM.Core
+namespace DTM.Core.Repositories
 {
     public abstract class RepositoryBase<TContext, T, TKey>
         where TContext : DbContext

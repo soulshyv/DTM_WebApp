@@ -2,17 +2,17 @@
 
 namespace DTM.Core.Models
 {
-    public class CharacterFull
+    public class PersoDto
     {
-        public CharacterFull(Perso charac,
+        public PersoDto(Perso charac,
             Carac caracs,
             Jauge jauges,
             Stat stats,
-            List<Element> elements,
-            List<Skill> skills,
+            List<ElementPerso> elements,
+            List<SkillPerso> skills,
             List<DonPerso> dons,
-            List<Demon> demons,
-            Inventaire inventaire)
+            List<DemonPerso> demons,
+            List<Inventaire> inventaire)
         {
             Charac = charac;
             Caracs = caracs;
@@ -25,16 +25,18 @@ namespace DTM.Core.Models
             Inventaire = inventaire;
         }
 
-        public CharacterFull(){}
+        public PersoDto(){}
 
         public Perso Charac;
         public Carac Caracs;
         public Jauge Jauges;
         public Stat Stats;
-        public List<Element> Elements;
-        public List<Skill> Skills;
+        public List<ElementPerso> Elements;
+        public List<SkillPerso> Skills;
         public List<DonPerso> Dons;
-        public List<Demon> Demons;
-        public Inventaire Inventaire;
-        }
+        public List<DemonPerso> Demons;
+        public List<Inventaire> Inventaire;
+        public List<MetierPerso> Metiers;
+        public List<PassifPerso> Passifs;
+    }
 }

@@ -14,9 +14,6 @@ namespace DTM.Core.Mvc
 
         public ILifetimeScope Scope { get; }
 
-        private CaracRepository _caracRepository;
-        public CaracRepository CaracRepository => _caracRepository ?? (_caracRepository = Scope.Resolve<CaracRepository>());
-
         private DemonRepository _demonRepository;
         public DemonRepository DemonRepository => _demonRepository ?? (_demonRepository = Scope.Resolve<DemonRepository>());
 
@@ -41,9 +38,6 @@ namespace DTM.Core.Mvc
         private ItemRepository _itemRepository;
         public ItemRepository ItemRepository => _itemRepository ?? (_itemRepository = Scope.Resolve<ItemRepository>());
 
-        private JaugeRepository _jaugeRepository;
-        public JaugeRepository JaugeRepository => _jaugeRepository ?? (_jaugeRepository = Scope.Resolve<JaugeRepository>());
-
         private MetierRepository _metierRepository;
         public MetierRepository MetierRepository => _metierRepository ?? (_metierRepository = Scope.Resolve<MetierRepository>());
 
@@ -67,9 +61,6 @@ namespace DTM.Core.Mvc
 
         private SkillPersoRepository _skillPersoRepository;
         public SkillPersoRepository SkillPersoRepository => _skillPersoRepository ?? (_skillPersoRepository = Scope.Resolve<SkillPersoRepository>());
-
-        private StatRepository _statRepository;
-        public StatRepository StatRepository => _statRepository ?? (_statRepository = Scope.Resolve<StatRepository>());
 
         private UserRepository _userRepository;
         public UserRepository UserRepository => _userRepository ?? (_userRepository = Scope.Resolve<UserRepository>());

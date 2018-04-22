@@ -15,16 +15,17 @@ else
 {
     /* Informations du perso actuel */
     var perso = Model.Perso;
-    var caracs = Model.Perso?.Carac?.FirstOrDefault();
-    var jauges = Model.Perso.Jauge?.FirstOrDefault();
-    var stats = Model.Perso.Stat?.FirstOrDefault();
-    var elementsPerso = Model.Perso.ElementPerso?.ToList();
-    var skillsPerso = Model.Perso.SkillPerso?.ToList();
-    var donsPerso = Model.Perso.DonPerso?.OrderBy(ob => ob.Taux).ToList();
-    var demonsPerso = Model.Perso.DemonPerso?.ToList();
-    var inventaire = Model.Perso.Inventaire?.ToList();
-    var metiersPerso = Model.Perso.MetierPerso?.ToList();
-    var passifsPerso = Model.Perso.PassifPerso?.ToList();
+    var charac = Model.Perso.Charac;
+    var caracs = Model.Perso?.Caracs;
+    var jauges = Model.Perso.Jauges;
+    var stats = Model.Perso.Stats;
+    var elementsPerso = Model.Perso.Elements;
+    var skillsPerso = Model.Perso.Skills;
+    var donsPerso = Model.Perso.Dons?.OrderBy(ob => ob.Taux).ToList();
+    var demonsPerso = Model.Perso.Demons;
+    var inventaire = Model.Perso.Inventaire;
+    var metiersPerso = Model.Perso.Metiers;
+    var passifsPerso = Model.Perso.Passifs;
     var characPic = Model.CharacterPicture ?? string.Empty;
 
     /* Collections complètes */
@@ -36,7 +37,6 @@ else
     
     /* Tableau des dégats */
     var degats = new List<string>();
-    var k = 0;
     for (var j = 1; j <= 5; j++)
     {
         degats.Add(j + "d" + 2);
@@ -48,11 +48,11 @@ else
 
     <div id="detailsPersoScrolling" class="col-lg-12 col-lg-offset-1">
         <div id="detailsPerso">
-            <span id="idPerso" hidden>@perso.Id</span>
-            <h2 id="nomPerso" class="text-center">@perso.Nom</h2>
-            <h3 id="raceperso" class="text-center">@(perso.Race)</h3>
+            <span id="idPerso" hidden>@charac.Id</span>
+            <h2 id="nomPerso" class="text-center">@charac.Nom</h2>
+            <h3 id="raceperso" class="text-center">@(charac.Race)</h3>
 
-            <img class="center-block" idPerso="characPic" src="@characPic" alt="Image de @perso.Nom" />
+            <img class="center-block" idPerso="characPic" src="@characPic" alt="Image de @charac.Nom" />
 
             <br />
 
@@ -63,14 +63,14 @@ else
             <table class="table detailsTab">
                 <!-- Caractéristiques -->
                 <tr class="text-center">
-                    <td>Lvl : @perso.Lvl</td>
-                    <td>Xp : @perso.Xp</td>
-                    <td>Po : @perso.Po</td>
+                    <td>Lvl : @charac.Lvl</td>
+                    <td>Xp : @charac.Xp</td>
+                    <td>Po : @charac.Po</td>
                     <td>
                         Type :
-                        @if (perso.TypePerso != null)
+                        @if (charac.TypePerso != null)
                         {
-                            @(((CharacterTypeEnum)perso.TypePerso).ToString().ToUpper())
+                            @(((CharacterTypeEnum)charac.TypePerso).ToString().ToUpper())
                         }
                     </td>
                     <td>
@@ -268,7 +268,7 @@ else
                         <div>
                             <label for="picUpload">Choississez une nouvelle image (png, jpg, gif)</label>
                             <input id="picUpload" name="pic" class="center-block" type="file" />
-                            <input asp-for="@perso.Id" type="hidden" />
+                            <input asp-for="@charac.Id" type="hidden" />
 
                             <input type="button" id="btn-submit-file" value="Enregistrer" class="btn btn-primary" data-dismiss="modal" />
                             <button type="button" class="btn" data-dismiss="modal">Annuler</button>
@@ -293,9 +293,9 @@ else
                     <form method="post" enctype="multipart/form-data">
                         <!-- Caractéristiques -->
                         <div class="text-center">
-                            <label asp-for="@perso.Nom"></label> <input asp-for="@perso.Nom" type="text" />
-                            <label asp-for="@perso.Race"></label>
-                            <select asp-for="@perso.Race">
+                            <label asp-for="@charac.Nom"></label> <input asp-for="@charac.Nom" type="text" />
+                            <label asp-for="@charac.Race"></label>
+                            <select asp-for="@charac.Race">
                                 @foreach (var r in EnumUtil.GetValues<CharacterRaceEnum>())
                                 {
                                     var race = r.ToString();
@@ -304,7 +304,7 @@ else
                                         race = r.ToString().ToKebabCase();
                                     }
 
-                                    if (race == perso.Race)
+                                    if (race == charac.Race)
                                     {
                                         <option selected="selected" value="@race">@race</option>
                                     }
@@ -321,8 +321,8 @@ else
                         <table class="table">
                             <tr class="text-center">
                                 <td>
-                                    <label asp-for="@perso.Lvl"></label>
-                                    <select asp-for="@perso.Lvl">
+                                    <label asp-for="@charac.Lvl"></label>
+                                    <select asp-for="@charac.Lvl">
                                         @for (var i = 1; i <= 999; i++)
                                         {
                                             <option value="@i">@i</option>
@@ -330,8 +330,8 @@ else
                                     </select>
                                 </td>
                                 <td>
-                                    <label asp-for="@perso.Xp"></label>
-                                    <select asp-for="@perso.Xp">
+                                    <label asp-for="@charac.Xp"></label>
+                                    <select asp-for="@charac.Xp">
                                         @for (var i = 0; i <= 99; i++)
                                         {
                                             <option value="@i">@i</option>
@@ -339,8 +339,8 @@ else
                                     </select>
                                 </td>
                                 <td>
-                                    <label asp-for="@perso.Po"></label>
-                                    <select asp-for="@perso.Po">
+                                    <label asp-for="@charac.Po"></label>
+                                    <select asp-for="@charac.Po">
                                         @for (var i = 0; i <= 999; i++)
                                         {
                                             <option value="@i">@i</option>
@@ -348,11 +348,11 @@ else
                                     </select>
                                 </td>
                                 <td>
-                                    <label asp-for="@perso.TypePerso">Type</label>
-                                    <select asp-for="@perso.TypePerso">
+                                    <label asp-for="@charac.TypePerso">Type</label>
+                                    <select asp-for="@charac.TypePerso">
                                         @foreach (var type in EnumUtil.GetValues<CharacterTypeEnum>())
                                         {
-                                            if (type == (CharacterTypeEnum)perso.TypePerso)
+                                            if (type == (CharacterTypeEnum)charac.TypePerso)
                                             {
                                                 <option value="@((int)type)" selected="selected">@type.ToString().ToUpper()</option>
                                             }
@@ -365,7 +365,7 @@ else
                                 </td>
                             </tr>
                         </table>
-                        <input asp-for="@perso.Id" type="hidden" />
+                        <input asp-for="@charac.Id" type="hidden" />
 
                         <br />
 
@@ -458,7 +458,7 @@ else
                         </table>
                         <input asp-for="@jauges.Id" type="hidden" />
                         <input asp-for="@jauges.PersoId" type="hidden" />
-                        <input asp-for="@perso.Id" type="hidden" />
+                        <input asp-for="@charac.Id" type="hidden" />
 
                         <div class="text-center">
                             <button type="button" class="btn btn-primary btn-submit-form" data-dismiss="modal">Enregistrer</button>
@@ -526,7 +526,7 @@ else
                         </table>
                         <input asp-for="@stats.Id" type="hidden" />
                         <input asp-for="@stats.PersoId" type="hidden" />
-                        <input asp-for="@perso.Id" type="hidden" />
+                        <input asp-for="@charac.Id" type="hidden" />
 
                         <div class="text-center">
                             <button type="button" class="btn btn-primary btn-submit-form" data-dismiss="modal">Enregistrer</button>
@@ -604,7 +604,7 @@ else
                         </table>
                         <input asp-for="@caracs.Id" type="hidden" />
                         <input asp-for="@caracs.PersoId" type="hidden" />
-                        <input asp-for="@perso.Id" type="hidden" />
+                        <input asp-for="@charac.Id" type="hidden" />
 
                         <div class="text-center">
                             <button type="button" class="btn btn-primary btn-submit-form" data-dismiss="modal">Enregistrer</button>
@@ -690,7 +690,7 @@ else
                                 </tr>
                             }
                         </table>
-                        <input asp-for="@perso.Id" type="hidden" />
+                        <input asp-for="@charac.Id" type="hidden" />
 
                         <div class="text-center">
                             <button type="button" class="btn btn-primary btn-submit-form" id="btn-don" data-dismiss="modal">Enregistrer</button>
@@ -751,7 +751,7 @@ else
                                 </tr>
                             }
                         </table>
-                        <input asp-for="@perso.Id" type="hidden" />
+                        <input asp-for="@charac.Id" type="hidden" />
 
                         <div class="text-center">
                             <button type="button" class="btn btn-primary btn-submit-form" id="btn-don" data-dismiss="modal">Enregistrer</button>
@@ -829,7 +829,7 @@ else
                                 </tr>
                             }
                         </table>
-                        <input asp-for="@perso.Id" type="hidden" />
+                        <input asp-for="@charac.Id" type="hidden" />
 
                         <div class="text-center">
                             <button type="button" class="btn btn-primary btn-submit-form" id="btn-don" data-dismiss="modal">Enregistrer</button>
@@ -988,7 +988,7 @@ else
                                 </tr>
                             }
                         </table>
-                        <input asp-for="@perso.Id" type="hidden" />
+                        <input asp-for="@charac.Id" type="hidden" />
 
                         <div class="text-center">
                             <button type="button" class="btn btn-primary btn-submit-form" id="btn-don" data-dismiss="modal">Enregistrer</button>
@@ -1048,7 +1048,7 @@ else
                                 </tr>
                             }
                         </table>
-                        <input asp-for="@perso.Id" type="hidden" />
+                        <input asp-for="@charac.Id" type="hidden" />
 
                         <div class="text-center">
                             <button type="button" class="btn btn-primary btn-submit-form" id="btn-don" data-dismiss="modal">Enregistrer</button>

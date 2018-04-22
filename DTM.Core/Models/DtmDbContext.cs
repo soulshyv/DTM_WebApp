@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DTM.Core.Models
 {
     public partial class DtmDbContext : DbContext
     {
-        public virtual DbSet<Carac> Carac { get; set; }
         public virtual DbSet<Demon> Demon { get; set; }
         public virtual DbSet<DemonPerso> DemonPerso { get; set; }
         public virtual DbSet<Don> Don { get; set; }
@@ -17,7 +14,6 @@ namespace DTM.Core.Models
         public virtual DbSet<ElementPerso> ElementPerso { get; set; }
         public virtual DbSet<Inventaire> Inventaire { get; set; }
         public virtual DbSet<Item> Item { get; set; }
-        public virtual DbSet<Jauge> Jauge { get; set; }
         public virtual DbSet<Metier> Metier { get; set; }
         public virtual DbSet<MetierPerso> MetierPerso { get; set; }
         public virtual DbSet<Passif> Passif { get; set; }
@@ -26,62 +22,19 @@ namespace DTM.Core.Models
         public virtual DbSet<Perso> Perso { get; set; }
         public virtual DbSet<Skill> Skill { get; set; }
         public virtual DbSet<SkillPerso> SkillPerso { get; set; }
-        public virtual DbSet<Stat> Stat { get; set; }
         public virtual DbSet<User> User { get; set; }
-
-        public DtmDbContext() :
-            base()
-        {
-            OnCreated();
-        }
-
-        public DtmDbContext(DbContextOptions<DtmDbContext> options) :
-            base(options)
-        {
-            OnCreated();
-        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.Options.Extensions.OfType<RelationalOptionsExtension>().Any(ext => !string.IsNullOrEmpty(ext.ConnectionString) || ext.Connection != null))
-
+            if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseMySql("Server=localhost;Port=3306;Database=jdr;Uid=mj;Pwd=mj");
             }
-
-            CustomizeConfiguration(ref optionsBuilder);
-            base.OnConfiguring(optionsBuilder);
         }
-
-        partial void CustomizeConfiguration(ref DbContextOptionsBuilder optionsBuilder);
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Carac>(entity =>
-            {
-                entity.ToTable("carac");
-
-                entity.HasIndex(e => e.PersoId)
-                    .HasName("fk_carac_perso");
-
-                entity.Property(e => e.Id).HasColumnType("int(11)");
-
-                entity.Property(e => e.Atk).HasColumnType("int(11)");
-
-                entity.Property(e => e.Def).HasColumnType("int(11)");
-
-                entity.Property(e => e.PersoId)
-                    .HasColumnName("Perso_Id")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Rap).HasColumnType("int(11)");
-
-                entity.HasOne(d => d.Perso)
-                    .WithMany(p => p.Carac)
-                    .HasForeignKey(d => d.PersoId)
-                    .HasConstraintName("fk_carac_perso");
-            });
-
             modelBuilder.Entity<Demon>(entity =>
             {
                 entity.ToTable("demon");
@@ -272,43 +225,6 @@ namespace DTM.Core.Models
                     .HasColumnType("int(11)");
             });
 
-            modelBuilder.Entity<Jauge>(entity =>
-            {
-                entity.ToTable("jauge");
-
-                entity.HasIndex(e => e.PersoId)
-                    .HasName("fk_jauge_perso");
-
-                entity.Property(e => e.Id).HasColumnType("int(11)");
-
-                entity.Property(e => e.PersoId)
-                    .HasColumnName("Perso_Id")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Psy).HasColumnType("int(11)");
-
-                entity.Property(e => e.PsyMax)
-                    .HasColumnName("Psy_Max")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Sync).HasColumnType("int(11)");
-
-                entity.Property(e => e.SyncMax)
-                    .HasColumnName("Sync_Max")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Vie).HasColumnType("int(11)");
-
-                entity.Property(e => e.VieMax)
-                    .HasColumnName("Vie_Max")
-                    .HasColumnType("int(11)");
-
-                entity.HasOne(d => d.Perso)
-                    .WithMany(p => p.Jauge)
-                    .HasForeignKey(d => d.PersoId)
-                    .HasConstraintName("fk_jauge_perso");
-            });
-
             modelBuilder.Entity<Metier>(entity =>
             {
                 entity.ToTable("metier");
@@ -440,6 +356,10 @@ namespace DTM.Core.Models
 
                 entity.Property(e => e.Id).HasColumnType("int(11)");
 
+                entity.Property(e => e.Caracs).IsRequired();
+
+                entity.Property(e => e.Jauges).IsRequired();
+
                 entity.Property(e => e.Lvl).HasColumnType("int(11)");
 
                 entity.Property(e => e.Nom)
@@ -451,6 +371,8 @@ namespace DTM.Core.Models
                 entity.Property(e => e.Race)
                     .IsRequired()
                     .HasMaxLength(50);
+
+                entity.Property(e => e.Stats).IsRequired();
 
                 entity.Property(e => e.TypePerso)
                     .HasColumnName("Type_Perso")
@@ -509,31 +431,6 @@ namespace DTM.Core.Models
                     .HasConstraintName("fk_skillPerso_skill");
             });
 
-            modelBuilder.Entity<Stat>(entity =>
-            {
-                entity.ToTable("stat");
-
-                entity.HasIndex(e => e.PersoId)
-                    .HasName("fk_stat_perso");
-
-                entity.Property(e => e.Id).HasColumnType("int(11)");
-
-                entity.Property(e => e.Mental).HasColumnType("int(11)");
-
-                entity.Property(e => e.PersoId)
-                    .HasColumnName("Perso_Id")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Phy).HasColumnType("int(11)");
-
-                entity.Property(e => e.Social).HasColumnType("int(11)");
-
-                entity.HasOne(d => d.Perso)
-                    .WithMany(p => p.Stat)
-                    .HasForeignKey(d => d.PersoId)
-                    .HasConstraintName("fk_stat_perso");
-            });
-
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("user");
@@ -561,7 +458,5 @@ namespace DTM.Core.Models
                     .HasConstraintName("fk_users_perso");
             });
         }
-
-        partial void OnCreated();
     }
 }

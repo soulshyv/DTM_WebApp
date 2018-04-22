@@ -47,7 +47,7 @@ namespace DemonTaleManager.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetDetails(int idPerso)
         {
-            Perso perso;
+            PersoDto perso;
             try
             {
                 perso = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
@@ -59,7 +59,7 @@ namespace DemonTaleManager.Web.Controllers
             }
 
             
-            var pic = GetPicture(perso.Nom) + "?" + new DateTime().TimeOfDay.Ticks;
+            var pic = GetPicture(perso.Charac.Nom) + "?" + new DateTime().TimeOfDay.Ticks;
             var dons = await DtmRepositories.DonRepository.GetAll();
             var demons = await DtmRepositories.DemonRepository.GetAll();
             var elements = await DtmRepositories.ElementRepository.GetAll();
@@ -69,16 +69,16 @@ namespace DemonTaleManager.Web.Controllers
             return PartialView("Details", new CharacterDetailsViewModel
             {
                 Perso = perso,
-                Caracs = perso.Carac.FirstOrDefault(),
-                Jauges = perso.Jauge.FirstOrDefault(),
-                Stats = perso.Stat.FirstOrDefault(),
-                ElementsPerso = perso.ElementPerso.ToList(),
-                SkillsPerso = perso.SkillPerso.ToList(),
-                DonsPerso = perso.DonPerso.ToList(),
-                DemonsPerso = perso.DemonPerso.ToList(),
-                Inventaire = perso.Inventaire.ToList(),
-                MetiersPerso = perso.MetierPerso.ToList(),
-                PassifsPerso = perso.PassifPerso.ToList(),
+                Caracs = perso.Caracs,
+                Jauges = perso.Jauges,
+                Stats = perso.Stats,
+                ElementsPerso = perso.Elements,
+                SkillsPerso = perso.Skills,
+                DonsPerso = perso.Dons,
+                DemonsPerso = perso.Demons,
+                Inventaire = perso.Inventaire,
+                MetiersPerso = perso.Metiers,
+                PassifsPerso = perso.Passifs,
                 CharacterPicture = pic,
                 Dons = dons,
                 Demons = demons,
@@ -105,23 +105,23 @@ namespace DemonTaleManager.Web.Controllers
             if (details == null)
                 return NotFound();
              
-            var idPerso = details.Perso.Id;
+            var idPerso = details.Perso.Charac.Id;
 
             if (details.Caracs != null)
             {
-                await DtmRepositories.CaracRepository.Update(details.Caracs);
+                //await DtmRepositories.CaracRepository.Update(details.Caracs);
             }
             else
             {
                 if (details.Stats != null)
                 {
-                    await DtmRepositories.StatRepository.Update(details.Stats);
+                    //await DtmRepositories.StatRepository.Update(details.Stats);
                 }
                 else
                 {
                     if (details.Jauges != null)
                     {
-                        await DtmRepositories.JaugeRepository.Update(details.Jauges);
+                        //await DtmRepositories.JaugeRepository.Update(details.Jauges);
                     }
                     else
                     {
@@ -195,21 +195,22 @@ namespace DemonTaleManager.Web.Controllers
                                         }
                                         else
                                         {
-                                            if (details.Perso.Lvl == 0 ||
-                                                !string.IsNullOrWhiteSpace(details.Perso.Nom) ||
-                                                !string.IsNullOrWhiteSpace(details.Perso.Race))
+                                            if (details.Perso.Charac.Lvl == 0 ||
+                                                !string.IsNullOrWhiteSpace(details.Perso.Charac.Nom) ||
+                                                !string.IsNullOrWhiteSpace(details.Perso.Charac.Race))
                                             {
                                                 return NotFound();
                                             }
                                             var persoToUpdate = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
-                                            persoToUpdate.Lvl = details.Perso.Lvl;
-                                            persoToUpdate.Nom = details.Perso.Nom;
-                                            persoToUpdate.Po = details.Perso.Po;
-                                            persoToUpdate.Race = details.Perso.Race;
-                                            persoToUpdate.TypePerso = details.Perso.TypePerso;
-                                            persoToUpdate.Xp = details.Perso.Xp;
+                                            persoToUpdate.Charac.Lvl = details.Perso.Charac.Lvl;
+                                            persoToUpdate.Charac.Nom = details.Perso.Charac.Nom;
+                                            persoToUpdate.Charac.Po = details.Perso.Charac.Po;
+                                            persoToUpdate.Charac.Race = details.Perso.Charac.Race;
+                                            persoToUpdate.Charac.TypePerso = details.Perso.Charac.TypePerso;
+                                            persoToUpdate.Charac.Xp = details.Perso.Charac.Xp;
 
-                                            await PersoRepository.Update(persoToUpdate);
+                                            //TODO
+                                            //await PersoRepository.Update(persoToUpdate);
                                         }
                                     }
                                 }
