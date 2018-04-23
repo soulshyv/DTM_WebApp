@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using DTM.Core.Models;
@@ -13,10 +11,11 @@ namespace DTM.Core.Repositories
     public class PersoRepository : RepositoryBase<JdrContext, Perso, int>
     {
         public PersoRepository(JdrContext co) : base(co, _ => _.Perso, _ => _.Id)
-        {   
+        {
         }
 
-        public override async Task<Perso> GetById(int id, bool noTracking = false, CancellationToken ctk = default(CancellationToken))
+        public override async Task<Perso> GetById(int id, bool noTracking = false,
+            CancellationToken ctk = default(CancellationToken))
         {
             return await Connection.Perso.SingleOrDefaultAsync(_ => _.Id == id, ctk);
         }
@@ -48,7 +47,7 @@ namespace DTM.Core.Repositories
             CancellationToken ctk = default(CancellationToken))
         {
             var res = await (
-                from perso in this.Connection.Perso
+                from perso in Connection.Perso
                 join ep in Connection.ElementPerso on perso.Id equals ep.PersoId into eps
                 join dp in Connection.DonPerso on perso.Id equals dp.PersoId into dps
                 join demon in Connection.DemonPerso on perso.Id equals demon.PersoId into demons
@@ -57,20 +56,19 @@ namespace DTM.Core.Repositories
                 join pp in Connection.PassifPerso on perso.Id equals pp.PersoId into pps
                 join sp in Connection.SkillPerso on perso.Id equals sp.PersoId into sps
                 where perso.Id == id
-                select new PersoDto
-                {
-                    Caracs = JsonConvert.DeserializeObject<Carac>(perso.Caracs),
-                    Jauges = JsonConvert.DeserializeObject<Jauge>(perso.Jauges),
-                    Stats = JsonConvert.DeserializeObject<Stat>(perso.Stats),
-                    Elements = eps.ToList(),
-                    Dons = dps.ToList(),
-                    Demons = demons.ToList(),
-                    Inventaire = invs.ToList(),
-                    Metiers= mps.ToList(),
-                    Passifs = pps.ToList(),
-                    Skills = sps.ToList()
-
-                }).FirstOrDefaultAsync(ctk);
+                select new PersoDto(
+                                new Charac(perso),
+                                perso.Caracs,
+                                perso.Jauges,
+                                perso.Stats,
+                                eps.ToList(),
+                                sps.ToList(),
+                                dps.ToList(),
+                                demons.ToList(),
+                                invs.ToList(),
+                                mps.ToList(),
+                                pps.ToList())
+                ).FirstOrDefaultAsync(ctk);
 
             return res;
         }
@@ -79,7 +77,7 @@ namespace DTM.Core.Repositories
             CancellationToken ctk = default(CancellationToken))
         {
             var res = await (
-                from perso in this.Connection.Perso
+                from perso in Connection.Perso
                 join ep in Connection.ElementPerso on perso.Id equals ep.PersoId into eps
                 join dp in Connection.DonPerso on perso.Id equals dp.PersoId into dps
                 join demon in Connection.DemonPerso on perso.Id equals demon.PersoId into demons
@@ -88,20 +86,19 @@ namespace DTM.Core.Repositories
                 join pp in Connection.PassifPerso on perso.Id equals pp.PersoId into pps
                 join sp in Connection.SkillPerso on perso.Id equals sp.PersoId into sps
                 where perso.Nom == nom
-                select new PersoDto
-                {
-                    Caracs = JsonConvert.DeserializeObject<Carac>(perso.Caracs),
-                    Jauges = JsonConvert.DeserializeObject<Jauge>(perso.Jauges),
-                    Stats = JsonConvert.DeserializeObject<Stat>(perso.Stats),
-                    Elements = eps.ToList(),
-                    Dons = dps.ToList(),
-                    Demons = demons.ToList(),
-                    Inventaire = invs.ToList(),
-                    Metiers = mps.ToList(),
-                    Passifs = pps.ToList(),
-                    Skills = sps.ToList()
-
-                }).FirstOrDefaultAsync(ctk);
+                select new PersoDto(
+                    new Charac(perso),
+                    perso.Caracs,
+                    perso.Jauges,
+                    perso.Stats,
+                    eps.ToList(),
+                    sps.ToList(),
+                    dps.ToList(),
+                    demons.ToList(),
+                    invs.ToList(),
+                    mps.ToList(),
+                    pps.ToList())
+            ).FirstOrDefaultAsync(ctk);
 
             return res;
         }
