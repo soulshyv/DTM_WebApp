@@ -2,6 +2,10 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/DemonTaleManager.Web",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:50000/",
       "sslPort": 0
@@ -15,7 +19,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Main": {
+    "DemonTaleManager.Web": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

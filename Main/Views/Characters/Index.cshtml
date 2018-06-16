@@ -1,0 +1,42 @@
+﻿@using DTM.Core.Enums
+@using DTM.Core.ViewModels
+@model CharactersViewModel
+@{
+    ViewData["Title"] = "Gestion des personnages";
+}
+
+<div id="container-left" class="pull-left">
+    <h1 class="text-center">Liste des persos</h1>
+
+    <table class="table table-hover">
+        <tr>
+            <th>Pseudo</th>
+            <th>Xp</th>
+            <th>Lvl</th>
+            <th>Po</th>
+            <th>Race</th>
+            <th>Type</th>
+        </tr>
+        @foreach (var charac in Model.Persos)
+        {
+            <tr id="@charac.Id" role="button">
+                <td class="details">@charac.Nom</td>
+                <td class="details">@charac.Xp</td>
+                <td class="details">@charac.Lvl</td>
+                <td class="details">@charac.Po</td>
+                <td class="details">@charac.Race</td>
+                <td class="details">@if (charac.TypePerso != null)
+                                    {
+                                        @(((CharacterTypeEnum)charac.TypePerso).ToString().ToUpper())
+                                    }</td>
+            </tr>
+        }
+    </table>
+</div>
+<div id="container-right" class="pull-right">
+    <div id="details">
+        @{
+            Html.RenderPartial("Details", new CharacterDetailsViewModel());
+        }
+    </div>
+</div>

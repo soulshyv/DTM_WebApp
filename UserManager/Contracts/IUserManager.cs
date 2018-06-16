@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace UserManager.Contracts
+namespace DTM.UserManager.Contracts
 {
     public interface IUserManager
     {

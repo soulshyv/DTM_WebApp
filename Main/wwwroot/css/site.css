@@ -1,35 +1,44 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: aliceblue;
+    font-size: 16px;
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+#mainContent {
+    background-image: url(../images/Wallpaper.jpg);
+    background-size: 100%;
+    background-repeat: no-repeat;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: dimgrey;
 }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
+#container-left {
+    width: 30%;
 }
 
-/* QR code generator */
-#qrCode {
-    margin: 15px;
+#container-right {
+    width: 70%;
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
+#detailsPersoScrolling {
+    height: 550px;
+    overflow-y: auto;
+}
+
+.detailsTab tbody tr {
+    background-image: radial-gradient(grey, black);
+    overflow-y: auto;
+}
+
+.modal-content {
+    background-color: slategrey;
+    color: black;
+}
+
+select, option, input[type=text], textarea {
+    background-color: dimgrey;
 }

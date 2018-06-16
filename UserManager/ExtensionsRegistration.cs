@@ -1,10 +1,9 @@
-﻿using DTM.Encryption;
+﻿using DTM.UserManager.Contracts;
+using DTM.UserManager.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using UserManager.Contracts;
-using UserManager.Services;
 
-namespace UserManager
+namespace DTM.UserManager
 {
     public static class RegistrationExtensions
     {
@@ -12,7 +11,7 @@ namespace UserManager
         {
             sc.TryAddScoped<IMd5Encryption, Md5Encryption>();
             sc.TryAddSingleton<IUserRepository, UserRepository>();
-            sc.TryAddSingleton<IUserManager, Services.UserManager>();
+            sc.TryAddScoped<IUserManager, Services.UserManager>();
 
             return sc;
         }

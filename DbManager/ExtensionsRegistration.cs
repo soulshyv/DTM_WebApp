@@ -1,5 +1,5 @@
-﻿using DbManager.Contracts;
-using DbManager.Services;
+﻿using DTM.DbManager.Contracts;
+using DTM.DbManager.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -9,7 +9,8 @@ namespace DTM.DbManager
     {
         public static IServiceCollection AddDbManager(this IServiceCollection sc)
         {
-            sc.TryAddScoped<IDtmRepository, DtmRepository>();
+            sc.TryAddScoped<ICharacPicSearcher>(_ =>
+                new CharacPicSearcher(@"./wwwroot/images/CharacPictures/", @"../../images/CharacPictures/"));
 
             return sc;
         }

@@ -1,28 +1,20 @@
 ﻿using System;
+using System.Data;
 using System.Threading.Tasks;
-using DTM.Core.Services;
+using Autofac;
+using DTM.UserManager.Contracts;
 using MySql.Data.MySqlClient;
-using UserManager.Contracts;
 
-namespace UserManager.Services
+namespace DTM.UserManager.Services
 {
     public class UserRepository : IUserRepository
     {
-        public UserRepository(IDtmDbConnection dbConnection)
+        public UserRepository(ILifetimeScope scope)
         {
-            try
-            {
-                Conn = dbConnection.DbConnection;
-                Conn.Open();
-            }
-            catch (Exception)
-            {
-                Conn.Close();
-                throw new Exception("Une erreur est survenue pendant la connexion à la base de données");
-            }
+            Scope = scope;
         }
 
-        private MySqlConnection Conn { get; }
+        public ILifetimeScope Scope { get; }
 
         public async Task<string> GetUser(string username)
         {
@@ -34,7 +26,7 @@ namespace UserManager.Services
             if (reader == null)
                 throw new Exception("Une erreur est survenue");
 
-            if (!reader.HasRows || reader.FieldCount != 1)
+            if (!reader.HasRows)
             {
                 reader.Close();
                 return null;

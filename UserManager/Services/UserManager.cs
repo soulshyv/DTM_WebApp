@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
-using DTM.Encryption;
-using UserManager.Contracts;
+using DTM.UserManager.Contracts;
 
-namespace UserManager.Services
+namespace DTM.UserManager.Services
 {
     public class UserManager : IUserManager
     {
