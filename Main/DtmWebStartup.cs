@@ -2,7 +2,6 @@
 using DTM.Core;
 using DTM.Core.Models;
 using DTM.Core.Mvc;
-using DTM.Core.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +26,11 @@ namespace DemonTaleManager.Web
             services.AddMvc(OnConfigureMvc);
 
             var defaultConnection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddEntityFrameworkMySql().AddDbContext<JdrContext>(options =>
+            //services.AddEntityFrameworkMySql().AddDbContext<JdrContext>(options =>
+            //{
+            //    options.UseMySql(defaultConnection);
+            //});
+            services.AddDbContext<JdrContext>(options =>
             {
                 options.UseMySql(defaultConnection);
             });
