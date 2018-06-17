@@ -25,10 +25,12 @@
                 <td class="details">@charac.Lvl</td>
                 <td class="details">@charac.Po</td>
                 <td class="details">@charac.Race</td>
-                <td class="details">@if (charac.TypePerso != null)
-                                    {
-                                        @(((CharacterTypeEnum)charac.TypePerso).ToString().ToUpper())
-                                    }</td>
+                <td class="details">
+                    @if (charac.TypePerso != null)
+                    {
+                        @(((CharacterTypeEnum) charac.TypePerso).ToString().ToUpper())
+                    }
+                </td>
             </tr>
         }
     </table>

@@ -1,6 +1,4 @@
-using System;
-
-namespace Main.Models
+namespace DemonTaleManager.Web.ViewModels
 {
     public class ErrorViewModel
     {

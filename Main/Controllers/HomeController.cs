@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using DemonTaleManager.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Main.Models;
 
-namespace Main.Controllers
+namespace DemonTaleManager.Web.Controllers
 {
     public class HomeController : Controller
     {

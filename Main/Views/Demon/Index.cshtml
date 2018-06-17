@@ -1,8 +1,37 @@
-﻿@model object
+﻿@using System.Collections
+@using DTM.Core.Extensions
+@model DemonTaleManager.Web.ViewModels.CrudViewModel
 
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+<h2 class="text-center">Administration - @Model.EntityType</h2>
+
+
+<table class="col-lg-6 table text-center" id="scrollable">
+    <tr>
+        @foreach (var propertyName in Model.EntityPropertiesName)
+        {
+            <th class="text-center">@propertyName</th>
+        }
+        <th></th>
+    </tr>
+    @foreach (var propertiesValues in Model.EntitesPropertiesValues)
+    {
+        <tr>
+            @foreach (var values in propertiesValues)
+            {
+                foreach (var value in values.Value)
+                {
+                    <td>@value</td>
+                }
+                <td>
+                    <a asp-controller="@Model.EntityType" asp-action="Edit" asp-route-id="@values.Key" class="btn btn-primary">Modifier</a>
+                    <a asp-controller="@Model.EntityType" asp-action="Delete" asp-route-id="@values.Key" class="btn btn-primary">Supprimer</a> 
+                </td>
+            }
+        </tr>
+    }
+</table>

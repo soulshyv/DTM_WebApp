@@ -42,3 +42,8 @@
 select, option, input[type=text], textarea {
     background-color: dimgrey;
 }
+
+#scrollable {
+    height: 550px;
+    overflow-y: auto;
+}

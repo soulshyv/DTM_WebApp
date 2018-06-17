@@ -2,17 +2,42 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
+using DemonTaleManager.Web.ViewModels;
+using DTM.Core.Models;
+using DTM.Core.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DemonTaleManager.Web.Controllers
 {
-    public class DemonController : Controller
+    public class DemonController : DtmControllerBase
     {
-        // GET: Demon
-        public ActionResult Index()
+        public DemonController(ILifetimeScope scope) : base(scope)
         {
-            return View();
+        }
+
+        // GET: Demon
+        public async Task<ActionResult> Index()
+        {
+            var demons = await DemonRepository.GetAll();
+            var propertiesValues = new List<Dictionary<int, List<object>>>();
+            foreach (var demon in demons)
+            {
+                var dico = new Dictionary<int, List<object>>();
+                var values = new List<object>{demon.Id, demon.Nom};
+                dico.Add(demon.Id, values);
+                propertiesValues.Add(dico);
+            }
+            var entityPropertiesName = new List<string>{ nameof(Demon.Id), nameof(Demon.Nom) };
+            var cvm = new CrudViewModel
+            {
+                EntityType = typeof(Demon).Name,
+                EntitesPropertiesValues = propertiesValues,
+                EntityPropertiesName = entityPropertiesName
+            };
+
+            return View(cvm);
         }
 
         // GET: Demon/Details/5
