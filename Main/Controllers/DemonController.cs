@@ -32,7 +32,7 @@ namespace DemonTaleManager.Web.Controllers
             var entityPropertiesName = new List<string>{ nameof(Demon.Id), nameof(Demon.Nom) };
             var cvm = new CrudViewModel
             {
-                EntityType = typeof(Demon).Name,
+                EntityType = typeof(Demon),
                 EntitesPropertiesValues = propertiesValues,
                 EntityPropertiesName = entityPropertiesName
             };

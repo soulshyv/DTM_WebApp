@@ -1,8 +1,22 @@
-﻿@model object
+﻿@using System.Collections
+@using System.Reflection
+@using DTM.Core.Extensions
+@model DemonTaleManager.Web.ViewModels.CrudCreateViewModel
 
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+
+<h2 class="text-center">Administration - @Model.EntityType.Name</h2>
+
+<form asp-controller="@Model.EntityType" asp-action="Create" method="post">
+    @foreach (var property in Model.EntityType.GetProperties())
+    {
+        var type = Model.EntityType;
+        var ctors = type.GetConstructors(BindingFlags.Public);
+        Model.Entity = ctors[0].Invoke(new object[] {});
+        @Html.EditorFor(_ => _.Entity)
+    }
+</form>
