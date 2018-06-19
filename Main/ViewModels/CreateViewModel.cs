@@ -2,7 +2,7 @@
 
 namespace DemonTaleManager.Web.ViewModels
 {
-    public class CrudCreateViewModel
+    public class CreateViewModel
     {
         public Type EntityType { get; set; }
         public object Entity { get; set; }

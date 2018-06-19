@@ -1,8 +1,25 @@
-﻿@model object
+﻿@using System.Collections
+@using System.Reflection
+@using DTM.Core.Extensions
+@model DemonTaleManager.Web.ViewModels.EditViewModel
 
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+
+<h1 class="text-center">Administration - @Model.EntityType.Name</h1>
+<h2 class="text-center">Edition</h2>
+
+@using (Html.BeginForm("Edit", Model.EntityType.Name, FormMethod.Post, new { @class = "form-inline" }))
+{
+    <div>
+        @Html.EditorFor(m => m.Entity)
+        <input type="hidden" asp-for="Id"/>
+    </div>
+    <br />
+    <div>
+        <input class="btn btn-primary" type="submit" value="Valider"/>
+    </div>
+}

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using DemonTaleManager.Web.ViewModels;
+using DTM.Core.Extensions;
 using DTM.Core.Models;
 using DTM.Core.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -49,7 +50,7 @@ namespace DemonTaleManager.Web.Controllers
         // GET: Demon/Create
         public ActionResult Create()
         {
-            return View("Crud/Create", new CrudCreateViewModel
+            return View("Crud/Create", new CreateViewModel
             {
                 EntityType = typeof(Demon),
                 Entity = new Demon().GetForm()
@@ -58,68 +59,74 @@ namespace DemonTaleManager.Web.Controllers
 
         // POST: Demon/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateAsync(Demon.DemonForm df)
+        public async Task<ActionResult> Create(Demon.DemonForm entity)
         {
             try
             {
-                if (df != null)
+                if (!entity.IsAnyNullOrEmpty())
                 {
-                    await DemonRepository.Insert(new Demon(df));
+                    await DemonRepository.Insert(new Demon(entity));
                 }
 
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View("Crud/Create");
+                return RedirectToAction(nameof(Create));
             }
         }
 
         // GET: Demon/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var demon = await DemonRepository.GetById(id);
+            return View("Crud/Edit" ,new EditViewModel
+            {
+                EntityType = typeof(Demon),
+                Entity = new Demon.DemonForm(demon),
+                Id = id
+            });
         }
 
         // POST: Demon/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, Demon.DemonForm entity)
         {
             try
             {
-                // TODO: Add update logic here
+                if (!entity.IsAnyNullOrEmpty())
+                {
+                    await DemonRepository.Update(new Demon(entity)
+                    {
+                        Id = id
+                    });
+                }
 
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Edit));
             }
-        }
-
-        // GET: Demon/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
         }
 
         // POST: Demon/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
+                if (id != 0)
+                {
+                    await DemonRepository.DeleteById(id);
+                }
             }
             catch
             {
-                return View();
+                // TODO : Ecrire dans le fichier de logs
             }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

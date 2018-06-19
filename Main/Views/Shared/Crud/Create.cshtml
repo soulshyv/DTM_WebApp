@@ -1,7 +1,7 @@
 ﻿@using System.Collections
 @using System.Reflection
 @using DTM.Core.Extensions
-@model DemonTaleManager.Web.ViewModels.CrudCreateViewModel
+@model DemonTaleManager.Web.ViewModels.CreateViewModel
 
 @{
     ViewBag.Title = "title";
@@ -9,7 +9,8 @@
 }
 
 
-<h2 class="text-center">Administration - @Model.EntityType.Name</h2>
+<h1 class="text-center">Administration - @Model.EntityType.Name</h1>
+<h2 class="text-center">Création</h2>
 
 @using (Html.BeginForm("Create", Model.EntityType.Name, FormMethod.Post, new { @class="form-inline" }))
 {

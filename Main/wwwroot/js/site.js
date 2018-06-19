@@ -6,11 +6,15 @@ $(document).ready(function () {
     }
 
     function loadDetails(idPerso) {
-        $("#details").load("Characters/GetDetails?idPerso=" + idPerso);
+        $("#details").load(`Characters/GetDetails?idPerso=${idPerso}`);
     }
 
     $(".details").click(function () {
         var idPerso = $(this).parent().attr("id");
         loadDetails(idPerso);
     });
+
+    function confirm() {
+        return confirm("Êtes-vous certain ?");
+    }
 });

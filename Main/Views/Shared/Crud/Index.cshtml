@@ -7,7 +7,7 @@
     Layout = "_Layout";
 }
 
-<h2 class="text-center">Administration - @Model.EntityType.Name</h2>
+<h1 class="text-center">Administration - @Model.EntityType.Name</h1>
 
 <div class="scrollable">
     <table class="row table table-bordered table-condensed scrollable crud-table text-center">
@@ -30,7 +30,10 @@
                         <td>@value</td>
                     }
                     <td>
-                        <a asp-controller="@Model.EntityType.Name" asp-action="Delete" asp-route-id="@values.Key" class="btn btn-primary btn-sm pull-right">Supprimer</a>
+                        <form asp-controller="@Model.EntityType.Name" asp-action="Delete">
+                            <input type="hidden" name="id" value="@values.Key" />
+                            <button onclick="return confirm()" class="btn btn-primary btn-sm pull-right">Supprimer</button>
+                        </form>
                         <a asp-controller="@Model.EntityType.Name" asp-action="Edit" asp-route-id="@values.Key" class="btn btn-primary btn-sm pull-right">Modifier</a>
                     </td>
                 }

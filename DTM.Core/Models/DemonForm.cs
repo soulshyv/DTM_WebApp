@@ -15,6 +15,15 @@
         public class DemonForm
         {
             public string Nom { get; set; }
+
+            public DemonForm()
+            {
+            }
+
+            public DemonForm(Demon d)
+            {
+                Nom = d.Nom;
+            }
         }
     }
 }
