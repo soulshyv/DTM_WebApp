@@ -11,12 +11,12 @@
 
 <h2 class="text-center">Administration - @Model.EntityType.Name</h2>
 
-<form asp-controller="@Model.EntityType" asp-action="Create" method="post">
-    @foreach (var property in Model.EntityType.GetProperties())
-    {
-        var type = Model.EntityType;
-        var ctors = type.GetConstructors(BindingFlags.Public);
-        Model.Entity = ctors[0].Invoke(new object[] {});
-        @Html.EditorFor(_ => _.Entity)
-    }
-</form>
+@using (Html.BeginForm("Create", Model.EntityType.Name, FormMethod.Post))
+{
+    <div>
+        @Html.EditorFor(m => m.Entity)
+    </div>
+    <div>
+        <input class="btn btn-primary" type="submit" value="Valider"/>
+    </div>
+}

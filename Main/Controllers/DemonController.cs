@@ -49,7 +49,11 @@ namespace DemonTaleManager.Web.Controllers
         // GET: Demon/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new CrudCreateViewModel
+            {
+                EntityType = typeof(Demon),
+                Entity = new Demon()
+            });
         }
 
         // POST: Demon/Create
