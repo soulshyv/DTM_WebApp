@@ -11,11 +11,12 @@
 
 <h2 class="text-center">Administration - @Model.EntityType.Name</h2>
 
-@using (Html.BeginForm("Create", Model.EntityType.Name, FormMethod.Post))
+@using (Html.BeginForm("Create", Model.EntityType.Name, FormMethod.Post, new { @class="form-inline" }))
 {
     <div>
         @Html.EditorFor(m => m.Entity)
     </div>
+    <br/>
     <div>
         <input class="btn btn-primary" type="submit" value="Valider"/>
     </div>

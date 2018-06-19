@@ -37,39 +37,42 @@ namespace DemonTaleManager.Web.Controllers
                 EntityPropertiesName = entityPropertiesName
             };
 
-            return View(cvm);
+            return View("Crud/Index", cvm);
         }
 
         // GET: Demon/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            return View("Crud/Details");
         }
 
         // GET: Demon/Create
         public ActionResult Create()
         {
-            return View(new CrudCreateViewModel
+            return View("Crud/Create", new CrudCreateViewModel
             {
                 EntityType = typeof(Demon),
-                Entity = new Demon()
+                Entity = new Demon().GetForm()
             });
         }
 
         // POST: Demon/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> CreateAsync(Demon.DemonForm df)
         {
             try
             {
-                // TODO: Add insert logic here
+                if (df != null)
+                {
+                    await DemonRepository.Insert(new Demon(df));
+                }
 
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View("Crud/Create");
             }
         }
 

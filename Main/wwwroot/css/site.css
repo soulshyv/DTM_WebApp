@@ -47,3 +47,7 @@ select, option, input[type=text], textarea {
     height: 550px;
     overflow-y: auto;
 }
+
+table.crud-table {
+    background-image: radial-gradient(darkgray, dimgray);
+}

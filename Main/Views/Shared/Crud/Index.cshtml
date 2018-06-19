@@ -9,15 +9,16 @@
 
 <h2 class="text-center">Administration - @Model.EntityType.Name</h2>
 
-
 <div class="scrollable">
-    <table class="col-lg-6 table text-center">
+    <table class="row table table-bordered table-condensed scrollable crud-table text-center">
         <tr>
             @foreach (var propertyName in Model.EntityPropertiesName)
             {
                 <th class="text-center">@propertyName</th>
             }
-            <th></th>
+            <th class="text-center">
+                <a asp-controller="@Model.EntityType.Name" asp-action="Create" class="btn btn-primary">Créer</a>
+            </th>
         </tr>
         @foreach (var propertiesValues in Model.EntitesPropertiesValues)
         {
@@ -29,8 +30,8 @@
                         <td>@value</td>
                     }
                     <td>
-                        <a asp-controller="@Model.EntityType.Name" asp-action="Edit" asp-route-id="@values.Key" class="btn btn-primary">Modifier</a>
-                        <a asp-controller="@Model.EntityType.Name" asp-action="Delete" asp-route-id="@values.Key" class="btn btn-primary">Supprimer</a>
+                        <a asp-controller="@Model.EntityType.Name" asp-action="Delete" asp-route-id="@values.Key" class="btn btn-primary btn-sm pull-right">Supprimer</a>
+                        <a asp-controller="@Model.EntityType.Name" asp-action="Edit" asp-route-id="@values.Key" class="btn btn-primary btn-sm pull-right">Modifier</a>
                     </td>
                 }
             </tr>
