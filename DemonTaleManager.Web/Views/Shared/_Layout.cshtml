@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - DTM_WebApp</title>
+        
+        <script src="dist/site.ts"></script>
+    </head>
+
+    <body id="mainContent">
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a asp-page="/Index" class="navbar-brand">DTM_WebApp</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a asp-controller="Characters" asp-action="Index">Gestion des personnages</a></li>
+                        <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
+                        <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>  
+                        <li><a asp-controller="Users" asp-action="Register">Register</a></li>
+                        <li><a asp-controller="Users" asp-action="Login">Login</a></li>
+                    </ul>
+                </div>
+                <div>
+                
+                </div>
+            </div>
+        </nav>
+
+        <div class="container body-content">
+            @RenderBody()
+        </div>
+
+        <div class="container">  
+            <hr />
+            <footer>
+                <p>&copy; 2018 - DTM_WebApp</p>
+            </footer>
+        </div>
+
+        @RenderSection("Scripts", false)
+    
+    </body>
+</html>
