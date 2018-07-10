@@ -23,4 +23,16 @@
     <ProjectReference Include="..\DTM.Core\DTM.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Item\Create.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Item\Edit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Item\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>

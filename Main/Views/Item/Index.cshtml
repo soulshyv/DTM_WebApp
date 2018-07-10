@@ -1,0 +1,43 @@
+﻿@using System.Collections
+@using DTM.Core.Extensions
+@using DTM.Core.Models
+@model DemonTaleManager.Web.ViewModels.ItemViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h1 class="text-center">Administration - Item</h1>
+
+<div class="scrollable">
+    <table class="row table table-bordered table-condensed scrollable crud-table text-center">
+        <tr>
+            <th class="text-center">@nameof(Item.Nom)</th>
+            <th class="text-center">@nameof(Item.Description)</th>
+            <th class="text-center">@nameof(Item.Prix)</th>
+            <th class="text-center">@nameof(Item.TypeItem)</th>
+            <th class="text-center">@nameof(Item.Commentaire)</th>
+            <th class="text-center">
+                <a asp-controller="Item" asp-action="Create" class="btn btn-primary">Créer</a>
+            </th>
+        </tr>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.Nom</td>
+                <td>@item.Description</td>
+                <td>@item.Prix</td>
+                <td>@item.TypeItem</td>
+                <td>@item.Commentaire</td>
+                <td>
+                    <form asp-controller="item" asp-action="Delete">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button onclick="return confirm()" class="btn btn-primary btn-sm pull-right">Supprimer</button>
+                    </form>
+                    <a asp-controller="item" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm pull-right">Modifier</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

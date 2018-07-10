@@ -1,0 +1,36 @@
+﻿@using System.Collections
+@using System.Reflection
+@using DTM.Core.Extensions
+@model DemonTaleManager.Web.ViewModels.ItemViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+
+<h1 class="text-center">Administration - Item</h1>
+<h2 class="text-center">Edition</h2>
+
+<form asp-controller="Item" asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Item.Nom"></label>
+        <input asp-for="Item.Nom" class="form-control" />
+        <br />
+        <label asp-for="Item.Description"></label>
+        <input asp-for="Item.Description" class="form-control" />
+        <br />
+        <label asp-for="Item.Prix"></label>
+        <input asp-for="Item.Prix" class="form-control" />
+        <br />
+        <label asp-for="Item.TypeItem"></label>
+        <input asp-for="Item.TypeItem" class="form-control" />
+        <br />
+        <label asp-for="Item.Commentaire"></label>
+        <input asp-for="Item.Commentaire" class="form-control" />
+    </div>
+    <br />
+    <div>
+        <input type="submit" value="Valider" class="btn btn-primary" />
+    </div>
+</form>
