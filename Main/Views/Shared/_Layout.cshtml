@@ -54,15 +54,25 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a asp-controller="Characters" asp-action="Index">Gestion des personnages</a></li>
-                        <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
-                        <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>  
-                        <li><a asp-controller="Users" asp-action="Register">Register</a></li>
-                        <li><a asp-controller="Users" asp-action="Login">Login</a></li>
+                        <li><a asp-controller="Characters" asp-action="Index">Personnages</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Gestionnaires d'entités
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="nav dropdown-menu">
+                                <li><a asp-controller="Characters" asp-action="Index">Personnages</a></li>
+                                <li><a asp-controller="Demon" asp-action="Index">Démons</a></li>
+                                <li><a asp-controller="Don" asp-action="Index">Dons</a></li>
+                                <li><a asp-controller="Element" asp-action="Index">Elements</a></li>
+                                <li><a asp-controller="Item" asp-action="Index">Items</a></li>
+                                <li><a asp-controller="Metier" asp-action="Index">Métiers</a></li>
+                                <li><a asp-controller="Passif" asp-action="Index">Passifs</a></li>
+                                <li><a asp-controller="Skill" asp-action="Index">Skills</a></li>
+                                @*<li><a asp-controller="User" asp-action="Index" class="disabled">Utilisateurs</a></li>*@
+                            </ul>
+                        </li>
                     </ul>
-                </div>
-                <div>
-                
                 </div>
             </div>
         </nav>
