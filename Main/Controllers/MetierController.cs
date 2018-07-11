@@ -12,27 +12,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DemonTaleManager.Web.Controllers
 {
-    public class DonController : DtmControllerBase
+    public class MetierController : DtmControllerBase
     {
-        public DonController(ILifetimeScope scope) : base(scope)
+        public MetierController(ILifetimeScope scope) : base(scope)
         {
         }
 
         public async Task<ActionResult> Index()
         {
-            var dons = await DonRepository.GetAll();
+            var metiers = await MetierRepository.GetAll();
             var propertiesValues = new List<Dictionary<int, List<object>>>();
-            foreach (var don in dons)
+            foreach (var metier in metiers)
             {
                 var dico = new Dictionary<int, List<object>>();
-                var values = new List<object>{don.Id, don.Libelle, don.Description};
-                dico.Add(don.Id, values);
+                var values = new List<object>{metier.Id, metier.Libelle, metier.Description};
+                dico.Add(metier.Id, values);
                 propertiesValues.Add(dico);
             }
-            var entityPropertiesName = new List<string>{ nameof(Don.Id), nameof(Don.Libelle), nameof(Don.Description) };
+            var entityPropertiesName = new List<string>{ nameof(Metier.Id), nameof(Metier.Libelle), nameof(Metier.Description) };
             var cvm = new CrudViewModel
             {
-                EntityType = typeof(Don),
+                EntityType = typeof(Metier),
                 EntitesPropertiesValues = propertiesValues,
                 EntityPropertiesName = entityPropertiesName
             };
@@ -49,19 +49,19 @@ namespace DemonTaleManager.Web.Controllers
         {
             return View("Crud/Create", new CreateViewModel
             {
-                EntityType = typeof(Element),
-                Entity = new Element().GetForm()
+                EntityType = typeof(Metier),
+                Entity = new Metier().GetForm()
             });
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Don.DonForm entity)
+        public async Task<ActionResult> Create(Metier.MetierForm entity)
         {
             try
             {
                 if (!entity.IsAnyNullOrEmpty())
                 {
-                    await DonRepository.Insert(new Don(entity));
+                    await MetierRepository.Insert(new Metier(entity));
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -74,23 +74,23 @@ namespace DemonTaleManager.Web.Controllers
 
         public async Task<ActionResult> Edit(int id)
         {
-            var don = await DonRepository.GetById(id);
+            var metier = await MetierRepository.GetById(id);
             return View("Crud/Edit" ,new EditViewModel
             {
-                EntityType = typeof(Don),
-                Entity = new Don.DonForm(don),
+                EntityType = typeof(Metier),
+                Entity = new Metier.MetierForm(metier),
                 Id = id
             });
         }
 
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, Don.DonForm entity)
+        public async Task<ActionResult> Edit(int id, Metier.MetierForm entity)
         {
             try
             {
                 if (!entity.IsAnyNullOrEmpty())
                 {
-                    await DonRepository.Update(new Don(entity)
+                    await MetierRepository.Update(new Metier(entity)
                     {
                         Id = id
                     });
@@ -111,7 +111,7 @@ namespace DemonTaleManager.Web.Controllers
             {
                 if (id != 0)
                 {
-                    await DonRepository.DeleteById(id);
+                    await MetierRepository.DeleteById(id);
                 }
             }
             catch

@@ -39,7 +39,7 @@
     color: black;
 }
 
-select, option, input[type=text], textarea {
+input, select, option, textarea {
     background-color: dimgrey;
 }
 
