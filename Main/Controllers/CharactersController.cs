@@ -100,6 +100,25 @@ namespace DemonTaleManager.Web.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> Create()
+        {
+            var dons = await DtmRepositories.DonRepository.GetAll();
+            var demons = await DtmRepositories.DemonRepository.GetAll();
+            var elements = await DtmRepositories.ElementRepository.GetAll();
+            var skills = await DtmRepositories.SkillRepository.GetAll();
+            var items = await DtmRepositories.ItemRepository.GetAll();
+
+            return PartialView("Create", new CharacterDetailsViewModel
+            {
+                Dons = dons,
+                Demons = demons,
+                Elements = elements,
+                Skills = skills,
+                Items = items
+            });
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Update(CharacterDetailsViewModel details)
         {
             if (details == null)
