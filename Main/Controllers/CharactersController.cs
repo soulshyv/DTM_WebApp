@@ -99,7 +99,7 @@ namespace DemonTaleManager.Web.Controllers
             return characPic;
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var dons = await DtmRepositories.DonRepository.GetAll();
@@ -108,7 +108,7 @@ namespace DemonTaleManager.Web.Controllers
             var skills = await DtmRepositories.SkillRepository.GetAll();
             var items = await DtmRepositories.ItemRepository.GetAll();
 
-            return PartialView("Create", new CharacterDetailsViewModel
+            return View("Create", new CharacterDetailsViewModel
             {
                 Dons = dons,
                 Demons = demons,

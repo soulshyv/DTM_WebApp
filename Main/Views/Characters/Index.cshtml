@@ -28,42 +28,16 @@
                 <td class="details">
                     @if (charac.TypePerso != null)
                     {
-                        @(((CharacterTypeEnum) charac.TypePerso).ToString().ToUpper())
+                        @(((CharacterTypeEnum)charac.TypePerso).ToString().ToUpper())
                     }
                 </td>
             </tr>
         }
-        <tr>
-            <td colspan="6">
-                <button asp-controller="Characters" class="btn btn-primary">Créer un personnage</button>
-            </td>
-        </tr>
     </table>
+    <input type="button" value="Créer un personnage" class="btn btn-primary text-center" onclick="window.location.href='@Url.Action("Create", "Characters")'"/>
 </div>
 <div id="container-right" class="pull-right">
     @{
         await Html.RenderPartialAsync("Details", new CharacterDetailsViewModel());
     }
-</div>
-
-<div id="modifDons" class="modal fade modifs col-lg-12" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title text-center">Création de personnage</h4>
-            </div>
-            <div class="modal-body">
-                <form method="post">
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary btn-submit-form" id="btn-don" data-dismiss="modal">Enregistrer</button>
-                        <button type="button" class="btn" data-dismiss="modal">Annuler</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-    </div>
 </div>

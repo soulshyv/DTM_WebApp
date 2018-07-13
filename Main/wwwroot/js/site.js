@@ -37,4 +37,8 @@ $(document).ready(function () {
         var idPerso = $(this).parent().attr("id");
         loadDetails(idPerso);
     });
+
+    var redirectTo = function (url) {
+        window.location.href = url;
+    }
 });

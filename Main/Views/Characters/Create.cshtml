@@ -1,0 +1,24 @@
+﻿@model DTM.Core.ViewModels.CharacterDetailsViewModel
+
+<div id="createPersoScrolling">
+    <form method="post">
+        <div class="input-group">
+            <span class="input-group-btn">
+                <span class="btn btn-default btn-file">
+                    Browse...
+                    <input data-url="/upload" accept="image/jpeg" name="image" type="file" id="image">
+                </span>
+            </span>
+            <input readonly="readonly" placeholder="Picture file" class="form-control" name="filename" type="text">
+        </div>
+        <br />
+        <div class="block-center">
+            <input type="submit" value="Enregistrer" class="btn btn-primary btn-submit-form" id="btn-don" data-dismiss="modal" />
+            <input type="reset" value="Annuler" class="btn" data-dismiss="modal" />
+        </div>
+    </form>
+</div>
+
+@section scripts {
+<script src="~/js/create.js"></script>
+}
