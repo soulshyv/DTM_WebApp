@@ -8,7 +8,15 @@
 <h2>Personnage - création</h2>
 
 <div id="createPersoScrolling">
-    <form>
+    <form id="createPerso" method="post">
+        <div class="form-control">
+            <label for="picUpload">Choississez une image (png, jpg, gif) <input id="picUpload" name="pic" class="center-block" type="file" /></label>
+        </div>
+        
 
+        <div class="text-center">
+            <button type="button" class="btn btn-primary" id="btn-create" data-dismiss="modal">Enregistrer</button>
+            <button type="button" class="btn" data-dismiss="modal">Annuler</button>
+        </div>
     </form>
 </div>

@@ -288,6 +288,12 @@ namespace DemonTaleManager.Web.Controllers
             return NotFound();
         }
 
+        [HttpGet]
+        public async Task<Perso> GetPersoById(int id)
+        {
+            return await PersoRepository.GetById(id);
+        }
+
         [HttpPost]
         public async Task<string> GetDonByLibelle(string libelle)
         {

@@ -15,24 +15,9 @@
     }
 
     /* Envoie les données et recharge les détails */
-    $(".btn-submit-form").click(function () {
-        var form = $(this).parent().parent();
-        var idPerso = $(document).find("#idPerso").text();
-        var anchor = form.parent().parent().parent().parent().attr("id");
-        $(".modal-backdrop").remove();
-        $.ajax({
-            url: "Characters/Update",
-            type: "POST",
-            data: form.serialize(),
-            success: function () {
-                loadDetails(idPerso, anchor);
-            },
-            error: function (message) {
-                console.log(message);
-                alert("Une erreur est survenue à l'enregistrement des données");
-            }
-        });
-    });
+    $(".btn-submit-form").click(
+        window.saveData("Characters/Update", loadDetails)
+    );
 
     /* Envoie la nouvelle image du personnage et recharge la page */
     $("#btn-submit-file").click(function () {

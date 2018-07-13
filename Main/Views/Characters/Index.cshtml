@@ -8,7 +8,7 @@
 <div id="container-left" class="pull-left">
     <h1 class="text-center">Liste des persos</h1>
 
-    <table class="table table-hover">
+    <table id="listePersos" class="table table-hover">
         <tr>
             <th>Pseudo</th>
             <th>Xp</th>
@@ -34,8 +34,8 @@
             </tr>
         }
         <tr>
-            <td>
-                <button asp-controller="Characters">Créer un personnage</button>
+            <td colspan="6">
+                <button asp-controller="Characters" class="btn btn-primary">Créer un personnage</button>
             </td>
         </tr>
     </table>
@@ -44,4 +44,26 @@
     @{
         await Html.RenderPartialAsync("Details", new CharacterDetailsViewModel());
     }
+</div>
+
+<div id="modifDons" class="modal fade modifs col-lg-12" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title text-center">Création de personnage</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary btn-submit-form" id="btn-don" data-dismiss="modal">Enregistrer</button>
+                        <button type="button" class="btn" data-dismiss="modal">Annuler</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
 </div>
