@@ -1,0 +1,11 @@
+{
+  "name": "demontalemanager.web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./wwwroot/js/site.js",
+  "scripts": {
+    "test": "echo 'test'"
+  },
+  "author": "",
+  "license": "ISC"
+}
