@@ -10,6 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\Characters\create.ts" />
+    <Content Remove="wwwroot\js\Characters\details.ts" />
+    <Content Remove="wwwroot\js\site.ts" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <PackageReference Include="bootstrap" Version="4.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.0" />
     <PackageReference Include="Microsoft.jQuery.Unobtrusive.Ajax" Version="3.2.5" />
@@ -23,6 +29,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DTM.Core\DTM.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\js\Characters\create.ts" />
+    <TypeScriptCompile Include="wwwroot\js\Characters\details.ts" />
+    <TypeScriptCompile Include="wwwroot\js\site.ts" />
   </ItemGroup>
 
 </Project>
