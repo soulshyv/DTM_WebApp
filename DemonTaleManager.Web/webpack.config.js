@@ -4,12 +4,12 @@ var webpack = require("webpack");
 module.exports = {
     entry: {
         // Output a "site.js" file from the "site.ts" file
-        home: "./js/site.ts",
+        site: "./js/site.ts",
         // Output a "characters_create.js" file from the "create.ts" file
-        characters_create: "./js/Characters/create.ts",
+        characters: [ "./js/Characters/create.ts", "./js/Characters/details.ts"]
 
         // Output a "characters_details.js" file from the "details.ts" file
-        characters_details: "./js/Characters/details.ts"
+        //characters_details: "./js/Characters/details.ts"
     },
     // Make sure Webpack picks up the .ts files
     resolve: {
