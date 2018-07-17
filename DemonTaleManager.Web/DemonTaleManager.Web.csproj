@@ -24,13 +24,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\Item\Create.cshtml">
+    <Content Update="Views\Items\Create.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Item\Edit.cshtml">
+    <Content Update="Views\Items\Edit.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Item\Index.cshtml">
+    <Content Update="Views\Items\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Shared\Crud\Details.cshtml">
