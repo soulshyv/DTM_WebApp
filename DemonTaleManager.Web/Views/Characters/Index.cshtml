@@ -37,7 +37,9 @@
     <input type="button" value="Créer un personnage" class="btn btn-primary text-center" onclick="window.location.href='@Url.Action("Create", "Characters")'"/>
 </div>
 <div id="container-right" class="pull-right">
-    @{
-        await Html.RenderPartialAsync("Details", new CharacterDetailsViewModel());
-    }
+    <div id="details">
+        @{
+            await Html.RenderPartialAsync("Details", new CharacterDetailsViewModel());
+        }
+    </div>
 </div>

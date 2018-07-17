@@ -13,7 +13,7 @@
 <h1 class="text-center">Administration - Item</h1>
 <h2 class="text-center">Création</h2>
 
-<form asp-controller="Item" asp-action="Create" method="post">
+<form asp-controller="Items" asp-action="Create" method="post">
     <div>
         <label asp-for="Item.Nom"></label>
         <input asp-for="Item.Nom" />
@@ -24,11 +24,11 @@
         <label asp-for="Item.Prix"></label>
         <input asp-for="Item.Prix" />
         <br />
-        <label asp-for="Item.TypeItem"></label>
+        <label asp-for="Item.TypeItem">@nameof(Model.Item.TypeItem).ToSpacedCase()</label>
         <select asp-for="Item.TypeItem">
             @foreach (var ite in EnumUtil.GetValues<ItemTypeEnum>())
             {
-                <option value="@((int)ite)">@ite</option>
+                <option value="@((int)ite)">@ite.ToString().ToSpacedCase()</option>
             }
         </select>
         <br />
