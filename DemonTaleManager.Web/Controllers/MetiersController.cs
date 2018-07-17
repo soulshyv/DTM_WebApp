@@ -12,27 +12,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DemonTaleManager.Web.Controllers
 {
-    public class SkillController : DtmControllerBase
+    public class MetiersController : DtmControllerBase
     {
-        public SkillController(ILifetimeScope scope) : base(scope)
+        public MetiersController(ILifetimeScope scope) : base(scope)
         {
         }
 
         public async Task<ActionResult> Index()
         {
-            var skills = await SkillRepository.GetAll();
+            var metiers = await MetierRepository.GetAll();
             var propertiesValues = new List<Dictionary<int, List<object>>>();
-            foreach (var skill in skills)
+            foreach (var metier in metiers)
             {
                 var dico = new Dictionary<int, List<object>>();
-                var values = new List<object>{skill.Id, skill.Libelle, skill.Description, skill.Taux, skill.Degats};
-                dico.Add(skill.Id, values);
+                var values = new List<object>{metier.Id, metier.Libelle, metier.Description};
+                dico.Add(metier.Id, values);
                 propertiesValues.Add(dico);
             }
-            var entityPropertiesName = new List<string>{ nameof(Skill.Id), nameof(Skill.Libelle), nameof(Skill.Description), nameof(Skill.Taux), nameof(Skill.Degats) };
+            var entityPropertiesName = new List<string>{ nameof(Metier.Id), nameof(Metier.Libelle), nameof(Metier.Description) };
             var cvm = new CrudViewModel
             {
-                EntityType = typeof(Skill),
+                EntityType = typeof(Metier),
                 EntitesPropertiesValues = propertiesValues,
                 EntityPropertiesName = entityPropertiesName
             };
@@ -49,19 +49,19 @@ namespace DemonTaleManager.Web.Controllers
         {
             return View("Crud/Create", new CreateViewModel
             {
-                EntityType = typeof(Skill),
-                Entity = new Skill().GetForm()
+                EntityType = typeof(Metier),
+                Entity = new Metier().GetForm()
             });
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Skill.SkillForm entity)
+        public async Task<ActionResult> Create(Metier.MetierForm entity)
         {
             try
             {
                 if (!entity.IsAnyNullOrEmpty())
                 {
-                    await SkillRepository.Insert(new Skill(entity));
+                    await MetierRepository.Insert(new Metier(entity));
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -74,23 +74,23 @@ namespace DemonTaleManager.Web.Controllers
 
         public async Task<ActionResult> Edit(int id)
         {
-            var skill = await SkillRepository.GetById(id);
+            var metier = await MetierRepository.GetById(id);
             return View("Crud/Edit" ,new EditViewModel
             {
-                EntityType = typeof(Skill),
-                Entity = new Skill.SkillForm(skill),
+                EntityType = typeof(Metier),
+                Entity = new Metier.MetierForm(metier),
                 Id = id
             });
         }
 
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, Skill.SkillForm entity)
+        public async Task<ActionResult> Edit(int id, Metier.MetierForm entity)
         {
             try
             {
                 if (!entity.IsAnyNullOrEmpty())
                 {
-                    await SkillRepository.Update(new Skill(entity)
+                    await MetierRepository.Update(new Metier(entity)
                     {
                         Id = id
                     });
@@ -111,7 +111,7 @@ namespace DemonTaleManager.Web.Controllers
             {
                 if (id != 0)
                 {
-                    await SkillRepository.DeleteById(id);
+                    await MetierRepository.DeleteById(id);
                 }
             }
             catch

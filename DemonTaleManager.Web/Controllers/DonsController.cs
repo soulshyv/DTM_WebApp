@@ -12,27 +12,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DemonTaleManager.Web.Controllers
 {
-    public class ElementController : DtmControllerBase
+    public class DonsController : DtmControllerBase
     {
-        public ElementController(ILifetimeScope scope) : base(scope)
+        public DonsController(ILifetimeScope scope) : base(scope)
         {
         }
 
         public async Task<ActionResult> Index()
         {
-            var elements = await ElementRepository.GetAll();
+            var dons = await DonRepository.GetAll();
             var propertiesValues = new List<Dictionary<int, List<object>>>();
-            foreach (var element in elements)
+            foreach (var don in dons)
             {
                 var dico = new Dictionary<int, List<object>>();
-                var values = new List<object>{element.Id, element.Libelle, element.Description};
-                dico.Add(element.Id, values);
+                var values = new List<object>{don.Id, don.Libelle, don.Description};
+                dico.Add(don.Id, values);
                 propertiesValues.Add(dico);
             }
-            var entityPropertiesName = new List<string>{ nameof(Element.Id), nameof(Element.Libelle), nameof(Element.Description) };
+            var entityPropertiesName = new List<string>{ nameof(Don.Id), nameof(Don.Libelle), nameof(Don.Description) };
             var cvm = new CrudViewModel
             {
-                EntityType = typeof(Element),
+                EntityType = typeof(Don),
                 EntitesPropertiesValues = propertiesValues,
                 EntityPropertiesName = entityPropertiesName
             };
@@ -55,13 +55,13 @@ namespace DemonTaleManager.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Element.ElementForm entity)
+        public async Task<ActionResult> Create(Don.DonForm entity)
         {
             try
             {
                 if (!entity.IsAnyNullOrEmpty())
                 {
-                    await ElementRepository.Insert(new Element(entity));
+                    await DonRepository.Insert(new Don(entity));
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -74,23 +74,23 @@ namespace DemonTaleManager.Web.Controllers
 
         public async Task<ActionResult> Edit(int id)
         {
-            var element = await ElementRepository.GetById(id);
+            var don = await DonRepository.GetById(id);
             return View("Crud/Edit" ,new EditViewModel
             {
-                EntityType = typeof(Element),
-                Entity = new Element.ElementForm(element),
+                EntityType = typeof(Don),
+                Entity = new Don.DonForm(don),
                 Id = id
             });
         }
 
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, Element.ElementForm entity)
+        public async Task<ActionResult> Edit(int id, Don.DonForm entity)
         {
             try
             {
                 if (!entity.IsAnyNullOrEmpty())
                 {
-                    await ElementRepository.Update(new Element(entity)
+                    await DonRepository.Update(new Don(entity)
                     {
                         Id = id
                     });
@@ -111,7 +111,7 @@ namespace DemonTaleManager.Web.Controllers
             {
                 if (id != 0)
                 {
-                    await ElementRepository.DeleteById(id);
+                    await DonRepository.DeleteById(id);
                 }
             }
             catch

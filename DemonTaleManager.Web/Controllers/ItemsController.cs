@@ -12,9 +12,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DemonTaleManager.Web.Controllers
 {
-    public class ItemController : DtmControllerBase
+    public class ItemsController : DtmControllerBase
     {
-        public ItemController(ILifetimeScope scope) : base(scope)
+        public ItemsController(ILifetimeScope scope) : base(scope)
         {
         }
 

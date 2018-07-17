@@ -12,27 +12,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DemonTaleManager.Web.Controllers
 {
-    public class PassifController : DtmControllerBase
+    public class ElementsController : DtmControllerBase
     {
-        public PassifController(ILifetimeScope scope) : base(scope)
+        public ElementsController(ILifetimeScope scope) : base(scope)
         {
         }
 
         public async Task<ActionResult> Index()
         {
-            var passifs = await PassifRepository.GetAll();
+            var elements = await ElementRepository.GetAll();
             var propertiesValues = new List<Dictionary<int, List<object>>>();
-            foreach (var passif in passifs)
+            foreach (var element in elements)
             {
                 var dico = new Dictionary<int, List<object>>();
-                var values = new List<object>{passif.Id, passif.Libelle, passif.Description};
-                dico.Add(passif.Id, values);
+                var values = new List<object>{element.Id, element.Libelle, element.Description};
+                dico.Add(element.Id, values);
                 propertiesValues.Add(dico);
             }
-            var entityPropertiesName = new List<string>{ nameof(Passif.Id), nameof(Passif.Libelle), nameof(Passif.Description) };
+            var entityPropertiesName = new List<string>{ nameof(Element.Id), nameof(Element.Libelle), nameof(Element.Description) };
             var cvm = new CrudViewModel
             {
-                EntityType = typeof(Passif),
+                EntityType = typeof(Element),
                 EntitesPropertiesValues = propertiesValues,
                 EntityPropertiesName = entityPropertiesName
             };
@@ -49,19 +49,19 @@ namespace DemonTaleManager.Web.Controllers
         {
             return View("Crud/Create", new CreateViewModel
             {
-                EntityType = typeof(Passif),
-                Entity = new Passif().GetForm()
+                EntityType = typeof(Element),
+                Entity = new Element().GetForm()
             });
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Passif.PassifForm entity)
+        public async Task<ActionResult> Create(Element.ElementForm entity)
         {
             try
             {
                 if (!entity.IsAnyNullOrEmpty())
                 {
-                    await PassifRepository.Insert(new Passif(entity));
+                    await ElementRepository.Insert(new Element(entity));
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -74,23 +74,23 @@ namespace DemonTaleManager.Web.Controllers
 
         public async Task<ActionResult> Edit(int id)
         {
-            var passif = await PassifRepository.GetById(id);
+            var element = await ElementRepository.GetById(id);
             return View("Crud/Edit" ,new EditViewModel
             {
-                EntityType = typeof(Metier),
-                Entity = new Passif.PassifForm(passif),
+                EntityType = typeof(Element),
+                Entity = new Element.ElementForm(element),
                 Id = id
             });
         }
 
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, Passif.PassifForm entity)
+        public async Task<ActionResult> Edit(int id, Element.ElementForm entity)
         {
             try
             {
                 if (!entity.IsAnyNullOrEmpty())
                 {
-                    await PassifRepository.Update(new Passif(entity)
+                    await ElementRepository.Update(new Element(entity)
                     {
                         Id = id
                     });
@@ -111,7 +111,7 @@ namespace DemonTaleManager.Web.Controllers
             {
                 if (id != 0)
                 {
-                    await PassifRepository.DeleteById(id);
+                    await ElementRepository.DeleteById(id);
                 }
             }
             catch

@@ -12,28 +12,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DemonTaleManager.Web.Controllers
 {
-    public class DemonController : DtmControllerBase
+    public class PassifsController : DtmControllerBase
     {
-        public DemonController(ILifetimeScope scope) : base(scope)
+        public PassifsController(ILifetimeScope scope) : base(scope)
         {
         }
 
-        // GET: Demon
         public async Task<ActionResult> Index()
         {
-            var demons = await DemonRepository.GetAll();
+            var passifs = await PassifRepository.GetAll();
             var propertiesValues = new List<Dictionary<int, List<object>>>();
-            foreach (var demon in demons)
+            foreach (var passif in passifs)
             {
                 var dico = new Dictionary<int, List<object>>();
-                var values = new List<object>{demon.Id, demon.Nom};
-                dico.Add(demon.Id, values);
+                var values = new List<object>{passif.Id, passif.Libelle, passif.Description};
+                dico.Add(passif.Id, values);
                 propertiesValues.Add(dico);
             }
-            var entityPropertiesName = new List<string>{ nameof(Demon.Id), nameof(Demon.Nom) };
+            var entityPropertiesName = new List<string>{ nameof(Passif.Id), nameof(Passif.Libelle), nameof(Passif.Description) };
             var cvm = new CrudViewModel
             {
-                EntityType = typeof(Demon),
+                EntityType = typeof(Passif),
                 EntitesPropertiesValues = propertiesValues,
                 EntityPropertiesName = entityPropertiesName
             };
@@ -41,31 +40,28 @@ namespace DemonTaleManager.Web.Controllers
             return View("Crud/Index", cvm);
         }
 
-        // GET: Demon/Details/5
         public ActionResult Details(int id)
         {
             return View("Crud/Details");
         }
 
-        // GET: Demon/Create
         public ActionResult Create()
         {
             return View("Crud/Create", new CreateViewModel
             {
-                EntityType = typeof(Demon),
-                Entity = new Demon().GetForm()
+                EntityType = typeof(Passif),
+                Entity = new Passif().GetForm()
             });
         }
 
-        // POST: Demon/Create
         [HttpPost]
-        public async Task<ActionResult> Create(Demon.DemonForm entity)
+        public async Task<ActionResult> Create(Passif.PassifForm entity)
         {
             try
             {
                 if (!entity.IsAnyNullOrEmpty())
                 {
-                    await DemonRepository.Insert(new Demon(entity));
+                    await PassifRepository.Insert(new Passif(entity));
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -76,27 +72,25 @@ namespace DemonTaleManager.Web.Controllers
             }
         }
 
-        // GET: Demon/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
-            var demon = await DemonRepository.GetById(id);
+            var passif = await PassifRepository.GetById(id);
             return View("Crud/Edit" ,new EditViewModel
             {
-                EntityType = typeof(Demon),
-                Entity = new Demon.DemonForm(demon),
+                EntityType = typeof(Metier),
+                Entity = new Passif.PassifForm(passif),
                 Id = id
             });
         }
 
-        // POST: Demon/Edit/5
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, Demon.DemonForm entity)
+        public async Task<ActionResult> Edit(int id, Passif.PassifForm entity)
         {
             try
             {
                 if (!entity.IsAnyNullOrEmpty())
                 {
-                    await DemonRepository.Update(new Demon(entity)
+                    await PassifRepository.Update(new Passif(entity)
                     {
                         Id = id
                     });
@@ -110,7 +104,6 @@ namespace DemonTaleManager.Web.Controllers
             }
         }
 
-        // POST: Demon/Delete/5
         [HttpPost]
         public async Task<ActionResult> Delete(int id)
         {
@@ -118,7 +111,7 @@ namespace DemonTaleManager.Web.Controllers
             {
                 if (id != 0)
                 {
-                    await DemonRepository.DeleteById(id);
+                    await PassifRepository.DeleteById(id);
                 }
             }
             catch

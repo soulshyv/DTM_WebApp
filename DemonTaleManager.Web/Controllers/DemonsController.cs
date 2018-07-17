@@ -12,27 +12,28 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DemonTaleManager.Web.Controllers
 {
-    public class MetierController : DtmControllerBase
+    public class DemonsController : DtmControllerBase
     {
-        public MetierController(ILifetimeScope scope) : base(scope)
+        public DemonsController(ILifetimeScope scope) : base(scope)
         {
         }
 
+        // GET: Demon
         public async Task<ActionResult> Index()
         {
-            var metiers = await MetierRepository.GetAll();
+            var demons = await DemonRepository.GetAll();
             var propertiesValues = new List<Dictionary<int, List<object>>>();
-            foreach (var metier in metiers)
+            foreach (var demon in demons)
             {
                 var dico = new Dictionary<int, List<object>>();
-                var values = new List<object>{metier.Id, metier.Libelle, metier.Description};
-                dico.Add(metier.Id, values);
+                var values = new List<object>{demon.Id, demon.Nom};
+                dico.Add(demon.Id, values);
                 propertiesValues.Add(dico);
             }
-            var entityPropertiesName = new List<string>{ nameof(Metier.Id), nameof(Metier.Libelle), nameof(Metier.Description) };
+            var entityPropertiesName = new List<string>{ nameof(Demon.Id), nameof(Demon.Nom) };
             var cvm = new CrudViewModel
             {
-                EntityType = typeof(Metier),
+                EntityType = typeof(Demon),
                 EntitesPropertiesValues = propertiesValues,
                 EntityPropertiesName = entityPropertiesName
             };
@@ -40,28 +41,31 @@ namespace DemonTaleManager.Web.Controllers
             return View("Crud/Index", cvm);
         }
 
+        // GET: Demon/Details/5
         public ActionResult Details(int id)
         {
             return View("Crud/Details");
         }
 
+        // GET: Demon/Create
         public ActionResult Create()
         {
             return View("Crud/Create", new CreateViewModel
             {
-                EntityType = typeof(Metier),
-                Entity = new Metier().GetForm()
+                EntityType = typeof(Demon),
+                Entity = new Demon().GetForm()
             });
         }
 
+        // POST: Demon/Create
         [HttpPost]
-        public async Task<ActionResult> Create(Metier.MetierForm entity)
+        public async Task<ActionResult> Create(Demon.DemonForm entity)
         {
             try
             {
                 if (!entity.IsAnyNullOrEmpty())
                 {
-                    await MetierRepository.Insert(new Metier(entity));
+                    await DemonRepository.Insert(new Demon(entity));
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -72,25 +76,27 @@ namespace DemonTaleManager.Web.Controllers
             }
         }
 
+        // GET: Demon/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
-            var metier = await MetierRepository.GetById(id);
+            var demon = await DemonRepository.GetById(id);
             return View("Crud/Edit" ,new EditViewModel
             {
-                EntityType = typeof(Metier),
-                Entity = new Metier.MetierForm(metier),
+                EntityType = typeof(Demon),
+                Entity = new Demon.DemonForm(demon),
                 Id = id
             });
         }
 
+        // POST: Demon/Edit/5
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, Metier.MetierForm entity)
+        public async Task<ActionResult> Edit(int id, Demon.DemonForm entity)
         {
             try
             {
                 if (!entity.IsAnyNullOrEmpty())
                 {
-                    await MetierRepository.Update(new Metier(entity)
+                    await DemonRepository.Update(new Demon(entity)
                     {
                         Id = id
                     });
@@ -104,6 +110,7 @@ namespace DemonTaleManager.Web.Controllers
             }
         }
 
+        // POST: Demon/Delete/5
         [HttpPost]
         public async Task<ActionResult> Delete(int id)
         {
@@ -111,7 +118,7 @@ namespace DemonTaleManager.Web.Controllers
             {
                 if (id != 0)
                 {
-                    await MetierRepository.DeleteById(id);
+                    await DemonRepository.DeleteById(id);
                 }
             }
             catch
