@@ -3,9 +3,9 @@ using RpgManager.Ged.Contracts;
 
 namespace RpgManager.Ged.Services
 {
-    public class HeliumFilesBrowser : IHeliumFilesBrowser
+    public class FilesBrowser : IFilesBrowser
     {
-        public HeliumFilesBrowser(string pathBaseDirectory)
+        public FilesBrowser(string pathBaseDirectory)
         {
             PathBaseDirectory = pathBaseDirectory;
 

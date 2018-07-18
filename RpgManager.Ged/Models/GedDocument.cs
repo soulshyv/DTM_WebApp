@@ -7,7 +7,7 @@ namespace RpgManager.Ged.Models
         public int Id { get; set; }
         public Guid? PublicId { get; set; }
         public string FileName { get; set; }
-        public int FileSize { get; set; }
+        public long FileSize { get; set; }
         public string FilePath { get; set; }
         public DateTime Created { get; set; }
     }

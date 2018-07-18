@@ -2,7 +2,7 @@
 
 namespace RpgManager.Ged.Services
 {
-    public class HeliumGedConfiguration : IHeliumGedConfiguration
+    public class GedConfiguration : IGedConfiguration
     {
         public string BaseDirectory { get; set; }
     }

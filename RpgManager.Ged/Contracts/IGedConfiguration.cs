@@ -1,6 +1,6 @@
 ﻿namespace RpgManager.Ged.Contracts
 {
-    public interface IHeliumGedConfiguration
+    public interface IGedConfiguration
     {
         string BaseDirectory { get; }
     }

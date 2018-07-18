@@ -2,7 +2,7 @@
 
 namespace RpgManager.Ged.Contracts
 {
-    public interface IHeliumFilesBrowser
+    public interface IFilesBrowser
     {
         string PathBaseDirectory { get; }
         FileStream SearchFile(string name);
