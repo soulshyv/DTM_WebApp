@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RpgManager.Ged;
+using RpgManager.Ged.Services;
 
 namespace DemonTaleManager.Web
 {
@@ -33,6 +35,11 @@ namespace DemonTaleManager.Web
             });
 
             services.AddCore();
+
+            services.AddGed(bld, new GedConfiguration
+            {
+                BaseDirectory = Configuration["Dtm:Ged:Repo"]
+            }).WithMySqlRepository();
         }
 
         protected override void OnConfigureMvcRoutes(IRouteBuilder routes)
