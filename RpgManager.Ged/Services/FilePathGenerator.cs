@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace RpgManager.Ged.Services
 {
-    public class FilePathGenerator
+    public class FilePathGenerator : IFilePathGenerator
     {
         public FilePathGenerator(string baseDirectory)
         {

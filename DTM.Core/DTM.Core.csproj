@@ -16,13 +16,13 @@
     <PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RpgManager.Ged\RpgManager.Ged.csproj" />
+  </ItemGroup>
+
   <!--<ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.1" />
   </ItemGroup>-->
-
-  <ItemGroup>
-    <ProjectReference Include="..\RpgManager.Core\RpgManager.Core.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">

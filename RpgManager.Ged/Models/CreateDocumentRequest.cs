@@ -27,6 +27,10 @@ namespace RpgManager.Ged.Models
         /// <inheritdoc />
         public int? FileType { get; set; }
 
+        /// <inheritdoc />
         public IDocument Document { get; }
+
+        /// <inheritdoc />
+        public string RealDirectory { get; }
     }
 }
