@@ -8,12 +8,9 @@ namespace RpgManager.Ged.Services
         public FilesBrowser(string pathBaseDirectory)
         {
             PathBaseDirectory = pathBaseDirectory;
-
-            /* Liaison à l'arborescence */
         }
 
         public string PathBaseDirectory { get; }
-        private string Filtre { get; set; }
 
         public FileStream SearchFile(string name)
         {

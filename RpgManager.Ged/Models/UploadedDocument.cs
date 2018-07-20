@@ -26,9 +26,6 @@ namespace RpgManager.Ged.Models
         public string FileName => _file.FileName;
 
         /// <inheritdoc />
-        public bool NeedsLocalCopy => true;
-
-        /// <inheritdoc />
         public Task CopyToAsync(Stream target, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _file.CopyToAsync(target, cancellationToken);

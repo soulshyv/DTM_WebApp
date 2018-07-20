@@ -1,15 +1,13 @@
 ﻿using Autofac;
+using DTM.Core.Mvc;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Main.Controllers
+namespace DemonTaleManager.Web.Controllers
 {
-    public class UsersController : Controller
+    public class UsersController : DtmControllerBase
     {
-        public ILifetimeScope Scope { get; }
-
-        public UsersController(ILifetimeScope scope)
+        public UsersController(ILifetimeScope scope) : base(scope)
         {
-            Scope = scope;
         }
 
         public IActionResult Register()

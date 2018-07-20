@@ -18,6 +18,13 @@ namespace RpgManager.Ged.Contracts
         Task<GedDocument> Create(ICreateDocumentRequest file, CancellationToken ctk = default(CancellationToken));
 
         /// <summary>
+        /// Recherche tous les documents enregistrés dans la GED
+        /// </summary>
+        /// <param name="ctk"></param>
+        /// <returns>Document</returns>
+        Task<IReadOnlyList<GedDocument>> GetAllFiles(CancellationToken ctk = default(CancellationToken));
+
+        /// <summary>
         /// Supprime un document à partir de son ID publique
         /// </summary>
         /// <param name="publicId">ID publique</param>

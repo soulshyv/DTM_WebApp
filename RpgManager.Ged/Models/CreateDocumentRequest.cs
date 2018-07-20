@@ -19,18 +19,9 @@ namespace RpgManager.Ged.Models
         }
 
         /// <inheritdoc />
-        public Guid Case { get; set; }
-
-        /// <inheritdoc />
-        public string FilePath { get; set; } = "/";
-
-        /// <inheritdoc />
-        public int? FileType { get; set; }
-
-        /// <inheritdoc />
         public IDocument Document { get; }
 
         /// <inheritdoc />
-        public string RealDirectory { get; }
+        public string RealDirectory { get; set; } = "/";
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using DemonTaleManager.Web.Views.Characters;
 using DTM.Core.Extensions;
 using DTM.Core.Models;
 using DTM.Core.Repositories;
@@ -12,6 +11,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using DTM.Core.Mvc;
 
 namespace DemonTaleManager.Web.Controllers
 {

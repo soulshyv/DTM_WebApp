@@ -77,6 +77,11 @@ namespace RpgManager.Ged.Services
             return gedDoc;
         }
 
+        public async Task<IReadOnlyList<GedDocument>> GetAllFiles(CancellationToken ctk = default(CancellationToken))
+        {
+            return await GedDocRepo.GetAllFiles(ctk);
+        }
+
         /// <inheritdoc/>
         public async Task<GedDocumentResult> FindByPublicId(Guid publicId,
             CancellationToken ctk = default(CancellationToken))
