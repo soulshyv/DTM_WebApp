@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Data;
+using Autofac;
 using DTM.Core;
 using DTM.Core.Models;
 using DTM.Core.Mvc;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MySql.Data.MySqlClient;
 using RpgManager.Ged;
 using RpgManager.Ged.Services;
 
@@ -28,8 +30,12 @@ namespace DemonTaleManager.Web
             services.AddMvc(OnConfigureMvc);
 
             var defaultConnection = Configuration.GetConnectionString("DefaultConnection");
-            
-            services.AddDbContext<JdrContext>(options =>
+
+            services.AddScoped<IDbConnection>(_ =>
+                new MySqlConnection(defaultConnection)
+            );
+
+            services.AddDbContext<JdrContext>(options =>    
             {
                 options.UseMySql(defaultConnection);
             });
