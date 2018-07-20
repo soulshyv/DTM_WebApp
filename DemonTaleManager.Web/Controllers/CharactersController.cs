@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using DTM.Core.Mvc;
+using RpgManager.Ged.Contracts;
 
 namespace DemonTaleManager.Web.Controllers
 {
@@ -24,8 +25,8 @@ namespace DemonTaleManager.Web.Controllers
         private ICharacPicSearcher _characPicSearcher;
         protected ICharacPicSearcher CharacPicSearcher => _characPicSearcher ?? (_characPicSearcher = Scope.Resolve<ICharacPicSearcher>());
 
-        private DtmRepositories _dtmRepositories;
-        protected DtmRepositories DtmRepositories => _dtmRepositories ?? (_dtmRepositories = Scope.Resolve<DtmRepositories>());
+        private IGedService _gedService;
+        protected IGedService GedService => _gedService ?? (_gedService = Scope.Resolve<IGedService>());
 
         private IHostingEnvironment _hostingEnv;
         protected IHostingEnvironment HostingEnv => _hostingEnv ?? (_hostingEnv = Scope.Resolve<IHostingEnvironment>());
@@ -33,7 +34,7 @@ namespace DemonTaleManager.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var persos = await DtmRepositories.PersoRepository.GetAll();
+            var persos = await PersoRepository.GetAll();
 
             if (persos != null)
                 return View(new CharactersViewModel
@@ -50,7 +51,7 @@ namespace DemonTaleManager.Web.Controllers
             PersoDto perso;
             try
             {
-                perso = await DtmRepositories.PersoRepository.GetFullPersoById(idPerso);
+                perso = await PersoRepository.GetFullPersoById(idPerso);
             }
             catch (Exception e)
             {
@@ -60,11 +61,11 @@ namespace DemonTaleManager.Web.Controllers
 
             
             var pic = GetPicture(perso.Charac.Nom) + "?" + new DateTime().TimeOfDay.Ticks;
-            var dons = await DtmRepositories.DonRepository.GetAll();
-            var demons = await DtmRepositories.DemonRepository.GetAll();
-            var elements = await DtmRepositories.ElementRepository.GetAll();
-            var skills = await DtmRepositories.SkillRepository.GetAll();
-            var items = await DtmRepositories.ItemRepository.GetAll();
+            var dons = await DonRepository.GetAll();
+            var demons = await DemonRepository.GetAll();
+            var elements = await ElementRepository.GetAll();
+            var skills = await SkillRepository.GetAll();
+            var items = await ItemRepository.GetAll();
 
             return PartialView("Details", new CharacterDetailsViewModel
             {
@@ -102,11 +103,11 @@ namespace DemonTaleManager.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var dons = await DtmRepositories.DonRepository.GetAll();
-            var demons = await DtmRepositories.DemonRepository.GetAll();
-            var elements = await DtmRepositories.ElementRepository.GetAll();
-            var skills = await DtmRepositories.SkillRepository.GetAll();
-            var items = await DtmRepositories.ItemRepository.GetAll();
+            var dons = await DonRepository.GetAll();
+            var demons = await DemonRepository.GetAll();
+            var elements = await ElementRepository.GetAll();
+            var skills = await SkillRepository.GetAll();
+            var items = await ItemRepository.GetAll();
 
             return View("Create", new CharacterDetailsViewModel
             {
@@ -302,7 +303,7 @@ namespace DemonTaleManager.Web.Controllers
                 return string.Empty;
             }
 
-            var don = await DtmRepositories.DonRepository.GetByLibelle(libelle);
+            var don = await DonRepository.GetByLibelle(libelle);
 
             return don == null ? string.Empty : don.Description;
         }
@@ -315,7 +316,7 @@ namespace DemonTaleManager.Web.Controllers
                 return string.Empty;
             }
 
-            var demon = await DtmRepositories.DemonRepository.GetByNom(nom);
+            var demon = await DemonRepository.GetByNom(nom);
 
             var passifsDemon = demon.PassifDemon.ToArray();
             var libelle = string.Empty;
@@ -345,7 +346,7 @@ namespace DemonTaleManager.Web.Controllers
                 return string.Empty;
             }
 
-            var element = await DtmRepositories.ElementRepository.GetByLibelle(libelle);
+            var element = await ElementRepository.GetByLibelle(libelle);
 
             return element == null ? string.Empty : element.Description;
         }
@@ -358,7 +359,7 @@ namespace DemonTaleManager.Web.Controllers
                 return string.Empty;
             }
 
-            var skill = await DtmRepositories.SkillRepository.GetByLibelle(libelle);
+            var skill = await SkillRepository.GetByLibelle(libelle);
 
             return skill == null ? string.Empty : skill.Description;
         }
@@ -371,7 +372,7 @@ namespace DemonTaleManager.Web.Controllers
                 return string.Empty;
             }
 
-            var item = await DtmRepositories.ItemRepository.GetByLibelle(libelle);
+            var item = await ItemRepository.GetByLibelle(libelle);
 
             return item == null ? string.Empty : item.Description;
         }
