@@ -19,7 +19,6 @@ namespace RpgManager.Ged.Repositories
                                             g.File_Name AS FileName,
                                             g.File_Path AS FilePath,
                                             g.File_Size AS FileSize,
-                                            g.Author_Id AS AuthorId,
                                             g.Created
                                            FROM Ged g ";
 
