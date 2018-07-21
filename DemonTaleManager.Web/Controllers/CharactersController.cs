@@ -48,16 +48,7 @@ namespace DemonTaleManager.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetDetails(int idPerso)
         {
-            PersoDto perso;
-            try
-            {
-                perso = await PersoRepository.GetFullPersoById(idPerso);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            var perso = await PersoRepository.GetFullPersoById(idPerso);
 
             var gdr = await GedService.FindByName(perso.Charac.Nom);
             
