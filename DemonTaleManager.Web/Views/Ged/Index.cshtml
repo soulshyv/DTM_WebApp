@@ -14,29 +14,31 @@
 }
 <br />
 <br />
-<table class="table table-bordered table-hover table-sm">
-    <tr>
-        <th>Nom du fichier</th>
-        <th>Chemin du fichier</th>
-        <th>Date de création</th>
-        <th></th>
-    </tr>
-    @if (Model != null)
-    {
-        foreach (var m in Model.GedDocList)
+<div class="scrollable">
+    <table class="table table-bordered table-hover crud-table">
+        <tr>
+            <th>Nom du fichier</th>
+            <th>Chemin du fichier</th>
+            <th>Date de création</th>
+            <th></th>
+        </tr>
+        @if (Model != null)
         {
-            <tr>
-                <td>@m.FileName</td>
-                <td>@m.FilePath</td>
-                <td>@m.Created</td>
-                <td>
-                    <a asp-controller="Ged" asp-action="DownloadFile" asp-route-id="@m.PublicId">Télécharger</a>
-                    <a asp-controller="Ged" asp-action="SuppressFile" asp-route-id="@m.PublicId">Supprimer</a>
-                </td>
-            </tr>
+            foreach (var m in Model.GedDocList)
+            {
+                <tr>
+                    <td>@m.FileName</td>
+                    <td>@m.FilePath</td>
+                    <td>@m.Created.ToShortDateString()</td>
+                    <td>
+                        <a asp-controller="Ged" asp-action="DownloadFile" asp-route-id="@m.PublicId">Télécharger</a>
+                        <a asp-controller="Ged" asp-action="SuppressFile" asp-route-id="@m.PublicId">Supprimer</a>
+                    </td>
+                </tr>
+            }
         }
-    }
-</table>
+    </table>
+</div>
 
 
 <div id="add" class="modal fade">
@@ -50,14 +52,16 @@
             <div class="modal-body">
                 <form method="post" enctype="multipart/form-data" asp-controller="Ged" asp-action="AddFiles">
                     <div class="form-group">
-                        <input type="file" asp-for="@Model.File" />
+                        <label asp-for="@Model.File">Choississez une nouvelle image (png, jpg, gif)</label>
+                        <input type="file" asp-for="@Model.File"/>
                     </div>
                     <div class="form-group">
-                        <input type="text" asp-for="@Model.Meta.RealDirectory" />
+                        <label asp-for="@Model.Meta.RealDirectory">Saisissez le nom du dossier qui contiendra le fichier (à la racine par défaut)</label>
+                        <input type="text" asp-for="@Model.Meta.RealDirectory" placeholder="/"/>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Valider</button>
-                    <button type="button" class="btn" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn" data-dismiss="modal">Fermer</button>
                 </form>
             </div>
             <div class="modal-footer">

@@ -20,5 +20,6 @@ namespace RpgManager.Ged.Contracts
         // Chargement unitaire
         Task<GedDocument> GetById(int id, CancellationToken ctk = default(CancellationToken));
         Task<GedDocument> GetByPublicId(Guid? publicId, CancellationToken ctk = default(CancellationToken));
+        Task<GedDocument> GetByName(string fileName, CancellationToken ctk);
     }
 }

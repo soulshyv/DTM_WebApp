@@ -42,7 +42,7 @@ namespace RpgManager.Ged.Services
 
             return Path.Combine(
                 Path.Combine(dirParts.ToArray()),
-                Guid.NewGuid() + Path.GetExtension(filename)
+                filename
             );
         }
     }

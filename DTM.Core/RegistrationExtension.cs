@@ -30,11 +30,6 @@ namespace DTM.Core
             sc.TryAddScoped<SkillRepository>();
             sc.TryAddScoped<UserRepository>();
 
-            sc.TryAddScoped<DtmRepositories>();
-
-            sc.TryAddScoped<ICharacPicSearcher>(_ =>
-                new CharacPicSearcher(@"./wwwroot/images/CharacPictures/", @"../../images/CharacPictures/"));
-
             sc.TryAddScoped<IMd5Encryption, Md5Encryption>();
 
             return sc;

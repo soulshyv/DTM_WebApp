@@ -59,8 +59,9 @@ namespace DemonTaleManager.Web.Controllers
                 throw;
             }
 
+            var gdr = await GedService.FindByName(perso.Charac.Nom);
             
-            var pic = GetPicture(perso.Charac.Nom) + "?" + new DateTime().TimeOfDay.Ticks;
+            var pic = gdr != null ? gdr.FilePath + "?" + new DateTime().TimeOfDay.Ticks : string.Empty;
             var dons = await DonRepository.GetAll();
             var demons = await DemonRepository.GetAll();
             var elements = await ElementRepository.GetAll();
@@ -87,17 +88,6 @@ namespace DemonTaleManager.Web.Controllers
                 Skills = skills,
                 Items = items
             });
-        }
-
-        [HttpPost]
-        public string GetPicture(string nomPerso)
-        {
-            if (nomPerso == null)
-                return string.Empty;
-
-            var characPic = CharacPicSearcher.GetPicture(nomPerso, true);
-
-            return characPic;
         }
 
         [HttpGet]
@@ -246,45 +236,45 @@ namespace DemonTaleManager.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdatePic(string nomPerso)
         {
-            foreach (var file in Request.Form.Files)
-            {
-                var directorypath = HostingEnv.WebRootPath + @"\images\CharacPictures\";
-                var strings = ContentDispositionHeaderValue.Parse(file.ContentDisposition).Name.Trim().ToString()
-                    .Split(".");
-                var ext = strings.LastOrDefault()?.ToLower();
-                var filename = "CharacterPicture_" + nomPerso + "_" + DateTime.Now.ToUnixTimeStamp() + "." + ext;
+            //foreach (var file in Request.Form.Files)
+            //{
+            //    var directorypath = HostingEnv.WebRootPath + @"\images\CharacPictures\";
+            //    var strings = ContentDispositionHeaderValue.Parse(file.ContentDisposition).Name.Trim().ToString()
+            //        .Split(".");
+            //    var ext = strings.LastOrDefault()?.ToLower();
+            //    var filename = "CharacterPicture_" + nomPerso + "_" + DateTime.Now.ToUnixTimeStamp() + "." + ext;
 
-                var invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
-                filename = invalid.Aggregate(filename, (current, c) => current.Replace(c.ToString(), ""));
+            //    var invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            //    filename = invalid.Aggregate(filename, (current, c) => current.Replace(c.ToString(), ""));
 
-                var filepath = directorypath + filename;
+            //    var filepath = directorypath + filename;
 
-                if (!Directory.Exists(directorypath))
-                    Directory.CreateDirectory(directorypath);
+            //    if (!Directory.Exists(directorypath))
+            //        Directory.CreateDirectory(directorypath);
 
-                foreach (var f in Directory.GetFiles(directorypath))
-                {
-                    var fname = Path.GetFileName(f).Split(".")[0].Split(@"\")[0];
-                    if (fname.Contains(nomPerso))
-                        System.IO.File.Delete(f);
-                }
+            //    foreach (var f in Directory.GetFiles(directorypath))
+            //    {
+            //        var fname = Path.GetFileName(f).Split(".")[0].Split(@"\")[0];
+            //        if (fname.Contains(nomPerso))
+            //            System.IO.File.Delete(f);
+            //    }
 
-                try
-                {
-                    using (var fs = System.IO.File.Create(filepath))
-                    {
-                        await file.CopyToAsync(fs);
-                        fs.Flush();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
+            //    try
+            //    {
+            //        using (var fs = System.IO.File.Create(filepath))
+            //        {
+            //            await file.CopyToAsync(fs);
+            //            fs.Flush();
+            //        }
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Console.WriteLine(e);
+            //        throw;
+            //    }
 
-                return Ok();
-            }
+            //    return Ok();
+            //}
 
             return NotFound();
         }

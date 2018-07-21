@@ -103,6 +103,26 @@ namespace RpgManager.Ged.Services
         }
 
         /// <inheritdoc/>
+        public async Task<GedDocument> FindByName(string fileName,
+            CancellationToken ctk = default(CancellationToken))
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                throw new ArgumentException("no filename received");
+            }
+
+            //Récupérer le fichier
+            var fileToDl = await GedDocRepo.GetByName(fileName, ctk);
+
+            if (fileToDl == null)
+            {
+                return null;
+            }
+
+            return fileToDl;
+        }
+
+        /// <inheritdoc/>
         public async Task<GedDocument> GetMetadataByPublicId(Guid publicId,
             CancellationToken ctk = default(CancellationToken))
         {

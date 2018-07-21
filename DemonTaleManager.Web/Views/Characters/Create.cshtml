@@ -1,15 +1,581 @@
-﻿@model DTM.Core.ViewModels.CharacterDetailsViewModel
+﻿@using DTM.Core.Enums
+@using DTM.Core.Extensions
+@using DTM.Core.Utils
+@using DTM.DbManager.Enums
+@model DTM.Core.ViewModels.CharacterDetailsViewModel
+
+@{
+    /* Informations du perso */
+    var perso = Model.Perso;
+    var charac = Model.Perso?.Charac;
+    var caracs = Model.Perso?.Caracs;
+    var jauges = Model.Perso?.Jauges;
+    var stats = Model.Perso?.Stats;
+    var elementsPerso = Model.Perso?.Elements;
+    var skillsPerso = Model.Perso?.Skills;
+    var donsPerso = Model.Perso?.Dons?.OrderBy(ob => ob.Taux).ToList();
+    var demonsPerso = Model.Perso?.Demons;
+    var inventaire = Model.Perso?.Inventaire;
+    var metiersPerso = Model.Perso?.Metiers;
+    var passifsPerso = Model.Perso?.Passifs;
+    var characPic = Model.CharacterPicture ?? string.Empty;
+
+    /* Collections complètes */
+    var dons = Model.Dons;
+    var demons = Model.Demons;
+    var elements = Model.Elements;
+    var skills = Model.Skills;
+    var items = Model.Items;
+
+    /* Tableau des dégats */
+    // TODO Passer ça dans le ViewModel
+    var degats = new List<string>();
+    for (var j = 1; j <= 5; j++)
+    {
+        degats.Add(j + "d" + 2);
+        degats.Add(j + "d" + 3);
+        degats.Add(j + "d" + 5);
+        degats.Add(j + "d" + 10);
+    }
+}
 
 <div id="createPersoScrolling">
     <form method="post">
-        <div class="input-group">
-            <span class="input-group-btn">
-                <span class="btn btn-default btn-file">
-                    Browse...
-                    <input data-url="/upload" accept="image/jpeg" name="image" type="file" id="image">
-                </span>
+    <div class="input-group">
+        <span class="input-group-btn">
+            <span class="btn btn-default btn-file">
+                Browse...
+                <input data-url="/upload" accept="image/jpeg" name="image" type="file" id="image">
             </span>
-            <input readonly="readonly" placeholder="Picture file" class="form-control" name="filename" type="text">
+        </span>
+        <input readonly="readonly" placeholder="Picture file" class="form-control" name="filename" type="text">
+    </div>
+    <div>
+            <label asp-for="@charac.Nom"></label> <input asp-for="@charac.Nom" type="text" />
+            <label asp-for="@charac.Race"></label>
+            <select asp-for="@charac.Race">
+                @foreach (var r in EnumUtil.GetValues<CharacterRaceEnum>())
+                {
+                    var race = r.ToString();
+                    if (r.ToString() != "NA")
+                    {
+                        race = r.ToString().ToKebabCase();
+                    }
+
+                    <option value="@race">@race</option>
+                }
+            </select>
+
+            <table class="table">
+                <tr class="text-center">
+                    <td>
+                        <label asp-for="@charac.Lvl"></label>
+                        <select asp-for="@charac.Lvl">
+                            @for (var i = 1; i <= 99; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <label asp-for="@charac.Xp"></label>
+                        <select asp-for="@charac.Xp">
+                            @for (var i = 0; i <= 99; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <label asp-for="@charac.Po"></label>
+                        <select asp-for="@charac.Po">
+                            @for (var i = 0; i <= 999; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <label asp-for="@charac.TypePerso">Type</label>
+                        <select asp-for="@charac.TypePerso">
+                            @foreach (var type in EnumUtil.GetValues<CharacterTypeEnum>())
+                            {
+                                <option value="@((int) type)">@type.ToString().ToUpper()</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+            </table>
+
+            <table class="table table-bordered detailsTab">
+                <!-- Jauges -->
+                <tr class="text-center">
+                    <!-- Jauge de vie -->
+                    <td class="form-group">
+                        <label asp-for="@jauges.Vie">Vie : </label>
+                        <select asp-for="@jauges.Vie">
+                            <option selected="selected" value="none"></option>
+                            @for (var i = 0; i <= 100; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+
+                        <label asp-for="@jauges.VieMax">/</label>
+                        <select asp-for="@jauges.VieMax">
+                            <option selected="selected" value="none"></option>
+                            @for (var i = 0; i < 100; i++)
+                            {
+                                <option value="@(i + 1)">@(i + 1)</option>
+                            }
+                        </select>
+                    </td>
+                    <!-- Jauge de psy -->
+                    <td class="form-group">
+                        <label asp-for="@jauges.Psy">Psy : </label>
+                        <select asp-for="@jauges.Psy">
+                            <option selected="selected" value="none"></option>
+                            @for (var i = 0; i <= 100; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+
+                        <label asp-for="@jauges.PsyMax">/</label>
+                        <select asp-for="@jauges.PsyMax">
+                            <option selected="selected" value="none"></option>
+                            @for (var i = 1; i <= 100; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </td>
+                    <!-- Jauge de synchro -->
+                    <td class="form-group">
+                        <label asp-for="@jauges.Sync">Synchro : </label>
+                        <select asp-for="@jauges.Sync">
+                            <option selected="selected" value="none"></option>
+                            @for (var i = 0; i <= 5; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+
+                        <label asp-for="@jauges.SyncMax">/</label>
+                        <select asp-for="@jauges.SyncMax">
+                            <option selected="selected" value="none"></option>
+                            @for (var i = 1; i <= 5; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+            </table>
+
+            <table class="table table-bordered detailsTab">
+                <tr>
+                    <th class="text-center">Physique</th>
+                    <th class="text-center">Mental</th>
+                    <th class="text-center">Social</th>
+                </tr>
+                <tr class="text-center">
+                    <!-- Physique -->
+                    <td class="form-group">
+                        <select asp-for="@stats.Phy">
+                            <option value="none"></option>
+                            @for (var i = 0; i <= 100; i+=5)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                        <label asp-for="@stats.Phy"> %</label>
+                    </td>
+                    <!-- Mental -->
+                    <td class="form-group">
+                        <select asp-for="@stats.Mental">
+                            <option value="none"></option>
+                            @for (var i = 0; i <= 100; i+=5)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                        <label asp-for="@stats.Mental"> %</label>
+                    </td>
+                    <!-- Social -->
+                    <td class="form-group">
+                        <select asp-for="@stats.Social">
+                            <option value="none"></option>
+                            @for (var i = 0; i <= 100; i+=5)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                        <label asp-for="@stats.Social"> %</label>
+                    </td>
+                </tr>
+            </table>
+
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <label asp-for="@caracs.Atk">Attaque</label>
+                        <select asp-for="@caracs.Atk">
+                            @for (var i = 0; i <= 150; i++)
+                            {
+                                if (i == caracs?.Atk)
+                                {
+                                    <option selected="selected" value="@i">@i</option>
+                                }
+                                else
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <label asp-for="@caracs.Def">Défense</label>
+                        <select asp-for="@caracs.Def">
+                            @for (var i = 0; i <= 50; i++)
+                            {
+                                if (i == caracs?.Def)
+                                {
+                                    <option selected="selected" value="@i">@i</option>
+                                }
+                                else
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <label asp-for="@caracs.Rap">Rapidité</label>
+                        <select asp-for="@caracs.Rap">
+                            @for (var i = 0; i <= 50; i++)
+                            {
+                                if (i == caracs?.Rap)
+                                {
+                                    <option selected="selected" value="@i">@i</option>
+                                }
+                                else
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            }
+                        </select>
+                    </td>
+                </tr>
+            </table>
+
+            <table class="table table-bordered detailsTab">
+                <tr>
+                    <th class="text-center">Don</th>
+                    <th class="text-center">Taux</th>
+                </tr>
+                @for (var i = 0; i < donsPerso?.Count; i++)
+                {
+                    <tr class="text-center">
+                        <!-- Libelle -->
+                        <td class="form-group">
+                            <select asp-for="@donsPerso[i].Don.Libelle" class="libelleInput donLibelleInput">
+                                @foreach (var d in dons)
+                                {
+                                    if (d.Libelle == donsPerso[i].Don.Libelle)
+                                    {
+                                        <option selected="selected" value="@d.Libelle">@d.Libelle</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@d.Libelle">@d.Libelle</option>
+                                    }
+                                }
+                            </select>
+                            <br />
+                            <br />
+                            <!-- Description -->
+                            <textarea style="resize: none; width: 100%;" asp-for="@donsPerso[i].Don.Description" type="text" class="donDesc" disabled>@donsPerso[i].Don.Description</textarea>
+                            <input asp-for="@donsPerso[i].Don.Description" type="hidden" class="donDescInput" />
+                        </td>
+                        <!-- Taux -->
+                        <td class="form-group">
+                            <select asp-for="@donsPerso[i].Taux" class="donTauxInput">
+                                @switch (donsPerso[i].Taux)
+                                {
+                                    case 10:
+                                        <option value="10" selected="selected">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                        break;
+
+                                    case 15:
+                                        <option value="10">10</option>
+                                        <option value="15" selected="selected">15</option>
+                                        <option value="20">20</option>
+                                        break;
+
+                                    case 20:
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20" selected="selected">20</option>
+                                        break;
+                                }
+                            </select>
+
+                            <input asp-for="@donsPerso[i].DonId" type="hidden" />
+                            <input asp-for="@donsPerso[i].PersoId" type="hidden" />
+                            <input asp-for="@donsPerso[i].Id" type="hidden" />
+                            <input asp-for="@donsPerso[i].Don.Id" type="hidden" />
+                        </td>
+                    </tr>
+                }
+            </table>
+
+            <table class="table table-bordered detailsTab">
+                <tr>
+                    <th class="text-center">Element</th>
+                    <th class="text-center">Description</th>
+                </tr>
+                @for (var i = 0; i < elementsPerso?.Count; i++)
+                {
+                    <tr class="text-center">
+                        <!-- Libelle -->
+                        <td class="form-group">
+                            <select asp-for="@elementsPerso[i].Element.Libelle" class="libelleInput elementLibelleInput">
+                                @foreach (var e in elements)
+                                {
+                                    if (e.Libelle == elementsPerso[i].Element.Libelle)
+                                    {
+                                        <option selected="selected" value="@e.Libelle">@e.Libelle</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@e.Libelle">@e.Libelle</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td class="form-group">
+                            <!-- Description -->
+                            <textarea style="resize: none; width: 100%;" asp-for="@elementsPerso[i].Element.Description" type="text" class="elementDesc" disabled>@elementsPerso[i].Element.Description</textarea>
+                            <input asp-for="@elementsPerso[i].Element.Description" type="hidden" class="elementDescInput" />
+
+                            <input asp-for="@elementsPerso[i].ElementId" type="hidden" />
+                            <input asp-for="@elementsPerso[i].PersoId" type="hidden" />
+                            <input asp-for="@elementsPerso[i].Id" type="hidden" />
+                            <input asp-for="@elementsPerso[i].Element.Id" type="hidden" />
+                        </td>
+                    </tr>
+                }
+            </table>
+
+            <table class="table table-bordered detailsTab">
+                <tr>
+                    <th class="text-center">Nom</th>
+                    <th class="text-center">Passif</th>
+                </tr>
+                @for (var i = 0; i < demonsPerso?.Count; i++)
+                {
+                    <tr class="text-center">
+                        <!-- Libelle -->
+                        <td class="form-group">
+                            <select asp-for="@demonsPerso[i].Demon.Nom" class="libelleInput demonNomInput">
+                                @foreach (var d in demons)
+                                {
+                                    if (d.Nom == demonsPerso[i].Demon.Nom)
+                                    {
+                                        <option selected="selected" value="@d.Nom">@d.Nom</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@d.Nom">@d.Nom</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td class="form-group">
+                            <!-- Description -->
+                            @{
+                                var passifsDemon = demonsPerso[i].Demon.PassifDemon.ToArray();
+                                var libelle = string.Empty;
+                                var desc = string.Empty;
+                                var passifDetails = string.Empty;
+                            }
+
+                            @for (var j = 0; j < passifsDemon.Length; j++)
+                            {
+                                libelle += passifsDemon[j].Passif.Libelle ?? string.Empty;
+                                desc += string.IsNullOrWhiteSpace(passifsDemon[j].Passif.Description) ? $" : {passifsDemon[j].Passif.Description}" : string.Empty;
+                                passifDetails = libelle + desc;
+
+                                if (j != passifsDemon.Length - 1)
+                                {
+                                    passifDetails += "\r";
+                                }
+                            }
+                            <textarea style="resize: none; width: 100%;" type="text" class="demonPassifDetails" disabled>@passifDetails</textarea>
+
+                            <input asp-for="@demonsPerso[i].DemonId" type="hidden" />
+                            <input asp-for="@demonsPerso[i].PersoId" type="hidden" />
+                            <input asp-for="@demonsPerso[i].Id" type="hidden" />
+                            <input asp-for="@demonsPerso[i].Demon.Id" type="hidden" />
+                        </td>
+                    </tr>
+                }
+            </table>
+
+            @*
+        <table class="table table-bordered detailsTab">
+            <tr>
+                <th class="text-center">Don</th>
+                <th class="text-center">Description</th>
+            </tr>
+            @for (var i = 0; i < elementsPerso.Count; i++)
+            {
+                <tr class="text-center">
+                    <!-- Libelle -->
+                    <td class="form-group">
+                        <select asp-for="@elementsPerso[i].Element.Libelle" class="libelleInput elementLibelleInput">
+                            @foreach (var e in elements)
+                            {
+                                if (e.Libelle == elementsPerso[i].Element.Libelle)
+                                {
+                                    <option selected="selected" value="@e.Libelle">@e.Libelle</option>
+                                }
+                                else
+                                {
+                                    <option value="@e.Libelle">@e.Libelle</option>
+                                }
+                            }
+                        </select>
+                    </td>
+                    <td class="form-group">
+                        <!-- Description -->
+                        <textarea style="resize:none;width:100%;" asp-for="@elementsPerso[i].Element.Description" type="text" class="elementDescInput" disabled>@elementsPerso[i].Element.Description</textarea>
+
+                        <input asp-for="@elementsPerso[i].ElementId" type="hidden" />
+                        <input asp-for="@elementsPerso[i].PersoId" type="hidden" />
+                        <input asp-for="@elementsPerso[i].Id" type="hidden" />
+                        <input asp-for="@elementsPerso[i].Element.Id" type="hidden" />
+                    </td>
+                </tr>
+            }
+        </table>
+            *@
+
+            <table class="table table-bordered detailsTab">
+                <tr>
+                    <th class="text-center">Don</th>
+                    <th class="text-center">Taux</th>
+                    <th class="text-center">Dégats</th>
+                </tr>
+                @for (var i = 0; i < skillsPerso?.Count; i++)
+                {
+                    <tr class="text-center">
+                        <!-- Libelle -->
+                        <td class="form-group">
+                            <select asp-for="@skillsPerso[i].Skill.Libelle" class="libelleInput skillLibelleInput">
+                                @foreach (var sk in skills)
+                                {
+                                    if (sk.Libelle == skillsPerso[i].Skill.Libelle)
+                                    {
+                                        <option selected="selected" value="@sk.Libelle">@sk.Libelle</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="sk.Libelle">@sk.Libelle</option>
+                                    }
+                                }
+                            </select>
+                            <br />
+                            <br />
+                            <!-- Description -->
+                            <textarea style="resize: none; width: 100%;" asp-for="@skillsPerso[i].Skill.Description" type="text" class="skillDesc" disabled>@skillsPerso[i].Skill.Description</textarea>
+                            <input asp-for="@skillsPerso[i].Skill.Description" type="hidden" class="skillDescInput" />
+                        </td>
+                        <td>
+                            @*<span>
+                            <select asp-for="@skillsPerso[i].Skill.Taux">
+                                <option value=""></option>
+                                @for (var j = 5; j <= 100; j += 5)
+                                {
+                                    if (j == skillsPerso[i].Skill.Taux)
+                                    {
+                                        <option selected="selected" value="@j">@j</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@j">@j</option>
+                                    }
+                                }
+                            </select>
+                            %
+                        </span>*@
+                            <span><input class="skillTaux" asp-for="@skillsPerso[i].Skill.Taux" type="text" disabled /> %</span>
+                        </td>
+                        <td>
+                            @*<select asp-for="@skillsPerso[i].Skill.Degats">
+                            <option value=""></option>
+                            @foreach(var d in degats)
+                            {
+                                if (d == skillsPerso[i].Skill.Degats)
+                                {
+                                    <option selected="selected" value="@d">@d</option>
+                                }
+                                else
+                                {
+                                    <option value="@d">@d</option>
+                                }
+                            }
+                        </select>*@
+                            <input asp-for="@skillsPerso[i].Skill.Degats" class="skillTaux" type="text" disabled />
+
+                            <input asp-for="@skillsPerso[i].SkillId" type="hidden" />
+                            <input asp-for="@skillsPerso[i].PersoId" type="hidden" />
+                            <input asp-for="@skillsPerso[i].Id" type="hidden" />
+                            <input asp-for="@skillsPerso[i].Skill.Id" type="hidden" />
+                        </td>
+                    </tr>
+                }
+            </table>
+
+            <table class="table table-bordered detailsTab">
+                <tr>
+                    <th class="text-center">Don</th>
+                    <th class="text-center">Description</th>
+                </tr>
+                @for (var i = 0; i < elementsPerso?.Count; i++)
+                {
+                    <tr class="text-center">
+                        <!-- Libelle -->
+                        <td class="form-group">
+                            <select asp-for="@elementsPerso[i].Element.Libelle" class="libelleInput elementLibelleInput">
+                                @foreach (var e in elements)
+                                {
+                                    if (e.Libelle == elementsPerso[i].Element.Libelle)
+                                    {
+                                        <option selected="selected" value="@e.Libelle">@e.Libelle</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@e.Libelle">@e.Libelle</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td class="form-group">
+                            <!-- Description -->
+                            <textarea style="resize: none; width: 100%;" asp-for="@elementsPerso[i].Element.Description" type="text" class="elementDescInput" disabled>@elementsPerso[i].Element.Description</textarea>
+
+                            <input asp-for="@elementsPerso[i].ElementId" type="hidden" />
+                            <input asp-for="@elementsPerso[i].PersoId" type="hidden" />
+                            <input asp-for="@elementsPerso[i].Id" type="hidden" />
+                            <input asp-for="@elementsPerso[i].Element.Id" type="hidden" />
+                        </td>
+                    </tr>
+                }
+            </table>
         </div>
         <br />
         <div class="block-center">
@@ -20,5 +586,5 @@
 </div>
 
 @section scripts {
-<script src="~/js/create.js"></script>
+    <script src="~/js/create.js"></script>
 }

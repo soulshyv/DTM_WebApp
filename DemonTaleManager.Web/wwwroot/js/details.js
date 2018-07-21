@@ -118,10 +118,10 @@
     });
 
     /* Récupère et affiche la description du skill sélectionné */
-    $(".elementLibelleInput").change(function () {
+    $(".skillLibelleInput").change(function () {
         var libelle = $(this).val();
-        var elementDesc = $(this).parent().parent().find(".elementDesc");
-        var inputDesc = $(this).parent().parent().find(".elementDescInput");
+        var elementDesc = $(this).parent().parent().find(".skillDesc");
+        var inputDesc = $(this).parent().parent().find(".skillDescInput");
         var data = new FormData();
         data.append("libelle", libelle);
         $.ajax({

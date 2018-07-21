@@ -52,17 +52,14 @@ namespace RpgManager.Ged.Repositories
                             )
                             VALUES
                             (
-                             :publicId,
-                             :filename,
-                             :filepath,
-                             :fileSize,
-                             :created
+                              @publicId,
+                              @filename,
+                              @filepath,
+                              @fileSize,
+                              @created
                             )", dp, cancellationToken: ctk);
 
-
-            await DbConnection.ExecuteAsync(cd).ConfigureAwait(false);
-
-            file.Id = dp.Get<int>("LAST_INSERT");
+            await DbConnection.ExecuteAsync(cd);
 
             return file;
         }
@@ -71,7 +68,7 @@ namespace RpgManager.Ged.Repositories
         {
             var cd = new CommandDefinition(@"
                             DELETE FROM Ged
-                            WHERE Id = :id",
+                            WHERE Id = @id",
                 new
                 {
                     id = file.Id
@@ -86,13 +83,13 @@ namespace RpgManager.Ged.Repositories
             await DbConnection.ExecuteAsync(@"
                             UPDATE Ged
                             SET
-                             Public_Id = :publicId,
-                             File_Name = :fileName,
-                             File_Path = :filePath,
-                             File_Size = :fileSize,
+                             Public_Id = @publicId,
+                             File_Name = @fileName,
+                             File_Path = @filePath,
+                             File_Size = @fileSize,
                              Created = :created
                             WHERE
-                             Id = :id",
+                             Id = @id",
                 new
                 {
                     id = file.Id,
@@ -117,7 +114,7 @@ namespace RpgManager.Ged.Repositories
         {
             return (await DbConnection.QueryAsync<GedDocument>(
                 BaseSelectQuery +
-                @"WHERE g.Public_Id in :Ids",
+                @"WHERE g.Public_Id in @Ids",
                 new
                 {
                     Ids = ids.ToArray()
@@ -128,14 +125,9 @@ namespace RpgManager.Ged.Repositories
         public async Task<GedDocument> GetById(int id,
             CancellationToken ctk = default(CancellationToken))
         {
-            if (id == 0)
-            {
-                throw new ArgumentException("Id is null");
-            }
-
             return (await DbConnection.QueryAsync<GedDocument>(
                 BaseSelectQuery +
-                @"WHERE g.Id = :Id",
+                @"WHERE g.Id = @Id",
                 new
                 {
                     Id = id
@@ -145,15 +137,19 @@ namespace RpgManager.Ged.Repositories
         public async Task<GedDocument> GetByPublicId(Guid? publicId,
             CancellationToken ctk = default(CancellationToken))
         {
-            if (publicId == Guid.Empty || publicId == null)
-            {
-                throw new ArgumentException("PublicId is null");
-            }
-
             return (await DbConnection.QueryAsync<GedDocument>(
-                new CommandDefinition(BaseSelectQuery + @"WHERE g.PUBLIC_ID = :PublicId", new
+                new CommandDefinition(BaseSelectQuery + @"WHERE g.Public_Id = @PublicId", new
                 {
                     PublicId = publicId
+                }))).FirstOrDefault();
+        }
+
+        public async Task<GedDocument> GetByName(string fileName, CancellationToken ctk)
+        {
+            return (await DbConnection.QueryAsync<GedDocument>(
+                new CommandDefinition(BaseSelectQuery + @"WHERE g.FileName LIKE @fileName%", new
+                {
+                    FileName = fileName
                 }))).FirstOrDefault();
         }
     }

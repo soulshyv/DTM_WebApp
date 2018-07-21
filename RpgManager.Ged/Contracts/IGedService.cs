@@ -41,6 +41,14 @@ namespace RpgManager.Ged.Contracts
         Task<GedDocumentResult> FindByPublicId(Guid publicId, CancellationToken ctk = default(CancellationToken));
 
         /// <summary>
+        /// Cherche un document par son nom
+        /// </summary>
+        /// <param name="fileName">nom du fichier</param>
+        /// <param name="ctk"></param>
+        /// <returns>Résultat de document, utile surtout pour télécharger</returns>
+        Task<GedDocument> FindByName(string fileName, CancellationToken ctk = default(CancellationToken));
+
+        /// <summary>
         /// Cherche un document par son ID publique
         /// </summary>
         /// <param name="publicId">ID publique</param>

@@ -324,7 +324,7 @@ else
                                 <td>
                                     <label asp-for="@charac.Lvl"></label>
                                     <select asp-for="@charac.Lvl">
-                                        @for (var i = 1; i <= 999; i++)
+                                        @for (var i = 1; i <= 99; i++)
                                         {
                                             <option value="@i">@i</option>
                                         }
@@ -503,7 +503,7 @@ else
                                 <td class="form-group">
                                     <select asp-for="@stats.Mental">
                                         <option value="none"></option>
-                                        @for (var i = 0; i <= 100; i++)
+                                        @for (var i = 0; i <= 100; i+=5)
                                         {
                                             <option value="@i">@i</option>
                                         }
@@ -514,7 +514,7 @@ else
                                 <td class="form-group">
                                     <select asp-for="@stats.Social">
                                         <option value="none"></option>
-                                        @for (var i = 0; i <= 100; i++)
+                                        @for (var i = 0; i <= 100; i+=5)
                                         {
                                             <option value="@i">@i</option>
                                         }
